@@ -1,0 +1,36 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --bg-dark: #141413;
+  --bg-card: #1c1c1b;
+  --bg-card-hover: #242423;
+  --text-light: #ffffff;
+  --text-muted: #888888;
+  --accent-pink: #da8061;
+  --accent-lavender: #da8061;
+  --accent-gradient: linear-gradient(135deg, #da8061 0%, #c96a4a 100%);
+  --border-color: rgba(255, 255, 255, 0.08);
+}
+
+html {
+  font-family: 'JetBrains Mono', 'SF Mono', 'Fira Code', monospace;
+  background: var(--bg-dark);
+  color: var(--text-light);
+  scroll-behavior: smooth;
+}
+
+body {
+  min-height: 100vh;
+  overflow-x: hidden;
+  background: var(--bg-dark);
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 32px;
+}

@@ -1,0 +1,1745 @@
+---
+import NotchDemo from './NotchDemo/NotchDemo.astro';
+import TryMeIndicator from './NotchDemo/TryMeIndicator.astro';
+import Simulation from './Simulation.astro';
+---
+
+<section class="showcase">
+  <div class="container">
+    <div class="showcase-wrapper">
+      <Simulation />
+      <!-- Stop/Replay button (shown during/after demo) -->
+      <div class="demo-stop-btn hidden" id="demo-stop-btn">
+        <div class="demo-stop-btn-inner" id="demo-stop-btn-inner">
+          <svg class="stop-icon" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M6 6h12v12H6z"/>
+          </svg>
+          <svg class="replay-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none">
+            <path d="M1 4v6h6M23 20v-6h-6"/>
+            <path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15"/>
+          </svg>
+          <span class="stop-text">Stop</span>
+          <span class="replay-text" style="display:none">Replay</span>
+        </div>
+      </div>
+      <img
+        src="/images/demo-preview.jpg"
+        alt="Claude Island Demo"
+        class="showcase-image"
+      />
+      <div class="notch-container">
+        <NotchDemo />
+      </div>
+      <div class="apple-menu">
+        <div class="apple-menu-content">
+          <a href="/privacy" class="apple-menu-link" tabindex="-1" aria-label="Privacy policy">
+            <div class="apple-icon apple-icon-default">
+              <svg class="apple-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M19.37 7.648c-.114.088-2.11 1.213-2.11 3.715 0 2.894 2.54 3.918 2.616 3.944-.011.062-.403 1.402-1.34 2.767-.834 1.201-1.706 2.4-3.032 2.4s-1.667-.77-3.198-.77c-1.492 0-2.022.796-3.235.796-1.214 0-2.06-1.112-3.033-2.477C4.911 16.42 4 13.93 4 11.566c0-3.791 2.465-5.802 4.891-5.802 1.29 0 2.364.847 3.173.847.77 0 1.972-.897 3.438-.897.556 0 2.553.05 3.867 1.934Zm-4.564-3.54c.607-.719 1.036-1.718 1.036-2.716 0-.138-.012-.279-.037-.392-.987.037-2.161.657-2.87 1.478-.555.632-1.074 1.63-1.074 2.643 0 .152.026.304.037.353.063.011.164.025.266.025.885 0 1.998-.593 2.642-1.39Z"></path>
+              </svg>
+            </div>
+            <div class="apple-icon apple-icon-hover">
+              <svg class="apple-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M19.374 7.995c-.114.088-2.11 1.213-2.11 3.716 0 2.894 2.54 3.919 2.616 3.945-.011.062-.403 1.402-1.34 2.768-.834 1.2-1.707 2.4-3.033 2.4s-1.668-.77-3.199-.77c-1.492 0-2.022.796-3.236.796s-2.06-1.112-3.033-2.478C4.91 16.77 4 14.278 4 11.914 4 8.122 6.466 6.11 8.892 6.11c1.29 0 2.365.848 3.174.848.77 0 1.973-.898 3.439-.898.556 0 2.553.05 3.868 1.935M8.07 5.213h1.586v-.98c0-1.987 1.272-2.706 2.41-2.706s2.42.72 2.42 2.706v.98h1.584v-.807C16.07 1.442 14.13 0 12.066 0 10.009 0 8.07 1.442 8.07 4.406z"></path>
+              </svg>
+            </div>
+          </a>
+        </div>
+      </div>
+      <div class="status-bar">
+        <div class="status-bar-content">
+          <svg class="status-icon wifi-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 28 28" aria-hidden="true">
+            <path d="M14.4901 23.4883C14.7479 23.4883 14.9705 23.3711 15.4276 22.9258L18.2869 20.1836C18.4627 20.0078 18.5096 19.75 18.3455 19.5391C17.5838 18.5547 16.1424 17.6992 14.4901 17.6992C12.7908 17.6992 11.3494 18.5898 10.5877 19.6094C10.4705 19.7969 10.5174 20.0078 10.7049 20.1836L13.5526 22.9258C14.0096 23.3594 14.2323 23.4883 14.4901 23.4883ZM7.6346 17.1133C7.89241 17.3594 8.20882 17.3242 8.44319 17.0664C9.84944 15.5078 12.1463 14.3711 14.4901 14.3828C16.8573 14.3711 19.1541 15.543 20.5838 17.1016C20.7948 17.3477 21.0877 17.3359 21.3455 17.1016L23.1619 15.2969C23.3494 15.1094 23.3729 14.8516 23.1971 14.6406C21.4276 12.4727 18.1463 10.8438 14.4901 10.8438C10.8338 10.8438 7.55257 12.4727 5.78303 14.6406C5.60725 14.8516 5.61897 15.0859 5.81819 15.2969L7.6346 17.1133ZM2.77132 12.2148C3.00569 12.4375 3.33382 12.4375 3.55647 12.2031C6.43928 9.14453 10.2362 7.52734 14.4901 7.52734C18.7674 7.52734 22.5877 9.15625 25.4471 12.2148C25.658 12.4258 25.9744 12.4141 26.2088 12.1914L27.826 10.5742C28.0369 10.3633 28.0252 10.1055 27.8612 9.90625C25.1073 6.50781 19.9276 4.01172 14.4901 4.01172C9.06428 4.01172 3.86116 6.50781 1.11897 9.90625C0.954909 10.1055 0.954909 10.3633 1.15413 10.5742L2.77132 12.2148Z"></path>
+          </svg>
+          <svg class="status-icon network-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 28 28" aria-hidden="true">
+            <path d="M7.496 13.688h12.961c3.023 0 5.484-2.157 5.484-5.344 0-3.188-2.46-5.344-5.484-5.344H7.497C4.472 3 2 5.156 2 8.344c0 3.187 2.473 5.344 5.496 5.344Zm0-1.77c-1.969 0-3.726-1.441-3.726-3.574S5.527 4.77 7.496 4.77h12.961c1.957 0 3.715 1.44 3.715 3.574 0 2.133-1.758 3.574-3.715 3.574H7.497Zm0-.797c1.547.012 2.777-1.254 2.79-2.8.01-1.536-1.243-2.766-2.79-2.766A2.768 2.768 0 0 0 4.72 8.332a2.778 2.778 0 0 0 2.777 2.79Zm-.48 14.004h13.921c2.778 0 5.004-1.945 5.004-4.816 0-2.872-2.226-4.817-5.003-4.817H7.015C4.238 15.492 2 17.437 2 20.31c0 2.87 2.238 4.816 5.016 4.816Zm14.214-1.77a3.048 3.048 0 0 1-3.035-3.058 3.028 3.028 0 0 1 3.035-3.035c1.688 0 3.06 1.347 3.047 3.023-.011 1.7-1.359 3.082-3.047 3.07Z"></path>
+          </svg>
+          <time class="status-time">
+            <span class="day-label">Sun </span>
+            <span class="time-digits">20:53</span>
+          </time>
+        </div>
+      </div>
+      <div class="dock-bar">
+        <div class="dock-content">
+          <div class="dock-item" id="terminal-dock-icon">
+            <span class="dock-icon-wrapper">
+              <div class="dock-icon-size">
+                <img class="dock-icon-img" src="/terminal.png" alt="Terminal App Icon" draggable="false">
+              </div>
+            </span>
+          </div>
+          <div class="dock-item dock-item-spaced" id="browser-dock-icon">
+            <span class="dock-icon-wrapper">
+              <div class="dock-icon-size">
+                <img class="dock-icon-img" src="/safari.png" alt="Safari App Icon" draggable="false">
+              </div>
+            </span>
+          </div>
+          <div class="dock-item" id="email-dock-icon">
+            <span class="dock-icon-wrapper">
+              <div class="dock-icon-size">
+                <img class="dock-icon-img" src="/mail.png" alt="Mail App Icon" draggable="false">
+              </div>
+            </span>
+          </div>
+          <div class="dock-placeholder"></div>
+        </div>
+      </div>
+      <!-- Terminal windows container -->
+      <div id="terminals-container"></div>
+
+      <!-- Terminal template -->
+      <template id="terminal-template">
+        <div class="terminal-window">
+          <div class="terminal-titlebar">
+            <div class="terminal-buttons">
+              <button class="terminal-btn terminal-btn-close" aria-label="Close"></button>
+              <button class="terminal-btn terminal-btn-minimize" aria-label="Minimize"></button>
+              <button class="terminal-btn terminal-btn-maximize" aria-label="Maximize"></button>
+            </div>
+            <span class="terminal-title">claude — claude-island</span>
+          </div>
+          <div class="terminal-body">
+            <div class="terminal-output"></div>
+          </div>
+          <div class="terminal-input-area">
+            <div class="terminal-separator"></div>
+            <div class="terminal-input-line">
+              <span class="terminal-prompt">&gt;</span>
+              <input type="text" class="terminal-input" autocomplete="off" spellcheck="false">
+            </div>
+            <div class="terminal-separator"></div>
+            <div class="terminal-mode-line">
+              <span class="terminal-mode">-- INSERT --</span>
+            </div>
+          </div>
+        </div>
+      </template>
+      <div class="browser-window" id="browser-window">
+        <div class="browser-titlebar">
+          <div class="terminal-buttons">
+            <button class="terminal-btn terminal-btn-close" id="browser-close" aria-label="Close"></button>
+            <button class="terminal-btn terminal-btn-minimize" id="browser-minimize" aria-label="Minimize"></button>
+            <button class="terminal-btn terminal-btn-maximize" aria-label="Maximize"></button>
+          </div>
+          <div class="browser-url-bar">
+            <span class="browser-url">youtube.com</span>
+          </div>
+        </div>
+        <div class="browser-body">
+          <div class="youtube-player">
+            <div class="youtube-header">
+              <svg class="youtube-logo" viewBox="0 0 90 20" preserveAspectRatio="xMidYMid meet">
+                <g>
+                  <path d="M27.9727 3.12324C27.6435 1.89323 26.6768 0.926623 25.4468 0.597366C23.2197 2.24288e-07 14.285 0 14.285 0C14.285 0 5.35042 2.24288e-07 3.12323 0.597366C1.89323 0.926623 0.926623 1.89323 0.597366 3.12324C2.24288e-07 5.35042 0 10 0 10C0 10 2.24288e-07 14.6496 0.597366 16.8768C0.926623 18.1068 1.89323 19.0734 3.12323 19.4026C5.35042 20 14.285 20 14.285 20C14.285 20 23.2197 20 25.4468 19.4026C26.6768 19.0734 27.6435 18.1068 27.9727 16.8768C28.5701 14.6496 28.5701 10 28.5701 10C28.5701 10 28.5677 5.35042 27.9727 3.12324Z" fill="#FF0000"></path>
+                  <path d="M11.4253 14.2854L18.8477 10.0004L11.4253 5.71533V14.2854Z" fill="white"></path>
+                </g>
+                <g>
+                  <path d="M34.6024 19.4526C33.3792 19.4526 32.3325 19.1496 31.4624 18.5765C30.5765 17.9876 29.9123 17.1498 29.4699 16.0631C29.0276 14.9924 28.8064 13.7063 28.8064 12.2049C28.8064 10.7193 29.0276 9.44909 29.4699 8.37841C29.9123 7.30773 30.5765 6.48589 31.4624 5.89697C32.3325 5.30805 33.3792 5.02136 34.6024 5.02136C35.8256 5.02136 36.8723 5.30805 37.7424 5.89697C38.6125 6.48589 39.2767 7.30773 39.7349 8.37841C40.193 9.44909 40.4142 10.7193 40.4142 12.2049C40.4142 13.7063 40.193 14.9924 39.7349 16.0631C39.2767 17.1498 38.6125 17.9876 37.7424 18.5765C36.8723 19.1496 35.8256 19.4526 34.6024 19.4526ZM34.6024 17.0075C35.4725 17.0075 36.1525 16.6092 36.6107 15.8127C37.0688 15.0161 37.2979 13.8171 37.2979 12.2049C37.2979 10.6085 37.0688 9.41755 36.6107 8.62094C36.1525 7.82434 35.4725 7.42604 34.6024 7.42604C33.7323 7.42604 33.0523 7.82434 32.5942 8.62094C32.136 9.41755 31.9069 10.6085 31.9069 12.2049C31.9069 13.8171 32.136 15.0161 32.5942 15.8127C33.0523 16.6092 33.7323 17.0075 34.6024 17.0075Z" fill="white"></path>
+                  <path d="M47.2107 19.1654H44.1219V7.61498H41.0331V5.32581H50.2995V7.61498H47.2107V19.1654Z" fill="white"></path>
+                  <path d="M59.0003 19.1654H55.9115V13.0399C55.9115 12.2909 55.8161 11.7337 55.6254 11.3513C55.4347 10.9689 55.1006 10.7777 54.6231 10.7777C54.0027 10.7777 53.5604 11.0009 53.2958 11.4472C53.0312 11.8777 52.8989 12.5001 52.8989 13.3125V19.1654H49.8101V5.32581H52.6665L52.8989 6.68441C53.2635 6.16576 53.7216 5.76746 54.2734 5.48965C54.8252 5.21184 55.4664 5.07294 56.1969 5.07294C57.2277 5.07294 58.0345 5.4078 58.6175 6.07754C59.2004 6.74727 59.4919 7.67621 59.4919 8.86436V13.7063C59.4919 14.2249 59.4761 14.7593 59.4444 15.3096C59.4127 15.8599 59.3651 16.3944 59.3017 16.9131H59.0003V19.1654Z" fill="white"></path>
+                </g>
+              </svg>
+            </div>
+            <div class="youtube-video">
+              <div class="youtube-gif-container">
+                <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExMTk1Znllc3N5aGE1NTFxdHR4ZW90bGhmOGxyMDVqMmY4MzQ0NWd6NyZlcD12MV9naWZzX3NlYXJjaCZjdD1n/kc1qe57aesZgI/giphy.gif" alt="Capybara" class="youtube-gif youtube-gif-active">
+                <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExMTk1Znllc3N5aGE1NTFxdHR4ZW90bGhmOGxyMDVqMmY4MzQ0NWd6NyZlcD12MV9naWZzX3NlYXJjaCZjdD1n/y4EiW9iac7PrYzeA2n/giphy.gif" alt="Capybara" class="youtube-gif">
+                <img src="https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3ZmY4NXk1eDVqeG04M3R1YnNlMjRjdzlzODJxcnYwNmkwN2phN2YyaiZlcD12MV9naWZzX3NlYXJjaCZjdD1n/bnl7xKaEXMLhI475je/giphy.gif" alt="Capybara" class="youtube-gif">
+                <img src="https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3ODR0Z2VjaW43MW1nYWFyM3IzeGt5ZWlkMzZsbWtjaWdwbzE3aDdqcSZlcD12MV9naWZzX3NlYXJjaCZjdD1n/26gJywYnYeBUwP31e/giphy.gif" alt="Capybara" class="youtube-gif">
+                <img src="https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3MjhlazNnbmY2a2Jic253ZzNvbDF2NGE3ZHEybXl6ejlvamIzdGRpOSZlcD12MV9naWZzX3NlYXJjaCZjdD1n/4VsdO7YSBLC9lzPJUQ/giphy.gif" alt="Capybara" class="youtube-gif">
+                <img src="https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3ODN6dmU5aWFwNngzd2lqcmUyMGxyaGh5MXY5bHc4bjM2NTd0d3o0OSZlcD12MV9naWZzX3NlYXJjaCZjdD1n/F5ogAwsvSHdrq/giphy.gif" alt="Capybara" class="youtube-gif">
+              </div>
+              <div class="youtube-controls">
+                <div class="youtube-progress">
+                  <div class="youtube-progress-bar"></div>
+                </div>
+                <div class="youtube-control-buttons">
+                  <svg class="youtube-control-icon" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" fill="currentColor"></path></svg>
+                  <span class="youtube-time">1:23 / 3:45</span>
+                </div>
+              </div>
+            </div>
+            <div class="youtube-info">
+              <div class="youtube-title">Ultimate Capybara Compilation</div>
+              <div class="youtube-channel">CapybaraWorld • 12M views • 2 days ago</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Email window - macOS Mail style -->
+      <div class="email-window" id="email-window">
+        <div class="email-titlebar">
+          <div class="terminal-buttons">
+            <button class="terminal-btn terminal-btn-close" id="email-close" aria-label="Close"></button>
+            <button class="terminal-btn terminal-btn-minimize" id="email-minimize" aria-label="Minimize"></button>
+            <button class="terminal-btn terminal-btn-maximize" aria-label="Maximize"></button>
+          </div>
+          <div class="email-toolbar">
+            <button class="email-toolbar-btn" aria-label="Reply">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 17l-5-5 5-5M4 12h16"/></svg>
+            </button>
+            <button class="email-toolbar-btn" aria-label="Delete">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+            </button>
+            <button class="email-toolbar-btn" aria-label="Archive">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"/></svg>
+            </button>
+            <div class="email-toolbar-spacer"></div>
+            <button class="email-toolbar-btn" aria-label="Flag">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 21v-18M3 7l9-4 9 4v8l-9 4-9-4"/></svg>
+            </button>
+          </div>
+        </div>
+        <div class="email-content">
+          <div class="email-header">
+            <div class="email-header-row">
+              <span class="email-label">From:</span>
+              <span class="email-value">
+                <span class="email-sender-name">James Mitchell</span>
+                <span class="email-sender-email">&lt;j.mitchell@company.com&gt;</span>
+              </span>
+            </div>
+            <div class="email-header-row">
+              <span class="email-label">Subject:</span>
+              <span class="email-value email-subject">Website Status Update</span>
+            </div>
+            <div class="email-header-row">
+              <span class="email-label">Date:</span>
+              <span class="email-value email-date">December 8, 2024 at 3:42 PM</span>
+            </div>
+          </div>
+          <div class="email-body" id="email-thread">
+            <div class="email-message">
+              <p>Hello,</p>
+              <p>What's the status on our new website?</p>
+              <p class="email-signature">—<br>James Mitchell<br>CEO</p>
+            </div>
+          </div>
+          <div class="email-reply-bar">
+            <div class="email-reply-input-wrapper">
+              <div class="email-reply-input" id="email-reply-input" contenteditable="false" data-placeholder="Reply..."></div>
+            </div>
+            <button class="email-send-btn" id="email-send-btn" aria-label="Send">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <TryMeIndicator />
+  </div>
+</section>
+
+<style>
+  .showcase {
+    padding: 0 0 120px;
+    position: relative;
+  }
+
+  .showcase .container {
+    max-width: 1400px;
+    position: relative;
+  }
+
+  .showcase-wrapper {
+    position: relative;
+    margin: 0 auto;
+    overflow: hidden;
+    border-radius: 40px;
+  }
+
+  /* Stop/Replay button - matches apple menu style */
+  .demo-stop-btn {
+    position: absolute;
+    top: 0;
+    left: 82px;
+    padding: 20px;
+    z-index: 101;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+  }
+
+  .demo-stop-btn.hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+
+  .demo-stop-btn-inner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 40px;
+    padding: 0 14px;
+    gap: 6px;
+    background: rgba(255, 247, 237, 0.1);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border-radius: 10px;
+    cursor: pointer;
+    color: #fff7ed;
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    border: none;
+    transition: background 0.2s ease;
+  }
+
+  .demo-stop-btn:hover .demo-stop-btn-inner {
+    background: rgba(255, 247, 237, 0.18);
+  }
+
+  .demo-stop-btn svg {
+    width: 14px;
+    height: 14px;
+    flex-shrink: 0;
+  }
+
+  .status-bar {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 20px;
+  }
+
+  .status-bar-content {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 10px 20px;
+    background: rgba(255, 247, 237, 0.1);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border-radius: 10px;
+    border-top-right-radius: 20px;
+    color: #fff7ed;
+  }
+
+  .status-icon {
+    width: 20px;
+    height: 20px;
+  }
+
+  .icon-outline {
+    fill: rgba(255, 247, 237, 0.75);
+  }
+
+  .wifi-icon,
+  .network-icon {
+    fill: #fff7ed;
+    display: none;
+  }
+
+  @media (min-width: 1024px) {
+    .wifi-icon,
+    .network-icon {
+      display: block;
+    }
+  }
+
+  .status-time {
+    font-size: 15px;
+    font-weight: 500;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+
+  .day-label {
+    display: none;
+  }
+
+  @media (min-width: 768px) {
+    .day-label {
+      display: inline;
+    }
+  }
+
+  .showcase-image {
+    width: 100%;
+    height: 24rem;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    filter: blur(8px);
+    border-radius: 40px;
+  }
+
+  @media (min-width: 640px) {
+    .showcase-image {
+      height: auto;
+      filter: none;
+    }
+  }
+
+
+  .dock-bar {
+    position: absolute;
+    bottom: 28px;
+    left: 0;
+    right: 0;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .dock-content {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background: rgba(255, 247, 237, 0.15);
+    padding: 12px 12px 11px 12px;
+    border-radius: 24px;
+  }
+
+  .dock-content::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: 24px;
+    border-top: 1px solid rgba(255, 247, 237, 0.15);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+  }
+
+  .dock-item {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    user-select: none;
+  }
+
+  .dock-item-link {
+    margin-left: 8px;
+    width: 60px;
+    height: 60px;
+    outline: none;
+  }
+
+  .dock-item-spaced {
+    /* spacing now handled by gap on .dock-content */
+  }
+
+  .dock-icon-wrapper {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .dock-icon-size {
+    width: 72px;
+    height: 72px;
+  }
+
+  .dock-icon-size-sm {
+    width: 62px;
+    height: 62px;
+  }
+
+  .dock-icon-img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    cursor: pointer;
+    transition: all 100ms;
+  }
+
+  .dock-placeholder {
+    width: 58px;
+    height: 58px;
+    border-radius: 13px;
+    background: rgba(255, 247, 237, 0.15);
+  }
+
+  .apple-menu {
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: 20px;
+  }
+
+  .apple-menu-content {
+    display: flex;
+    align-items: center;
+    height: 40px;
+    background: rgba(255, 247, 237, 0.1);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border-radius: 10px;
+    border-top-left-radius: 20px;
+  }
+
+  .apple-menu-link {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 62px;
+    height: 100%;
+    color: #fff7ed;
+    outline: none;
+  }
+
+  .apple-icon {
+    position: absolute;
+    width: 22px;
+    height: 22px;
+  }
+
+  .apple-icon-hover {
+    display: none;
+  }
+
+  .apple-svg {
+    width: 100%;
+    height: 100%;
+    fill: currentColor;
+  }
+
+  .notch-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 500px;
+    pointer-events: none;
+    z-index: 50;
+  }
+
+  .notch-container :global(header#notch),
+  .notch-container :global(.try-me-indicator) {
+    pointer-events: auto;
+  }
+
+  #terminal-dock-icon {
+    cursor: pointer;
+  }
+</style>
+
+<style is:global>
+  .terminal-window {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.95);
+    width: 600px;
+    max-width: 90%;
+    height: 320px;
+    display: flex;
+    flex-direction: column;
+    background: #1e1e1e;
+    border-radius: 10px;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    overflow: hidden;
+    z-index: 40;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+  }
+
+  .terminal-window.open {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translate(-50%, -50%) scale(1);
+  }
+
+  .terminal-window.minimized,
+  .browser-window.minimized {
+    opacity: 0;
+    pointer-events: none;
+    transform: translate(-50%, 100%) scale(0.5);
+  }
+
+  .terminal-titlebar {
+    display: flex;
+    align-items: center;
+    padding: 12px 16px;
+    background: #2d2d2d;
+    position: relative;
+  }
+
+  .terminal-buttons {
+    display: flex;
+    gap: 8px;
+    padding-right: 12px;
+    border-right: 1px solid rgba(255, 255, 255, 0.1);
+    margin-right: 12px;
+  }
+
+  .terminal-btn {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+    transition: filter 0.15s ease, transform 0.1s ease;
+  }
+
+  .terminal-btn:hover {
+    filter: brightness(1.1);
+  }
+
+  .terminal-btn:active {
+    transform: scale(0.9);
+  }
+
+  .terminal-btn-close {
+    background: #ff5f57;
+  }
+
+  .terminal-btn-minimize {
+    background: #ffbd2e;
+  }
+
+  .terminal-btn-maximize {
+    background: #28c840;
+  }
+
+  .terminal-title {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 13px;
+    color: #999;
+    font-weight: 500;
+    max-width: 60%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .terminal-body {
+    padding: 16px;
+    overflow-y: auto;
+    font-family: 'SF Mono', 'Monaco', 'Menlo', 'Consolas', monospace;
+    font-size: 13px;
+    line-height: 1.5;
+    flex: 1;
+    min-height: 0;
+    /* Use column-reverse to anchor content at bottom */
+    display: flex;
+    flex-direction: column-reverse;
+  }
+
+  .terminal-output {
+    color: #fff;
+  }
+
+  .terminal-input-area {
+    font-family: 'SF Mono', 'Monaco', 'Menlo', 'Consolas', monospace;
+    font-size: 13px;
+  }
+
+  .terminal-separator {
+    height: 1px;
+    background: #444;
+    margin: 0;
+  }
+
+  .terminal-input-line {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+  }
+
+  .terminal-prompt {
+    color: #666;
+    white-space: nowrap;
+  }
+
+  .terminal-input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    color: #fff;
+    font-family: inherit;
+    font-size: inherit;
+    outline: none;
+    caret-color: #fff;
+  }
+
+  .terminal-mode-line {
+    padding: 4px 16px 8px;
+  }
+
+  .terminal-mode {
+    color: #666;
+    font-size: 12px;
+  }
+
+  .terminal-user-msg {
+    color: #fff;
+    margin-bottom: 12px;
+    padding-left: 0;
+  }
+
+  .terminal-user-prompt {
+    color: #666;
+    margin-right: 8px;
+  }
+
+  .terminal-tool {
+    color: #888;
+    margin-bottom: 2px;
+    font-size: 13px;
+  }
+
+  .terminal-tool-result {
+    color: #666;
+    font-size: 13px;
+    margin-bottom: 8px;
+  }
+
+  .terminal-tool-icon {
+    color: #fff;
+    margin-right: 6px;
+    animation: toolPulse 1.5s ease-in-out infinite;
+  }
+
+  @keyframes toolPulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+
+  .terminal-tool-icon.terminal-tool-success {
+    color: #22c55e;
+    animation: none;
+  }
+
+  .terminal-tool-icon.terminal-tool-error {
+    color: #ef4444;
+    animation: none;
+  }
+
+  .terminal-response-icon {
+    color: #fff;
+    margin-right: 6px;
+  }
+
+  .terminal-processing {
+    color: #888;
+    font-size: 13px;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+  }
+
+  .terminal-spinner {
+    color: var(--accent-pink, #f97316);
+    margin-right: 6px;
+    animation: terminalPulse 1s ease-in-out infinite;
+  }
+
+  @keyframes terminalPulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+
+  .terminal-response {
+    margin-bottom: 16px;
+    display: flex;
+    align-items: flex-start;
+  }
+
+  .terminal-response-text {
+    color: #e5e5e5;
+    line-height: 1.6;
+  }
+
+  /* Browser Window Styles */
+  .browser-window {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.95);
+    width: 700px;
+    max-width: 90%;
+    background: #0f0f0f;
+    border-radius: 10px;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    overflow: hidden;
+    z-index: 40;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+  }
+
+  .browser-window.open {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translate(-50%, -50%) scale(1);
+  }
+
+  .browser-titlebar {
+    display: flex;
+    align-items: center;
+    padding: 12px 16px;
+    background: #2d2d2d;
+    gap: 12px;
+  }
+
+  .browser-url-bar {
+    flex: 1;
+    background: #1a1a1a;
+    border-radius: 6px;
+    padding: 6px 12px;
+  }
+
+  .browser-url {
+    color: #888;
+    font-size: 13px;
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  }
+
+  .browser-body {
+    background: #0f0f0f;
+  }
+
+  .youtube-player {
+    display: flex;
+    flex-direction: column;
+    padding: 12px;
+    gap: 12px;
+  }
+
+  .youtube-header {
+    display: none;
+  }
+
+  .youtube-video {
+    position: relative;
+    background: #000;
+    border-radius: 8px;
+    overflow: hidden;
+    width: 100%;
+  }
+
+  .youtube-gif-container {
+    position: relative;
+    width: 100%;
+    height: 280px;
+  }
+
+  .youtube-gif {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 280px;
+    object-fit: cover;
+    display: block;
+    opacity: 0;
+    transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .youtube-gif-active {
+    opacity: 1;
+  }
+
+  .youtube-controls {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(transparent, rgba(0,0,0,0.8));
+    padding: 20px 12px 8px;
+  }
+
+  .youtube-progress {
+    height: 3px;
+    background: rgba(255,255,255,0.3);
+    border-radius: 2px;
+    margin-bottom: 8px;
+  }
+
+  .youtube-progress-bar {
+    width: 35%;
+    height: 100%;
+    background: #ff0000;
+    border-radius: 2px;
+  }
+
+  .youtube-control-buttons {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .youtube-control-icon {
+    width: 20px;
+    height: 20px;
+    color: #fff;
+  }
+
+  .youtube-time {
+    color: #fff;
+    font-size: 11px;
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  }
+
+  .youtube-info {
+    width: 100%;
+    padding: 0;
+  }
+
+  .youtube-title {
+    color: #fff;
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 8px;
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    line-height: 1.4;
+  }
+
+  .youtube-channel {
+    color: #aaa;
+    font-size: 12px;
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    line-height: 1.4;
+  }
+
+  #browser-dock-icon {
+    cursor: pointer;
+  }
+
+  #email-dock-icon {
+    cursor: pointer;
+  }
+
+  /* Email window styles - macOS Mail */
+  .email-window {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.95);
+    width: 520px;
+    max-width: 90%;
+    background: #1d1d1f;
+    border-radius: 10px;
+    box-shadow:
+      0 0 0 0.5px rgba(255, 255, 255, 0.1),
+      0 25px 50px -12px rgba(0, 0, 0, 0.6);
+    overflow: hidden;
+    z-index: 45;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
+  }
+
+  .email-window.open {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translate(-50%, -50%) scale(1);
+  }
+
+  .email-window.minimized {
+    opacity: 0;
+    pointer-events: none;
+    transform: translate(-50%, 100%) scale(0.5);
+  }
+
+  /* Titlebar with toolbar */
+  .email-window .email-titlebar {
+    display: flex;
+    align-items: center;
+    padding: 10px 12px;
+    background: linear-gradient(180deg, #3a3a3c 0%, #2c2c2e 100%);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.4);
+    gap: 12px;
+  }
+
+  .email-toolbar {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    margin-left: 8px;
+  }
+
+  .email-toolbar-btn {
+    width: 28px;
+    height: 24px;
+    background: transparent;
+    border: none;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: #98989d;
+    transition: background 0.15s, color 0.15s;
+  }
+
+  .email-toolbar-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+  }
+
+  .email-toolbar-btn svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  .email-toolbar-spacer {
+    flex: 1;
+  }
+
+  /* Email content area */
+  .email-content {
+    display: flex;
+    flex-direction: column;
+    height: 320px;
+    background: #1d1d1f;
+  }
+
+  /* Email header - From/Subject/Date rows */
+  .email-header {
+    padding: 14px 16px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    background: #232325;
+  }
+
+  .email-header-row {
+    display: flex;
+    align-items: baseline;
+    margin-bottom: 6px;
+    font-size: 13px;
+    line-height: 1.4;
+  }
+
+  .email-header-row:last-child {
+    margin-bottom: 0;
+  }
+
+  .email-label {
+    width: 60px;
+    color: #86868b;
+    font-weight: 400;
+    flex-shrink: 0;
+  }
+
+  .email-value {
+    color: #f5f5f7;
+    flex: 1;
+  }
+
+  .email-sender-name {
+    font-weight: 500;
+  }
+
+  .email-sender-email {
+    color: #86868b;
+    margin-left: 4px;
+  }
+
+  .email-subject {
+    font-weight: 500;
+  }
+
+  .email-date {
+    color: #86868b;
+  }
+
+  /* Email body */
+  .email-body {
+    flex: 1;
+    padding: 16px;
+    overflow-y: auto;
+    background: #1d1d1f;
+  }
+
+  .email-body::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  .email-body::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .email-body::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 4px;
+  }
+
+  .email-message {
+    font-size: 13px;
+    line-height: 1.6;
+    color: #e5e5e7;
+  }
+
+  .email-message p {
+    margin: 0 0 12px 0;
+  }
+
+  .email-message p:last-child {
+    margin-bottom: 0;
+  }
+
+  .email-signature {
+    color: #86868b;
+    font-size: 12px;
+    margin-top: 20px !important;
+  }
+
+  /* Sent message styling - plain text like native Mail */
+  .email-sent-message {
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .email-sent-message p {
+    font-size: 13px;
+    line-height: 1.6;
+    color: #e5e5e7;
+    margin: 0;
+  }
+
+  /* Reply bar */
+  .email-reply-bar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    background: #232325;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .email-reply-input-wrapper {
+    flex: 1;
+    background: #1d1d1f;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 8px;
+  }
+
+  .email-reply-input {
+    width: 100%;
+    padding: 12px 14px;
+    font-size: 13px;
+    color: #f5f5f7;
+    background: transparent;
+    border: none;
+    outline: none;
+    min-height: 20px;
+    max-height: 80px;
+    overflow-y: auto;
+    line-height: 1.4;
+    box-sizing: border-box;
+  }
+
+  .email-reply-input:empty::before {
+    content: attr(data-placeholder);
+    color: #636366;
+  }
+
+  .email-reply-input-wrapper:focus-within {
+    border-color: rgba(255, 255, 255, 0.25);
+  }
+
+  .email-send-btn {
+    width: 44px;
+    height: 44px;
+    background: #007aff;
+    border: none;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: #fff;
+    flex-shrink: 0;
+    transition: background 0.15s, transform 0.1s;
+  }
+
+  .email-send-btn svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  .email-send-btn:hover {
+    background: #0066d6;
+  }
+
+  .email-send-btn:active {
+    transform: scale(0.95);
+  }
+
+  .email-send-btn.sent {
+    background: #30d158;
+  }
+</style>
+
+<script>
+  // Wait for simulation to complete before enabling manual interaction
+  let simulationComplete = false;
+
+  // Listen for simulation complete event
+  window.addEventListener('simulationComplete', () => {
+    simulationComplete = true;
+  });
+
+  // Stop/Replay button controls
+  const showcaseWrapper = document.querySelector('.showcase-wrapper');
+  const stopBtn = document.getElementById('demo-stop-btn');
+  const stopBtnInner = document.getElementById('demo-stop-btn-inner');
+  let isReplayMode = false;
+  let hasStarted = false;
+
+  function setReplayMode(replay: boolean) {
+    isReplayMode = replay;
+    const stopIcon = stopBtn?.querySelector('.stop-icon') as HTMLElement;
+    const replayIcon = stopBtn?.querySelector('.replay-icon') as HTMLElement;
+    const stopText = stopBtn?.querySelector('.stop-text') as HTMLElement;
+    const replayText = stopBtn?.querySelector('.replay-text') as HTMLElement;
+
+    if (stopIcon) stopIcon.style.display = replay ? 'none' : 'block';
+    if (replayIcon) replayIcon.style.display = replay ? 'block' : 'none';
+    if (stopText) stopText.style.display = replay ? 'none' : 'inline';
+    if (replayText) replayText.style.display = replay ? 'inline' : 'none';
+  }
+
+  function startDemo() {
+    if (hasStarted) return;
+    hasStarted = true;
+    stopBtn?.classList.remove('hidden');
+    setReplayMode(false);
+    window.dispatchEvent(new CustomEvent('startSimulation'));
+  }
+
+  // Auto-start when scrolled into view (not on initial page load)
+  let hasScrolled = false;
+
+  function checkAndStartDemo() {
+    if (!showcaseWrapper || hasStarted) return;
+    const rect = showcaseWrapper.getBoundingClientRect();
+    const visibleHeight = Math.min(rect.bottom, window.innerHeight) - Math.max(rect.top, 0);
+    if (visibleHeight / rect.height >= 0.6) {
+      startDemo();
+    }
+  }
+
+  const handleFirstScroll = () => {
+    hasScrolled = true;
+    window.removeEventListener('scroll', handleFirstScroll);
+    // Check if showcase is already visible after first scroll
+    checkAndStartDemo();
+  };
+  window.addEventListener('scroll', handleFirstScroll, { passive: true });
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting && !hasStarted && hasScrolled) {
+        startDemo();
+      }
+    });
+  }, { threshold: 0.6 });
+
+  if (showcaseWrapper) {
+    observer.observe(showcaseWrapper);
+  }
+
+  stopBtnInner?.addEventListener('click', () => {
+    if (isReplayMode) {
+      // Reset and replay
+      resetDemo();
+      setReplayMode(false);
+      hasStarted = true;
+      window.dispatchEvent(new CustomEvent('startSimulation'));
+    } else {
+      // Stop demo and switch to replay mode
+      window.dispatchEvent(new CustomEvent('stopSimulation'));
+      resetDemo();
+      setReplayMode(true);
+      // Trigger simulationComplete to create sample session
+      window.dispatchEvent(new CustomEvent('simulationComplete'));
+    }
+  });
+
+  // Switch to replay mode when simulation completes naturally
+  window.addEventListener('simulationComplete', () => {
+    setReplayMode(true);
+  });
+
+  function resetDemo() {
+    // Reset all demo state (don't hide stop button - it becomes replay button)
+
+    // Close all windows
+    document.getElementById('browser-window')?.classList.remove('open', 'minimized');
+    document.getElementById('email-window')?.classList.remove('open', 'minimized');
+
+    // Clear all terminals
+    const terminalsContainer = document.getElementById('terminals-container');
+    if (terminalsContainer) terminalsContainer.innerHTML = '';
+
+    // Reset terminal manager
+    if ((window as any).terminalManager) {
+      (window as any).terminalManager.terminals.clear();
+      (window as any).terminalManager.nextId = 1;
+    }
+
+    // Reset email thread
+    const emailThread = document.getElementById('email-thread');
+    if (emailThread) {
+      const sentMessages = emailThread.querySelectorAll('.email-sent-message');
+      sentMessages.forEach(msg => msg.remove());
+    }
+
+    // Reset email input and send button
+    const emailInput = document.getElementById('email-reply-input');
+    if (emailInput) emailInput.textContent = '';
+    document.getElementById('email-send-btn')?.classList.remove('sent');
+
+    // Collapse notch
+    window.dispatchEvent(new CustomEvent('collapseNotch'));
+    window.dispatchEvent(new CustomEvent('resetNotch'));
+  }
+
+  const responses: Record<string, { tool?: string; toolResult?: string; response: string }> = {
+    'hello': {
+      response: `Hello! I'm Claude, ready to help you with the Claude Island codebase. What would you like to work on?`
+    },
+    'hi': {
+      response: `Hi there! How can I help you today?`
+    },
+    'help': {
+      response: `I can help you with:
+
+• Exploring the codebase structure
+• Reading and analyzing files
+• Answering questions about the code
+• Making changes and improvements
+
+Try asking me something like "check a file" or "what is this project?"`
+    },
+    'check a file': {
+      tool: 'Read(src/components/Showcase.astro)',
+      toolResult: 'Read 312 lines',
+      response: `Here's src/components/Showcase.astro - the main showcase section:
+
+Purpose: Displays the interactive demo of Claude Island
+
+Key components:
+• MacOS-style window with notch animation
+• Interactive dock bar with app icons
+• Status bar with time and system icons
+• Fake terminal that mimics Claude Code
+
+The component uses Astro with scoped CSS and client-side JavaScript for interactivity.`
+    },
+    'what files': {
+      tool: 'Glob(src/**/*)',
+      toolResult: 'Found 9 files',
+      response: `Found 9 files in src/:
+
+src/
+├── layouts/
+│   └── Layout.astro
+├── pages/
+│   └── index.astro
+└── components/
+    ├── CTA.astro
+    ├── Hero.astro
+    ├── Features.astro
+    ├── Showcase.astro
+    ├── Footer.astro
+    └── NotchDemo/`
+    },
+    'what is this': {
+      response: `Claude Island is a macOS menu bar app that brings AI assistance to your desktop.
+
+Features:
+• Smart notifications in your menu bar
+• Seamless Claude AI integration
+• Beautiful native macOS experience
+• Quick access from anywhere on your Mac
+
+It's designed to be your AI-powered productivity companion!`
+    }
+  };
+
+  function findResponse(input: string): { tool?: string; toolResult?: string; response: string } {
+    const lower = input.toLowerCase().trim();
+    for (const [key, value] of Object.entries(responses)) {
+      if (lower === key || lower.includes(key) || key.includes(lower)) {
+        return value;
+      }
+    }
+    return {
+      response: `I'd be happy to help with that! In the Claude Island codebase, I can explore files, explain components, or help make changes. Could you be more specific about what you'd like to know?`
+    };
+  }
+
+  // Terminal instance class
+  class TerminalInstance {
+    id: string;
+    element: HTMLElement;
+    output: HTMLElement;
+    input: HTMLInputElement;
+    title: HTMLElement;
+    name: string;
+    zIndex: number;
+    firstMessage: string | null = null;
+
+    constructor(id: string, zIndex: number) {
+      this.id = id;
+      this.zIndex = zIndex;
+      this.name = 'claude-island';
+
+      const template = document.getElementById('terminal-template') as HTMLTemplateElement;
+      const clone = template.content.cloneNode(true) as DocumentFragment;
+      this.element = clone.querySelector('.terminal-window') as HTMLElement;
+      this.element.id = `terminal-${id}`;
+      this.element.style.zIndex = String(zIndex);
+
+      this.output = this.element.querySelector('.terminal-output') as HTMLElement;
+      this.input = this.element.querySelector('.terminal-input') as HTMLInputElement;
+      this.title = this.element.querySelector('.terminal-title') as HTMLElement;
+
+      // Add offset for stacking
+      const offset = (terminalManager.terminals.size) * 20;
+      this.element.style.transform = `translate(calc(-50% + ${offset}px), calc(-50% + ${offset}px)) scale(1)`;
+
+      this.setupEventListeners();
+
+      const container = document.getElementById('terminals-container');
+      container?.appendChild(this.element);
+    }
+
+    setupEventListeners() {
+      const closeBtn = this.element.querySelector('.terminal-btn-close');
+      const minimizeBtn = this.element.querySelector('.terminal-btn-minimize');
+
+      closeBtn?.addEventListener('click', (e) => {
+        e.stopPropagation();
+        this.close();
+      });
+
+      minimizeBtn?.addEventListener('click', (e) => {
+        e.stopPropagation();
+        this.minimize();
+      });
+
+      this.input.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' && this.input.value.trim()) {
+          this.handleCommand(this.input.value);
+          this.input.value = '';
+        }
+      });
+
+      this.element.addEventListener('click', () => {
+        this.focus();
+      });
+    }
+
+    open() {
+      this.element.classList.remove('minimized');
+      this.element.classList.add('open');
+      this.focus();
+    }
+
+    close() {
+      this.element.classList.remove('open', 'minimized');
+      terminalManager.removeTerminal(this.id);
+    }
+
+    minimize() {
+      this.element.classList.remove('open');
+      this.element.classList.add('minimized');
+    }
+
+    focus() {
+      terminalManager.bringToFront(this.id);
+      setTimeout(() => this.input.focus({ preventScroll: true }), 50);
+    }
+
+    setTitle(name: string) {
+      this.name = name;
+      this.title.textContent = `claude — ${name}`;
+    }
+
+    addUserMessage(text: string) {
+      const line = document.createElement('div');
+      line.className = 'terminal-user-msg';
+      line.innerHTML = `<span class="terminal-user-prompt">&gt;</span> ${text}`;
+      this.output.appendChild(line);
+    }
+
+    addToolUsage(tool: string, result?: string) {
+      const line = document.createElement('div');
+      line.className = 'terminal-tool';
+      line.innerHTML = `<span class="terminal-tool-icon">⏺</span> ${tool}`;
+      this.output.appendChild(line);
+
+      if (result) {
+        const resultLine = document.createElement('div');
+        resultLine.className = 'terminal-tool-result';
+        resultLine.innerHTML = `  ⎿  ${result}`;
+        this.output.appendChild(resultLine);
+      }
+    }
+
+    addResponse(text: string) {
+      const line = document.createElement('div');
+      line.className = 'terminal-response';
+      line.innerHTML = `<span class="terminal-response-icon">⏺</span> <span class="terminal-response-text">${text.replace(/\n/g, '<br>')}</span>`;
+      this.output.appendChild(line);
+    }
+
+    handleCommand(input: string) {
+      const trimmed = input.trim();
+      if (!trimmed) return;
+
+      // Store first message and update title
+      if (!this.firstMessage) {
+        this.firstMessage = trimmed;
+        this.setTitle(trimmed.slice(0, 30) + (trimmed.length > 30 ? '...' : ''));
+
+        // Dispatch event for notch integration
+        window.dispatchEvent(new CustomEvent('terminalMessage', {
+          detail: {
+            terminalId: this.id,
+            message: trimmed,
+            isFirst: true
+          }
+        }));
+      } else {
+        window.dispatchEvent(new CustomEvent('terminalMessage', {
+          detail: {
+            terminalId: this.id,
+            message: trimmed,
+            isFirst: false
+          }
+        }));
+      }
+
+      this.addUserMessage(trimmed);
+      this.showProcessing(true);
+      // Response comes from notch via notchToTerminal event
+    }
+
+    showProcessing(show: boolean) {
+      // Remove existing processing indicator
+      const existing = this.output.querySelector('.terminal-processing');
+      if (existing) existing.remove();
+
+      if (show) {
+        const line = document.createElement('div');
+        line.className = 'terminal-processing';
+        line.innerHTML = `<span class="terminal-spinner">⏺</span> Processing...`;
+        this.output.appendChild(line);
+      }
+    }
+
+    // Handle events from notch
+    handleNotchEvent(eventType: string, data: any) {
+      switch (eventType) {
+        case 'toolUse':
+          this.showProcessing(false);
+          this.addToolUsage(data.toolName, data.toolInput);
+          break;
+        case 'toolResult':
+          // Tool completed - show colored dot (green=success, red=error)
+          const lastTool = this.output.querySelector('.terminal-tool:last-of-type .terminal-tool-icon');
+          if (lastTool) {
+            lastTool.classList.add(data.success ? 'terminal-tool-success' : 'terminal-tool-error');
+          }
+          break;
+        case 'assistantMessage':
+          this.showProcessing(false);
+          this.addResponse(data.text);
+          break;
+        case 'stateChange':
+          if (data.state === 'processing') {
+            this.showProcessing(true);
+          } else {
+            this.showProcessing(false);
+          }
+          break;
+      }
+    }
+  }
+
+  // Terminal manager
+  class TerminalManager {
+    terminals: Map<string, TerminalInstance> = new Map();
+    nextId: number = 1;
+    topZIndex: number = 40;
+
+    createTerminal(): TerminalInstance {
+      const id = String(this.nextId++);
+      this.topZIndex++;
+      const terminal = new TerminalInstance(id, this.topZIndex);
+      this.terminals.set(id, terminal);
+      terminal.open();
+      return terminal;
+    }
+
+    getTerminal(id: string): TerminalInstance | undefined {
+      return this.terminals.get(id);
+    }
+
+    removeTerminal(id: string) {
+      const terminal = this.terminals.get(id);
+      if (terminal) {
+        terminal.element.remove();
+        this.terminals.delete(id);
+      }
+    }
+
+    bringToFront(id: string) {
+      const terminal = this.terminals.get(id);
+      if (terminal) {
+        this.topZIndex++;
+        terminal.element.style.zIndex = String(this.topZIndex);
+      }
+    }
+
+    hasOpenTerminal(): boolean {
+      for (const terminal of this.terminals.values()) {
+        if (terminal.element.classList.contains('open')) {
+          return true;
+        }
+      }
+      return false;
+    }
+
+    getFirstOpenTerminal(): TerminalInstance | undefined {
+      for (const terminal of this.terminals.values()) {
+        if (terminal.element.classList.contains('open') || terminal.element.classList.contains('minimized')) {
+          return terminal;
+        }
+      }
+      return undefined;
+    }
+
+    openOrCreateTerminal() {
+      // If there's a minimized terminal, restore it
+      for (const terminal of this.terminals.values()) {
+        if (terminal.element.classList.contains('minimized')) {
+          terminal.open();
+          return terminal;
+        }
+      }
+      // Otherwise create a new one
+      return this.createTerminal();
+    }
+  }
+
+  const terminalManager = new TerminalManager();
+
+  // Expose for simulation
+  (window as any).terminalManager = terminalManager;
+
+  // Listen for events from notch to update terminals
+  window.addEventListener('notchToTerminal', ((e: CustomEvent) => {
+    const { terminalId, eventType, ...data } = e.detail;
+    const terminal = terminalManager.getTerminal(terminalId);
+    if (terminal) {
+      terminal.handleNotchEvent(eventType, data);
+    }
+  }) as EventListener);
+
+  // Dock icon click - create new or restore minimized
+  const terminalDockIcon = document.getElementById('terminal-dock-icon');
+  terminalDockIcon?.addEventListener('click', () => {
+    terminalManager.openOrCreateTerminal();
+  });
+
+  // Browser window
+  const browserDockIcon = document.getElementById('browser-dock-icon');
+  const browserWindow = document.getElementById('browser-window');
+  const browserClose = document.getElementById('browser-close');
+  const browserMinimize = document.getElementById('browser-minimize');
+
+  browserDockIcon?.addEventListener('click', () => {
+    browserWindow?.classList.remove('minimized');
+    browserWindow?.classList.add('open');
+  });
+
+  browserClose?.addEventListener('click', () => {
+    browserWindow?.classList.remove('open');
+    browserWindow?.classList.remove('minimized');
+  });
+
+  browserMinimize?.addEventListener('click', () => {
+    browserWindow?.classList.remove('open');
+    browserWindow?.classList.add('minimized');
+  });
+
+  // Email window
+  const emailDockIcon = document.getElementById('email-dock-icon');
+  const emailWindow = document.getElementById('email-window');
+  const emailClose = document.getElementById('email-close');
+  const emailMinimize = document.getElementById('email-minimize');
+  const emailReplyInput = document.getElementById('email-reply-input');
+  const emailSendBtn = document.getElementById('email-send-btn');
+
+  emailDockIcon?.addEventListener('click', () => {
+    emailWindow?.classList.remove('minimized');
+    emailWindow?.classList.add('open');
+  });
+
+  emailClose?.addEventListener('click', () => {
+    emailWindow?.classList.remove('open');
+    emailWindow?.classList.remove('minimized');
+  });
+
+  emailMinimize?.addEventListener('click', () => {
+    emailWindow?.classList.remove('open');
+    emailWindow?.classList.add('minimized');
+  });
+
+  // Listen for simulation events
+  window.addEventListener('openEmail', () => {
+    emailWindow?.classList.remove('minimized');
+    emailWindow?.classList.add('open');
+  });
+
+  window.addEventListener('closeBrowser', () => {
+    browserWindow?.classList.remove('open');
+    browserWindow?.classList.remove('minimized');
+  });
+
+  window.addEventListener('sendEmail', () => {
+    const emailBody = document.getElementById('email-thread');
+    const input = document.getElementById('email-reply-input');
+    const text = input?.textContent || '';
+
+    if (emailBody && text) {
+      // Create sent reply - plain text like native Mail
+      const sentMessage = document.createElement('div');
+      sentMessage.className = 'email-sent-message';
+      sentMessage.innerHTML = `<p>${text}</p>`;
+      emailBody.appendChild(sentMessage);
+      emailBody.scrollTop = emailBody.scrollHeight;
+
+      // Clear input
+      if (input) input.textContent = '';
+    }
+
+    emailSendBtn?.classList.add('sent');
+  });
+
+  // GIF cycling with smooth crossfade
+  let currentGifIndex = 0;
+  const gifs = document.querySelectorAll('.youtube-gif');
+
+  function cycleGif() {
+    // Remove active class from current
+    gifs[currentGifIndex]?.classList.remove('youtube-gif-active');
+
+    // Move to next
+    currentGifIndex = (currentGifIndex + 1) % gifs.length;
+
+    // Add active class to new
+    gifs[currentGifIndex]?.classList.add('youtube-gif-active');
+  }
+
+  // Cycle every 5 seconds
+  setInterval(cycleGif, 5000);
+</script>

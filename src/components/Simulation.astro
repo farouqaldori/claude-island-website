@@ -1,0 +1,603 @@
+---
+// Simulation component - controls the fake cursor demo
+---
+
+<div class="simulation-cursor" id="simulation-cursor">
+  <img src="/cursor.png" alt="" class="cursor-img" draggable="false">
+</div>
+
+<div class="simulation-overlay" id="simulation-overlay"></div>
+
+<style is:global>
+  .simulation-cursor {
+    position: absolute;
+    width: 24px;
+    height: 24px;
+    pointer-events: none;
+    z-index: 100;
+    opacity: 0;
+    margin-left: -6px;
+    margin-top: -4px;
+    will-change: left, top, opacity;
+  }
+
+  .simulation-cursor.active {
+    opacity: 1;
+    transition: opacity 0.2s ease;
+  }
+
+  .cursor-img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  .simulation-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 60;
+    pointer-events: all;
+  }
+
+  .simulation-overlay.inactive {
+    pointer-events: none;
+  }
+
+  /* Click effect */
+  .simulation-cursor::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 20px;
+    height: 20px;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    transform: scale(0);
+    opacity: 0;
+    transition: none;
+  }
+
+  .simulation-cursor.clicking::after {
+    animation: clickPulse 0.3s ease-out;
+  }
+
+  @keyframes clickPulse {
+    0% {
+      transform: scale(0);
+      opacity: 0.6;
+    }
+    100% {
+      transform: scale(2);
+      opacity: 0;
+    }
+  }
+</style>
+
+<script>
+  interface SimulationStep {
+    type: 'move' | 'click' | 'type' | 'typeElement' | 'wait' | 'callback' | 'waitForEvent' | 'backspace';
+    target?: string;
+    x?: number;
+    y?: number;
+    duration?: number;
+    text?: string;
+    callback?: () => void;
+    eventName?: string;
+    timeout?: number;
+    count?: number; // for backspace
+  }
+
+  class DemoSimulation {
+    private cursor: HTMLElement;
+    private overlay: HTMLElement;
+    private showcaseWrapper: HTMLElement | null;
+    private isRunning = false;
+    private onComplete?: () => void;
+
+    constructor() {
+      this.cursor = document.getElementById('simulation-cursor')!;
+      this.overlay = document.getElementById('simulation-overlay')!;
+      this.showcaseWrapper = document.querySelector('.showcase-wrapper');
+    }
+
+    private getElementCenter(selector: string): { x: number; y: number } | null {
+      const el = document.querySelector(selector);
+      if (!el || !this.showcaseWrapper) return null;
+
+      const elRect = el.getBoundingClientRect();
+      const wrapperRect = this.showcaseWrapper.getBoundingClientRect();
+
+      // Return the center point where the cursor TIP should be
+      return {
+        x: elRect.left - wrapperRect.left + elRect.width / 2,
+        y: elRect.top - wrapperRect.top + elRect.height / 2
+      };
+    }
+
+    private async moveTo(x: number, y: number, duration: number = 800): Promise<void> {
+      // Get current position
+      const startX = parseFloat(this.cursor.style.left) || 0;
+      const startY = parseFloat(this.cursor.style.top) || 0;
+
+      // Calculate distance to determine if we should curve
+      const distance = Math.sqrt(Math.pow(x - startX, 2) + Math.pow(y - startY, 2));
+      const shouldCurve = distance > 100; // Only curve for movements > 100px
+
+      // Calculate control point for bezier curve (only if curving)
+      const midX = shouldCurve
+        ? (startX + x) / 2 + (Math.random() - 0.5) * 50
+        : (startX + x) / 2;
+      const midY = shouldCurve
+        ? (startY + y) / 2 + (Math.random() - 0.5) * 30
+        : (startY + y) / 2;
+
+      const startTime = performance.now();
+
+      return new Promise(resolve => {
+        const animate = (currentTime: number) => {
+          const elapsed = currentTime - startTime;
+          const progress = Math.min(elapsed / duration, 1);
+
+          // Ease out cubic for natural deceleration
+          const eased = 1 - Math.pow(1 - progress, 3);
+
+          let currentX: number, currentY: number;
+
+          if (shouldCurve) {
+            // Quadratic bezier curve interpolation
+            const t = eased;
+            const invT = 1 - t;
+            currentX = invT * invT * startX + 2 * invT * t * midX + t * t * x;
+            currentY = invT * invT * startY + 2 * invT * t * midY + t * t * y;
+          } else {
+            // Linear interpolation for short distances
+            currentX = startX + (x - startX) * eased;
+            currentY = startY + (y - startY) * eased;
+          }
+
+          this.cursor.style.left = `${currentX}px`;
+          this.cursor.style.top = `${currentY}px`;
+
+          if (progress < 1) {
+            requestAnimationFrame(animate);
+          } else {
+            resolve();
+          }
+        };
+
+        requestAnimationFrame(animate);
+      });
+    }
+
+    private async moveToElement(selector: string, duration: number = 800): Promise<void> {
+      const pos = this.getElementCenter(selector);
+      if (pos) {
+        await this.moveTo(pos.x, pos.y, duration);
+      }
+    }
+
+    private async click(): Promise<void> {
+      return new Promise(resolve => {
+        this.cursor.classList.add('clicking');
+        setTimeout(() => {
+          this.cursor.classList.remove('clicking');
+          resolve();
+        }, 300);
+      });
+    }
+
+    private async wait(ms: number): Promise<void> {
+      return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
+    private async waitForEvent(eventName: string, timeout: number = 10000): Promise<void> {
+      return new Promise(resolve => {
+        const timeoutId = setTimeout(() => {
+          window.removeEventListener(eventName, handler);
+          resolve(); // Continue even if timeout
+        }, timeout);
+
+        const handler = () => {
+          clearTimeout(timeoutId);
+          window.removeEventListener(eventName, handler);
+          resolve();
+        };
+
+        window.addEventListener(eventName, handler);
+      });
+    }
+
+    private async typeText(selector: string, text: string, speed: number = 50): Promise<void> {
+      const input = document.querySelector(selector) as HTMLInputElement;
+      if (!input) return;
+
+      input.focus({ preventScroll: true });
+      for (const char of text) {
+        input.value += char;
+        input.dispatchEvent(new Event('input', { bubbles: true }));
+        await this.wait(speed);
+      }
+    }
+
+    private async typeInElement(selector: string, text: string, speed: number = 50): Promise<void> {
+      const el = document.querySelector(selector) as HTMLElement;
+      if (!el) return;
+
+      el.focus();
+      for (const char of text) {
+        el.textContent = (el.textContent || '') + char;
+        el.dispatchEvent(new Event('input', { bubbles: true }));
+        await this.wait(speed);
+      }
+    }
+
+    private async backspaceInElement(selector: string, count: number, speed: number = 50): Promise<void> {
+      const el = document.querySelector(selector) as HTMLElement;
+      if (!el) return;
+
+      for (let i = 0; i < count; i++) {
+        const text = el.textContent || '';
+        if (text.length > 0) {
+          el.textContent = text.slice(0, -1);
+          el.dispatchEvent(new Event('input', { bubbles: true }));
+        }
+        await this.wait(speed);
+      }
+    }
+
+    private async executeStep(step: SimulationStep): Promise<void> {
+      switch (step.type) {
+        case 'move':
+          if (step.target) {
+            await this.moveToElement(step.target, step.duration);
+          } else if (step.x !== undefined && step.y !== undefined) {
+            await this.moveTo(step.x, step.y, step.duration);
+          }
+          break;
+        case 'click':
+          await this.click();
+          if (step.target) {
+            const el = document.querySelector(step.target) as HTMLElement;
+            el?.click();
+          }
+          break;
+        case 'type':
+          if (step.target && step.text) {
+            await this.typeText(step.target, step.text, step.duration);
+          }
+          break;
+        case 'wait':
+          await this.wait(step.duration || 1000);
+          break;
+        case 'callback':
+          if (step.callback) {
+            step.callback();
+          }
+          break;
+        case 'waitForEvent':
+          if (step.eventName) {
+            await this.waitForEvent(step.eventName, step.timeout || 10000);
+          }
+          break;
+        case 'typeElement':
+          if (step.target && step.text) {
+            await this.typeInElement(step.target, step.text, step.duration);
+          }
+          break;
+        case 'backspace':
+          if (step.target && step.count) {
+            await this.backspaceInElement(step.target, step.count, step.duration);
+          }
+          break;
+      }
+    }
+
+    async run(steps: SimulationStep[], onComplete?: () => void): Promise<void> {
+      if (this.isRunning) return;
+
+      this.isRunning = true;
+      this.shouldStop = false;
+      this.onComplete = onComplete;
+
+      // Reset overlay state
+      this.overlay.classList.remove('inactive');
+
+      // Position cursor at starting point (in pixels, relative to wrapper)
+      const wrapperRect = this.showcaseWrapper?.getBoundingClientRect();
+      const startX = wrapperRect ? wrapperRect.width * 0.5 : 300;
+      const startY = wrapperRect ? wrapperRect.height * 0.8 : 400;
+      this.cursor.style.left = `${startX}px`;
+      this.cursor.style.top = `${startY}px`;
+
+      // Show cursor
+      await this.wait(500);
+      if (this.shouldStop) return this.cleanup();
+      this.cursor.classList.add('active');
+      await this.wait(300);
+
+      // Execute steps
+      for (const step of steps) {
+        if (this.shouldStop) return this.cleanup();
+        await this.executeStep(step);
+        await this.wait(80); // Small pause between steps
+      }
+
+      // Hide cursor and finish
+      await this.wait(500);
+      this.cleanup();
+
+      if (this.onComplete) {
+        this.onComplete();
+      }
+
+      // Dispatch custom event
+      window.dispatchEvent(new CustomEvent('simulationComplete'));
+    }
+
+    stop(): void {
+      this.shouldStop = true;
+      this.isRunning = false;
+    }
+
+    private cleanup(): void {
+      this.cursor.classList.remove('active');
+      this.overlay.classList.add('inactive');
+      this.isRunning = false;
+    }
+
+    private shouldStop = false;
+  }
+
+  // Helper to open terminal and type message
+  function createOpenAndTypeSteps(terminalIndex: number, message: string): SimulationStep[] {
+    return [
+      { type: 'move', target: '#terminal-dock-icon', duration: 300 },
+      { type: 'wait', duration: 80 },
+      { type: 'click', target: '#terminal-dock-icon' },
+      { type: 'wait', duration: 150 },
+      { type: 'move', target: `#terminal-${terminalIndex} .terminal-input`, duration: 200 },
+      { type: 'click' },
+      { type: 'wait', duration: 80 },
+      { type: 'type', target: `#terminal-${terminalIndex} .terminal-input`, text: message, duration: 25 },
+      { type: 'wait', duration: 60 },
+      { type: 'callback', callback: () => {
+        const input = document.querySelector(`#terminal-${terminalIndex} .terminal-input`) as HTMLInputElement;
+        if (input) {
+          input.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }));
+        }
+      }},
+    ];
+  }
+
+  // Helper to minimize a terminal
+  function createMinimizeSteps(terminalIndex: number): SimulationStep[] {
+    return [
+      { type: 'move', target: `#terminal-${terminalIndex} .terminal-btn-minimize`, duration: 180 },
+      { type: 'click', target: `#terminal-${terminalIndex} .terminal-btn-minimize` },
+      { type: 'wait', duration: 120 },
+    ];
+  }
+
+  // Helper to click approve button on notch
+  function createApproveSteps(sessionIndex: number): SimulationStep[] {
+    return [
+      { type: 'move', target: `.instance-item:nth-child(${sessionIndex}) .instance-btn-approve`, duration: 250 },
+      { type: 'wait', duration: 100 },
+      { type: 'click', target: `.instance-item:nth-child(${sessionIndex}) .instance-btn-approve` },
+    ];
+  }
+
+  // Helper to type in notch chat input
+  function createNotchTypeSteps(text: string): SimulationStep[] {
+    return [
+      { type: 'move', target: '.chat-input', duration: 200 },
+      { type: 'click' },
+      { type: 'wait', duration: 80 },
+      { type: 'type', target: '.chat-input', text: text, duration: 30 },
+      { type: 'wait', duration: 100 },
+      { type: 'callback', callback: () => {
+        const input = document.querySelector('.chat-input') as HTMLInputElement;
+        if (input) {
+          input.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }));
+        }
+      }},
+    ];
+  }
+
+  // Demo messages
+  const DEMO_MESSAGES = {
+    terminal1: 'create a react dashboard for my app',
+    terminal2: 'Build a backend server with express',
+    terminal3: 'Find all the large files on my computer'
+  };
+
+  // Build the complete demo sequence
+  const demoSteps: SimulationStep[] = [
+    // === PHASE 1: Open all 3 terminals and send messages ===
+
+    // Terminal 1 - React dashboard
+    ...createOpenAndTypeSteps(1, DEMO_MESSAGES.terminal1),
+    { type: 'wait', duration: 300 },
+
+    // Terminal 2 - Backend
+    ...createOpenAndTypeSteps(2, DEMO_MESSAGES.terminal2),
+    { type: 'wait', duration: 300 },
+
+    // Terminal 3 - Large files
+    ...createOpenAndTypeSteps(3, DEMO_MESSAGES.terminal3),
+    { type: 'wait', duration: 300 },
+
+    // Minimize all terminals
+    ...createMinimizeSteps(3),
+    ...createMinimizeSteps(2),
+    ...createMinimizeSteps(1),
+
+    // === PHASE 2: Open Safari and start watching ===
+    { type: 'wait', duration: 400 },
+
+    // Open browser
+    { type: 'move', target: '#browser-dock-icon', duration: 300 },
+    { type: 'wait', duration: 100 },
+    { type: 'click', target: '#browser-dock-icon' },
+    { type: 'wait', duration: 500 },
+
+    // Move cursor to video area to "watch"
+    { type: 'move', x: 350, y: 280, duration: 350 },
+
+    // === PHASE 3: Permission requests arrive while watching ===
+
+    // Wait for Terminal 1 to request permission (tool calls have been running)
+    { type: 'wait', duration: 2500 },
+    { type: 'callback', callback: () => {
+      window.dispatchEvent(new CustomEvent('terminalPermission', {
+        detail: {
+          terminalId: '1',
+          toolName: 'Bash',
+          toolInput: 'npx create-react-app dashboard'
+        }
+      }));
+    }},
+
+    // Cursor moves to notch and approves Terminal 1
+    { type: 'wait', duration: 800 },
+    ...createApproveSteps(1),
+
+    // Move outside and collapse notch
+    { type: 'wait', duration: 300 },
+    { type: 'move', x: 350, y: 280, duration: 250 },
+    { type: 'callback', callback: () => {
+      window.dispatchEvent(new CustomEvent('collapseNotch'));
+    }},
+
+    // Wait a bit, then Terminal 2 requests permission
+    { type: 'wait', duration: 2000 },
+    { type: 'callback', callback: () => {
+      window.dispatchEvent(new CustomEvent('terminalPermission', {
+        detail: {
+          terminalId: '2',
+          toolName: 'Bash',
+          toolInput: 'npm init -y && npm install express'
+        }
+      }));
+    }},
+
+    // Cursor approves Terminal 2
+    { type: 'wait', duration: 700 },
+    ...createApproveSteps(2),
+
+    // Move outside and collapse notch
+    { type: 'wait', duration: 300 },
+    { type: 'move', x: 350, y: 280, duration: 250 },
+    { type: 'callback', callback: () => {
+      window.dispatchEvent(new CustomEvent('collapseNotch'));
+    }},
+
+    // === PHASE 4: Terminal 3 asks question, cursor responds ===
+
+    // Wait for Terminal 3 to finish and ask for input (event-driven, with 15s timeout)
+    { type: 'waitForEvent', eventName: 'sessionWaitingForInput', timeout: 15000 },
+    { type: 'wait', duration: 500 },
+
+    // Click on notch to expand it (show session list)
+    { type: 'move', target: '#notch', duration: 300 },
+    { type: 'wait', duration: 150 },
+    { type: 'callback', callback: () => {
+      window.dispatchEvent(new CustomEvent('expandNotch'));
+    }},
+    { type: 'wait', duration: 400 },
+
+    // Click on Terminal 3 session to open chat
+    { type: 'move', target: '.instance-item:nth-child(3)', duration: 250 },
+    { type: 'wait', duration: 150 },
+    { type: 'callback', callback: () => {
+      window.dispatchEvent(new CustomEvent('openSessionChat', {
+        detail: { sessionId: 'terminal-3' }
+      }));
+    }},
+    { type: 'wait', duration: 400 },
+
+    // Type response in chat
+    ...createNotchTypeSteps('Yes, clean up the logs please'),
+
+    // Wait for cleanup response to complete before collapsing
+    { type: 'waitForEvent', eventName: 'cleanupResponseComplete', timeout: 5000 },
+    { type: 'wait', duration: 2000 },
+
+    // Collapse notch
+    { type: 'move', x: 350, y: 280, duration: 250 },
+    { type: 'callback', callback: () => {
+      window.dispatchEvent(new CustomEvent('collapseNotch'));
+    }},
+
+    // === PHASE 5: Email demo ===
+    { type: 'wait', duration: 4000 },
+
+    // Close Safari by clicking the close button
+    { type: 'move', target: '#browser-close', duration: 250 },
+    { type: 'wait', duration: 100 },
+    { type: 'click', target: '#browser-close' },
+    { type: 'callback', callback: () => {
+      window.dispatchEvent(new CustomEvent('closeBrowser'));
+    }},
+    { type: 'wait', duration: 400 },
+
+    // Open email
+    { type: 'move', target: '#email-dock-icon', duration: 300 },
+    { type: 'wait', duration: 100 },
+    { type: 'click', target: '#email-dock-icon' },
+    { type: 'callback', callback: () => {
+      window.dispatchEvent(new CustomEvent('openEmail'));
+    }},
+    { type: 'wait', duration: 800 },
+
+    // Move to reply input and click
+    { type: 'move', target: '#email-reply-input', duration: 300 },
+    { type: 'click' },
+    { type: 'wait', duration: 200 },
+
+    // Type initial response with "5 minutes"
+    { type: 'typeElement', target: '#email-reply-input', text: 'Hello, I just spent 5 minutes', duration: 40 },
+    { type: 'wait', duration: 800 },
+
+    // Backspace to remove "5 minutes"
+    { type: 'backspace', target: '#email-reply-input', count: 9, duration: 60 },
+    { type: 'wait', duration: 300 },
+
+    // Type the correction
+    { type: 'typeElement', target: '#email-reply-input', text: 'the last 7 days', duration: 40 },
+    { type: 'wait', duration: 200 },
+
+    // Continue typing the rest
+    { type: 'typeElement', target: '#email-reply-input', text: ' building this functionality, it\'s ready for production.', duration: 35 },
+    { type: 'wait', duration: 500 },
+
+    // Move to send button and click
+    { type: 'move', target: '#email-send-btn', duration: 250 },
+    { type: 'wait', duration: 150 },
+    { type: 'click', target: '#email-send-btn' },
+    { type: 'callback', callback: () => {
+      window.dispatchEvent(new CustomEvent('sendEmail'));
+    }},
+    { type: 'wait', duration: 1000 },
+  ];
+
+  // Initialize simulation
+  const simulation = new DemoSimulation();
+
+  // Listen for start event (triggered by play button)
+  window.addEventListener('startSimulation', () => {
+    setTimeout(() => {
+      simulation.run(demoSteps);
+    }, 500);
+  });
+
+  // Listen for stop event
+  window.addEventListener('stopSimulation', () => {
+    simulation.stop();
+  });
+
+  // Expose for manual triggering
+  (window as any).demoSimulation = simulation;
+  (window as any).demoSteps = demoSteps;
+</script>

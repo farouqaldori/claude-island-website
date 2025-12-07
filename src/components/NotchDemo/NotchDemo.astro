@@ -1,0 +1,2211 @@
+---
+---
+
+<header id="notch" class="collapsed">
+  <div class="notch-persistent">
+    <div class="notch-crab">
+      <svg width="16" height="14" viewBox="0 0 66 52" fill="none">
+        <rect x="0" y="13" width="6" height="13" fill="var(--accent-pink)"/>
+        <rect x="60" y="13" width="6" height="13" fill="var(--accent-pink)"/>
+        <rect x="6" y="0" width="54" height="39" fill="var(--accent-pink)"/>
+        <rect x="12" y="13" width="6" height="6.5" fill="#000"/>
+        <rect x="48" y="13" width="6" height="6.5" fill="#000"/>
+        <rect class="crab-leg leg-1" x="6" y="39" width="6" height="13" fill="var(--accent-pink)"/>
+        <rect class="crab-leg leg-2" x="18" y="39" width="6" height="13" fill="var(--accent-pink)"/>
+        <rect class="crab-leg leg-3" x="42" y="39" width="6" height="13" fill="var(--accent-pink)"/>
+        <rect class="crab-leg leg-4" x="54" y="39" width="6" height="13" fill="var(--accent-pink)"/>
+      </svg>
+    </div>
+    <span class="processing-spinner"></span>
+  </div>
+
+  <div class="container">
+    <div class="notch-popping"></div>
+
+    <div class="notch-expanded">
+      <div class="instance-list">
+        <div class="instance-item" data-instance="approval">
+          <div class="instance-icon approval">
+            <svg viewBox="0 0 30 30" fill="none">
+              <rect x="5" y="5" width="4" height="4" fill="#ffb340"/>
+              <rect x="5" y="9" width="4" height="4" fill="#ffb340"/>
+              <rect x="9" y="1" width="4" height="4" fill="#ffb340"/>
+              <rect x="13" y="1" width="4" height="4" fill="#ffb340"/>
+              <rect x="17" y="1" width="4" height="4" fill="#ffb340"/>
+              <rect x="21" y="5" width="4" height="4" fill="#ffb340"/>
+              <rect x="21" y="9" width="4" height="4" fill="#ffb340"/>
+              <rect x="13" y="17" width="4" height="4" fill="#ffb340"/>
+              <rect x="13" y="25" width="4" height="4" fill="#ffb340"/>
+              <rect x="17" y="13" width="4" height="4" fill="#ffb340"/>
+            </svg>
+          </div>
+          <div class="instance-info">
+            <div class="instance-name">ClaudeIsland-website</div>
+            <div class="instance-status approval">Waiting for approval</div>
+          </div>
+          <span class="instance-arrow">›</span>
+        </div>
+
+        <div class="instance-item" data-instance="processing">
+          <span class="instance-spinner"></span>
+          <div class="instance-info">
+            <div class="instance-name">my-app</div>
+            <div class="instance-status processing">Processing</div>
+          </div>
+          <span class="instance-arrow">›</span>
+        </div>
+
+        <div class="instance-item" data-instance="idle">
+          <span class="instance-dot idle"></span>
+          <div class="instance-info">
+            <div class="instance-name">docs-project</div>
+            <div class="instance-status">Idle</div>
+          </div>
+          <span class="instance-arrow">›</span>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="notch-chat">
+      <div class="chat-header" id="chat-back">
+        <span class="chat-back">‹</span>
+        <span class="chat-title">ClaudeIsland-website</span>
+      </div>
+
+      <div class="chat-messages" id="chat-messages"></div>
+
+      <div class="chat-bottom-bar" id="chat-bottom-bar"></div>
+    </div>
+  </div>
+</header>
+
+<style is:global>
+/* Header - Notch Style with Apple-like spring animation */
+header#notch {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  z-index: 100;
+  background: #000000;
+  cursor: pointer;
+  transform: translateX(-50%);
+  /* Spring-like cubic bezier matching Apple's Dynamic Island */
+  transition:
+    width 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.1),
+    height 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.1),
+    padding 0.4s cubic-bezier(0.175, 0.885, 0.32, 1),
+    border-radius 0.35s cubic-bezier(0.175, 0.885, 0.32, 1),
+    box-shadow 0.4s ease-out;
+  /* will-change only during animation - set via JS */
+}
+
+/* Base notch dimensions - matches SwiftUI closed state */
+header#notch {
+  padding: 0;
+  width: 220px;
+  height: 42px;
+  border-radius: 0 0 14px 14px;
+  box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+}
+
+header#notch::before,
+header#notch::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  width: 13px;
+  height: 25px;
+  background: transparent;
+}
+
+header#notch::before {
+  left: -13px;
+  border-top-right-radius: 6px;
+  box-shadow: 5px 0 0 0 #000;
+}
+
+header#notch::after {
+  right: -13px;
+  border-top-left-radius: 6px;
+  box-shadow: -5px 0 0 0 #000;
+}
+
+/* Container holds all content layers */
+header#notch .container {
+  position: relative;
+  max-width: none;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* COLLAPSED state - just black bar matching SwiftUI */
+header#notch.collapsed {
+  width: 220px;
+  height: 42px;
+}
+
+/* POPPING state - shows crab + spinner, expands with 15px sides */
+header#notch.popping {
+  width: 300px;
+  height: 42px;
+  padding: 0 15px;
+  border-radius: 0 0 14px 14px;
+  box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+}
+header#notch.popping:hover {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+}
+
+/* EXPANDED state - full menu */
+header#notch.expanded {
+  padding: 12px 19px 14px;
+  width: 400px;
+  height: 320px;
+  background: #000000;
+  border-radius: 0 0 24px 24px;
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.6);
+  cursor: default;
+}
+
+/* All content layers are absolutely positioned and crossfade */
+.notch-popping, .notch-expanded, .notch-chat {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease-out;
+}
+
+/* Active state shows content */
+header#notch.collapsed .notch-popping,
+header#notch.collapsed .notch-expanded,
+header#notch.collapsed .notch-chat {
+  opacity: 0;
+}
+
+header#notch.popping .notch-popping {
+  opacity: 1;
+  pointer-events: auto;
+  transition-delay: 0.08s;
+}
+
+header#notch.expanded .notch-expanded {
+  opacity: 1;
+  pointer-events: auto;
+  transition-delay: 0.1s;
+}
+
+header#notch.chat .notch-chat {
+  opacity: 1;
+  pointer-events: auto;
+  transition-delay: 0.1s;
+}
+
+/* Outgoing content fades faster */
+header#notch.expanded .notch-popping,
+header#notch.chat .notch-popping,
+header#notch.popping .notch-expanded,
+header#notch.chat .notch-expanded,
+header#notch.popping .notch-chat,
+header#notch.expanded .notch-chat {
+  opacity: 0;
+  transition-delay: 0s;
+  transition-duration: 0.15s;
+}
+
+/* Persistent elements layer - always visible, animates position */
+.notch-persistent {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 42px; /* Fixed height matching popping state */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 15px;
+  pointer-events: none;
+  z-index: 10;
+  transition: padding 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.1);
+}
+
+/* Crab and spinner transitions */
+.notch-crab,
+.processing-spinner {
+  transition: opacity 0.25s ease-out;
+}
+
+/* Collapsed - hide persistent elements */
+header#notch.collapsed .notch-crab,
+header#notch.collapsed .processing-spinner {
+  opacity: 0;
+}
+
+/* Popping - crab left, spinner right */
+header#notch.popping .notch-persistent {
+  padding: 0 15px;
+}
+header#notch.popping .notch-crab,
+header#notch.popping .processing-spinner {
+  opacity: 1;
+}
+
+/* Expanded - adjust padding to match expanded state */
+header#notch.expanded .notch-persistent {
+  padding: 0 19px;
+}
+header#notch.expanded .notch-crab,
+header#notch.expanded .processing-spinner {
+  opacity: 1;
+}
+
+/* Chat - same as expanded */
+header#notch.chat .notch-persistent {
+  padding: 0 19px;
+}
+header#notch.chat .notch-crab,
+header#notch.chat .processing-spinner {
+  opacity: 1;
+}
+
+/* Hide crab and spinner when inactive (all sessions idle or waiting for input) */
+header#notch.inactive .notch-crab,
+header#notch.inactive .processing-spinner {
+  opacity: 0 !important;
+}
+
+/* POPPING content - now empty since persistent handles it */
+.notch-popping {
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* EXPANDED content */
+.notch-expanded {
+  flex-direction: column;
+  gap: 0;
+  padding-top: 38px; /* Space for persistent crab/spinner row */
+}
+
+/* Instance list with smooth transitions */
+.instance-list { display: flex; flex-direction: column; gap: 2px; margin-left: -10px; flex: 1; overflow-y: auto; min-height: 0; overscroll-behavior: contain; }
+.instance-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 8px 10px; border-radius: 10px;
+  cursor: pointer;
+  transition:
+    background 0.2s ease,
+    transform 0.25s cubic-bezier(0.32, 0.72, 0, 1),
+    opacity 0.25s cubic-bezier(0.32, 0.72, 0, 1);
+  text-decoration: none; color: inherit;
+}
+
+.instance-item:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+.instance-item:active { transform: scale(0.98); }
+
+/* Instance status icons */
+.instance-icon {
+  width: 14px; height: 14px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.instance-icon svg {
+  width: 12px; height: 12px;
+}
+.instance-icon.approval svg {
+  animation: statusPulse 1.5s ease-in-out infinite;
+}
+
+.instance-dot {
+  width: 14px; height: 14px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.instance-dot::after {
+  content: '';
+  width: 6px; height: 6px; border-radius: 50%;
+}
+.instance-dot.idle::after {
+  background: rgba(255, 255, 255, 0.3);
+}
+.instance-dot.waiting-input::after {
+  background: #30d158;
+}
+
+/* Processing spinner for instance (reuse header spinner style) */
+.instance-spinner {
+  font-size: 12px;
+  font-weight: bold;
+  color: var(--accent-pink);
+  width: 14px;
+  text-align: center;
+  font-family: sans-serif;
+  flex-shrink: 0;
+}
+
+.instance-info { flex: 1; min-width: 0; }
+.instance-name { font-size: 13px; font-weight: 600; color: var(--text-light); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.instance-status { font-size: 11px; color: var(--text-muted); }
+.instance-status.waiting-input { color: #30d158; }
+.instance-status.approval { color: #ffb340; }
+.instance-status.processing { color: var(--accent-pink); }
+.instance-arrow {
+  color: rgba(255,255,255,0.2); font-size: 14px; font-weight: 300;
+  transition: color 0.2s ease;
+}
+.instance-item:hover .instance-arrow {
+  color: rgba(255,255,255,0.5);
+}
+
+/* Instance approval buttons */
+.instance-item-approval {
+  cursor: default;
+}
+.instance-item-approval:hover {
+  background: transparent;
+}
+.instance-item-approval:active {
+  transform: none;
+}
+.instance-approval-buttons {
+  display: flex;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+@keyframes statusPulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+
+.instance-divider {
+  height: 1px; background: rgba(255, 255, 255, 0.06); margin: 8px 0;
+}
+
+/* Menu items with smooth transitions */
+.menu-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 8px 10px; border-radius: 8px;
+  cursor: pointer;
+  transition:
+    background 0.15s ease,
+    transform 0.2s cubic-bezier(0.32, 0.72, 0, 1),
+    color 0.15s ease,
+    opacity 0.25s cubic-bezier(0.32, 0.72, 0, 1);
+  text-decoration: none; color: var(--text-muted); font-size: 13px;
+}
+
+.menu-item:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text-light);
+  transform: translateX(2px);
+}
+.menu-item:active { transform: scale(0.98); }
+.menu-item svg { width: 15px; height: 15px; opacity: 0.5; transition: opacity 0.15s ease; }
+.menu-item:hover svg { opacity: 1; }
+
+/* CHAT state (opened: top 19, bottom 24) */
+header#notch.chat {
+  padding: 12px 19px 14px;
+  width: 480px;
+  height: 480px;
+  background: #000000;
+  border-radius: 0 0 24px 24px;
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.6);
+  cursor: default;
+}
+
+.notch-chat {
+  flex-direction: column;
+  padding-top: 38px; /* Space for persistent crab/spinner row */
+}
+
+/* Chat header */
+.chat-header {
+  display: flex; align-items: center; gap: 8px;
+  padding: 8px 10px; border-radius: 10px;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.15s ease;
+  margin-bottom: 10px;
+}
+.chat-header:hover { background: rgba(255, 255, 255, 0.08); }
+.chat-header:active { transform: scale(0.98); }
+.chat-back {
+  color: rgba(255,255,255,0.5); font-size: 18px; font-weight: 500;
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+.chat-header:hover .chat-back {
+  color: rgba(255,255,255,0.8);
+  transform: translateX(-2px);
+}
+.chat-title { font-size: 14px; font-weight: 600; color: var(--text-light); }
+
+/* Chat messages - use column-reverse to anchor content at bottom */
+.chat-messages {
+  flex: 1;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  display: flex;
+  flex-direction: column-reverse;
+  gap: 12px;
+  padding: 8px 0;
+  min-height: 0;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.15) transparent;
+}
+
+.chat-messages::-webkit-scrollbar {
+  width: 4px;
+}
+
+.chat-messages::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.chat-messages::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 2px;
+}
+
+.chat-messages::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+.chat-message {
+  font-size: 13px; line-height: 1.5;
+  transition:
+    opacity 0.3s cubic-bezier(0.32, 0.72, 0, 1),
+    transform 0.3s cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+.chat-message.user {
+  align-self: flex-end;
+  background: rgba(255,255,255,0.15);
+  padding: 10px 14px;
+  border-radius: 18px 18px 4px 18px;
+  max-width: 85%;
+}
+.chat-message.assistant {
+  display: flex; gap: 8px; align-items: flex-start;
+}
+.chat-message.assistant::before {
+  content: '';
+  width: 6px; height: 6px;
+  background: rgba(255,255,255,0.5);
+  border-radius: 50%;
+  margin-top: 7px;
+  flex-shrink: 0;
+}
+.chat-message.assistant span { color: rgba(255,255,255,0.85); }
+.chat-message.assistant a {
+  color: var(--accent-pink);
+  text-decoration: none;
+  transition: opacity 0.2s ease;
+}
+.chat-message.assistant a:hover {
+  opacity: 0.8;
+  text-decoration: underline;
+}
+/* Markdown styling in assistant messages */
+.chat-message.assistant .md-bullet {
+  color: var(--accent-pink);
+  font-weight: 600;
+  margin-right: 2px;
+}
+.chat-message.assistant .md-number {
+  color: var(--accent-pink);
+  font-weight: 600;
+  margin-right: 2px;
+}
+
+/* Tool call in chat */
+.chat-tool {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 12px; color: rgba(255,255,255,0.6);
+  padding: 4px 0;
+  transition:
+    opacity 0.3s cubic-bezier(0.32, 0.72, 0, 1),
+    transform 0.3s cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+.chat-tool .tool-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  transition: background 0.3s ease;
+}
+.chat-tool .tool-dot.success { background: #30d158; }
+.chat-tool .tool-dot.error { background: #ff453a; }
+.chat-tool .tool-dot.pending { background: #ffb340; animation: statusPulse 1.5s infinite; }
+.chat-tool .tool-dot.running { background: #fff; animation: statusPulse 1.5s infinite; }
+.chat-tool .tool-name { font-weight: 600; }
+.chat-tool .tool-status { opacity: 0.6; }
+
+/* Bottom bar container */
+.chat-bottom-bar {
+  margin-top: auto;
+}
+
+/* Bottom bar state animation */
+@keyframes bottomBarFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Approval bar in chat */
+.chat-approval-bar {
+  display: flex; align-items: center; gap: 10px;
+  min-height: 44px;
+}
+.chat-approval-bar.animate {
+  animation: bottomBarFadeIn 0.3s cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+/* Processing indicator */
+.chat-processing {
+  display: flex; align-items: center; gap: 6px;
+  min-height: 44px;
+  font-size: 12px;
+  color: var(--accent-pink);
+}
+.chat-processing.animate {
+  animation: bottomBarFadeIn 0.3s cubic-bezier(0.32, 0.72, 0, 1);
+}
+.chat-processing .instance-spinner {
+  width: 6px;
+  font-size: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.approval-info { flex: 1; min-width: 0; }
+.approval-tool-name {
+  font-size: 12px; font-weight: 600;
+  font-family: 'JetBrains Mono', monospace;
+  color: #ffb340;
+}
+.approval-tool-input {
+  font-size: 11px; color: rgba(255,255,255,0.5);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.approval-btn {
+  padding: 8px 18px; border-radius: 20px;
+  font-size: 13px; font-weight: 600;
+  font-family: inherit; cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.32, 0.72, 0, 1);
+  border: none;
+}
+.approval-btn:active { transform: scale(0.95); }
+.approval-btn.deny {
+  background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.7);
+}
+.approval-btn.deny:hover { background: rgba(255,255,255,0.15); }
+.approval-btn.allow {
+  background: rgba(255,255,255,0.95); color: #000;
+}
+.approval-btn.allow:hover { background: #fff; transform: scale(1.02); }
+
+/* Chat input */
+.chat-input-bar {
+  display: flex; align-items: center; gap: 10px;
+  min-height: 44px;
+  padding-top: 8px;
+}
+.chat-input-bar.animate {
+  animation: bottomBarFadeIn 0.3s cubic-bezier(0.32, 0.72, 0, 1);
+}
+.chat-input {
+  flex: 1; background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 20px; padding: 10px 14px;
+  font-size: 13px; font-family: inherit;
+  color: var(--text-light); outline: none;
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+.chat-input:focus {
+  border-color: rgba(255,255,255,0.2);
+  background: rgba(255,255,255,0.1);
+}
+.chat-input::placeholder { color: rgba(255,255,255,0.4); }
+.chat-send {
+  width: 32px; height: 32px;
+  background: rgba(255,255,255,0.9);
+  border-radius: 50%; border: none;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.32, 0.72, 0, 1);
+}
+.chat-send:hover { background: #fff; transform: scale(1.05); }
+.chat-send:active { transform: scale(0.95); }
+.chat-send svg { width: 16px; height: 16px; color: #000; }
+
+/* Animated Crab */
+.notch-crab {
+  display: flex;
+  align-items: center;
+  margin-right: 4px;
+}
+
+.notch-crab svg {
+  display: block;
+}
+
+/* Leg animation matching SwiftUI - alternating up/down pattern */
+/* Legs move up/down by translating, staying attached to body */
+.crab-leg.leg-1,
+.crab-leg.leg-3 {
+  animation: legWalk1 0.6s steps(1) infinite;
+}
+
+.crab-leg.leg-2,
+.crab-leg.leg-4 {
+  animation: legWalk2 0.6s steps(1) infinite;
+}
+
+@keyframes legWalk1 {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-2px); }
+}
+
+@keyframes legWalk2 {
+  0%, 100% { transform: translateY(-2px); }
+  50% { transform: translateY(0); }
+}
+
+/* Processing Spinner - matches SwiftUI ProcessingSpinner */
+.processing-spinner {
+  font-size: 12px;
+  font-weight: bold;
+  color: var(--accent-pink);
+  width: 14px;
+  text-align: center;
+  font-family: sans-serif;
+}
+</style>
+
+<script>
+  const EventType = {
+    USER_MESSAGE: 'userMessage',
+    ASSISTANT_MESSAGE: 'assistantMessage',
+    TOOL_USE: 'toolUse',
+    TOOL_RESULT: 'toolResult',
+    PERMISSION_REQUEST: 'permissionRequest',
+    PERMISSION_APPROVED: 'permissionApproved',
+    PERMISSION_DENIED: 'permissionDenied',
+  };
+
+  const ToolStatus = {
+    RUNNING: 'running',
+    WAITING_FOR_APPROVAL: 'waitingForApproval',
+    SUCCESS: 'success',
+    ERROR: 'error',
+  };
+
+  const InstanceState = {
+    IDLE: 'idle',
+    PROCESSING: 'processing',
+    WAITING_FOR_APPROVAL: 'waitingForApproval',
+    WAITING_FOR_INPUT: 'waitingForInput',
+  };
+
+  class Session {
+    constructor(id, name) {
+      this.id = id;
+      this.name = name;
+      this.state = InstanceState.IDLE;
+      this.events = [];
+      this.tools = new Map(); // toolId -> tool state
+      this.pendingApproval = null; // { toolId, toolName, toolInput }
+    }
+
+    process(event) {
+      // Don't add duplicate events
+      const isDuplicate = this.events.some(e =>
+        e.type === event.type &&
+        e.toolId === event.toolId &&
+        e.text === event.text
+      );
+      if (!isDuplicate) {
+        this.events.push(event);
+      }
+
+      switch (event.type) {
+        case EventType.USER_MESSAGE:
+          this.state = InstanceState.PROCESSING;
+          break;
+        case EventType.ASSISTANT_MESSAGE:
+          // Assistant responded, might be idle or continue processing
+          break;
+        case EventType.TOOL_USE:
+          // Only add if not already exists
+          if (!this.tools.has(event.toolId)) {
+            this.tools.set(event.toolId, {
+              id: event.toolId,
+              name: event.toolName,
+              input: event.toolInput,
+              status: ToolStatus.RUNNING,
+            });
+          }
+          this.state = InstanceState.PROCESSING;
+          break;
+        case EventType.PERMISSION_REQUEST:
+          // Create or update tool with approval status
+          const existingTool = this.tools.get(event.toolId) || {};
+          this.tools.set(event.toolId, {
+            id: event.toolId,
+            name: event.toolName,
+            input: event.toolInput,
+            ...existingTool,
+            status: ToolStatus.WAITING_FOR_APPROVAL,
+          });
+          this.pendingApproval = {
+            toolId: event.toolId,
+            toolName: event.toolName,
+            toolInput: event.toolInput,
+          };
+          this.state = InstanceState.WAITING_FOR_APPROVAL;
+          break;
+        case EventType.PERMISSION_APPROVED:
+          if (this.tools.has(event.toolId)) {
+            this.tools.get(event.toolId).status = ToolStatus.RUNNING;
+          }
+          this.pendingApproval = null;
+          this.state = InstanceState.PROCESSING;
+          break;
+        case EventType.PERMISSION_DENIED:
+          if (this.tools.has(event.toolId)) {
+            this.tools.get(event.toolId).status = ToolStatus.ERROR;
+          }
+          this.pendingApproval = null;
+          this.state = InstanceState.WAITING_FOR_INPUT;
+          break;
+        case EventType.TOOL_RESULT:
+          if (this.tools.has(event.toolId)) {
+            this.tools.get(event.toolId).status = event.success ? ToolStatus.SUCCESS : ToolStatus.ERROR;
+            this.tools.get(event.toolId).result = event.result;
+          }
+          break;
+      }
+
+      return this;
+    }
+
+    getChatHistory() {
+      const items = [];
+      // Track tool IDs we've seen to avoid duplicates
+      const seenToolIds = new Set();
+
+      for (const event of this.events) {
+        switch (event.type) {
+          case EventType.USER_MESSAGE:
+            items.push({ type: 'user', text: event.text });
+            break;
+          case EventType.ASSISTANT_MESSAGE:
+            items.push({ type: 'assistant', text: event.text });
+            break;
+          case EventType.TOOL_USE:
+            // Only add each tool once, and skip if we'll see it as a permission request
+            if (!seenToolIds.has(event.toolId)) {
+              seenToolIds.add(event.toolId);
+              const tool = this.tools.get(event.toolId);
+              if (tool) {
+                items.push({ type: 'tool', ...tool });
+              }
+            }
+            break;
+          case EventType.PERMISSION_REQUEST:
+            // Permission requests are special tool entries - only add if not already seen
+            if (!seenToolIds.has(event.toolId)) {
+              seenToolIds.add(event.toolId);
+              const tool = this.tools.get(event.toolId);
+              if (tool) {
+                items.push({ type: 'tool', ...tool });
+              }
+            }
+            break;
+        }
+      }
+      return items;
+    }
+  }
+
+  // Sessions store
+  const sessions = new Map();
+  let activeSessionId = null;
+
+  // Map terminal IDs to session IDs
+  const terminalToSession = new Map();
+
+  // Create a new session from terminal message
+  function createSessionFromTerminal(terminalId: string, message: string) {
+    const sessionId = `terminal-${terminalId}`;
+
+    // If session already exists for this terminal, don't create a new one
+    if (sessions.has(sessionId)) {
+      return sessions.get(sessionId);
+    }
+
+    const session = new Session(sessionId, message);
+
+    session.events.push({ type: EventType.USER_MESSAGE, text: message });
+    session.state = InstanceState.PROCESSING;
+
+    sessions.set(sessionId, session);
+    terminalToSession.set(terminalId, sessionId);
+
+    // Simulate processing and response
+    simulateSessionResponse(sessionId, message);
+
+    renderInstanceList();
+    updateNotchState();
+
+    return session;
+  }
+
+  // Add message to existing session
+  function addMessageToSession(terminalId: string, message: string) {
+    const sessionId = terminalToSession.get(terminalId);
+    if (!sessionId) return;
+
+    const session = sessions.get(sessionId);
+    if (!session) return;
+
+    session.events.push({ type: EventType.USER_MESSAGE, text: message });
+    session.state = InstanceState.PROCESSING;
+
+    if (activeSessionId === sessionId) {
+      renderChat(sessionId);
+    }
+    renderInstanceList();
+    updateNotchState();
+
+    // For follow-up messages, use easter egg response
+    simulateEasterEggResponse(session, sessionId);
+  }
+
+  // Track which sessions have already started simulation
+  const simulationStarted = new Set<string>();
+
+  // Helper to dispatch events to terminals
+  function notifyTerminal(terminalId: string, eventType: string, data: any) {
+    window.dispatchEvent(new CustomEvent('notchToTerminal', {
+      detail: { terminalId, eventType, ...data }
+    }));
+  }
+
+  // Get terminal ID from session ID
+  function getTerminalIdFromSession(sessionId: string): string | null {
+    if (sessionId.startsWith('terminal-')) {
+      return sessionId.replace('terminal-', '');
+    }
+    return null;
+  }
+
+  // Simulate session based on terminal type
+  function simulateSessionResponse(sessionId: string, message: string) {
+    // Prevent duplicate simulations
+    if (simulationStarted.has(sessionId)) return;
+    simulationStarted.add(sessionId);
+
+    const session = sessions.get(sessionId);
+    if (!session) return;
+
+    const lower = message.toLowerCase();
+
+    // Terminal 3 (files) - just show tools, then wait for input
+    if (lower.includes('file') || lower.includes('large') || lower.includes('find')) {
+      simulateFilesSession(session, sessionId);
+    } else if (lower.includes('react') || lower.includes('dashboard')) {
+      // Terminal 1 - React: quick read, then permission comes from simulation
+      simulateReactSession(session, sessionId);
+    } else if (lower.includes('backend') || lower.includes('express') || lower.includes('server')) {
+      // Terminal 2 - Backend: quick read, then permission comes from simulation
+      simulateBackendSession(session, sessionId);
+    } else {
+      // Unrecognized message - use easter egg (fake LLM connection)
+      simulateEasterEggResponse(session, sessionId);
+    }
+  }
+
+  // Easter egg response for terminal - fake LLM connection attempts
+  function simulateEasterEggResponse(session: Session, sessionId: string) {
+    const terminalId = getTerminalIdFromSession(sessionId);
+    const stage = easterEggStage.get(sessionId) || 0;
+    const baseId = Date.now();
+
+    function randomDelay(base: number, variance = 0.3) {
+      return base * (1 + (Math.random() - 0.5) * variance * 2);
+    }
+
+    function runFailedConnections(count: number, baseDelay: number, onComplete: () => void, pauseBetween = 800) {
+      let attempt = 0;
+      function tryConnect() {
+        attempt++;
+        const toolId = `llm-connect-${baseId}-${attempt}`;
+        session.process({
+          type: EventType.TOOL_USE,
+          toolId,
+          toolName: 'Connect to LLM',
+          toolInput: ''
+        });
+        if (terminalId) notifyTerminal(terminalId, 'toolUse', { toolName: 'Connect to LLM', toolInput: '' });
+        renderInstanceList();
+        if (activeSessionId === sessionId) renderChat(sessionId);
+
+        const attemptDelay = randomDelay(baseDelay);
+        setTimeout(() => {
+          session.process({
+            type: EventType.TOOL_RESULT,
+            toolId,
+            success: false
+          });
+          if (terminalId) notifyTerminal(terminalId, 'toolResult', { toolName: 'Connect to LLM', success: false });
+          renderInstanceList();
+          if (activeSessionId === sessionId) renderChat(sessionId);
+
+          if (attempt < count) {
+            setTimeout(tryConnect, randomDelay(pauseBetween));
+          } else {
+            setTimeout(onComplete, randomDelay(600));
+          }
+        }, attemptDelay);
+      }
+      tryConnect();
+    }
+
+    function sendMessage(msg: string) {
+      session.process({ type: EventType.ASSISTANT_MESSAGE, text: msg });
+      if (terminalId) notifyTerminal(terminalId, 'assistantMessage', { text: msg });
+      session.state = InstanceState.WAITING_FOR_INPUT;
+      renderInstanceList();
+      if (activeSessionId === sessionId) renderChat(sessionId);
+      updateNotchState();
+    }
+
+    // Run easter egg based on stage (delay to let user message appear first)
+    const initialDelay = 400;
+    switch (stage) {
+      case 0:
+        setTimeout(() => {
+          runFailedConnections(3, 2500, () => {
+            sendMessage("Um, so I'm just a demo, I'm not actually connected to an LLM. Sorry :)");
+            easterEggStage.set(sessionId, 1);
+          });
+        }, initialDelay);
+        break;
+      case 1:
+        setTimeout(() => {
+          runFailedConnections(3, 1800, () => {
+            sendMessage("Ok so I just retried connecting to an LLM, still failed :(");
+            easterEggStage.set(sessionId, 2);
+          }, 600);
+        }, initialDelay);
+        break;
+      case 2:
+        setTimeout(() => {
+          runFailedConnections(3, 3500, () => {
+            session.process({ type: EventType.ASSISTANT_MESSAGE, text: "Let me try again for real this time..." });
+            if (terminalId) notifyTerminal(terminalId, 'assistantMessage', { text: "Let me try again for real this time..." });
+            easterEggStage.set(sessionId, 3);
+            renderInstanceList();
+            if (activeSessionId === sessionId) renderChat(sessionId);
+
+            setTimeout(() => {
+              runFailedConnections(3, 2200, () => {
+                sendMessage("Hmm... still didn't work. Shall we try again once more?");
+              }, 900);
+            }, randomDelay(1500));
+          }, 1000);
+        }, initialDelay);
+        break;
+      case 3:
+        setTimeout(() => {
+          session.process({ type: EventType.ASSISTANT_MESSAGE, text: "You're absolutely right! Let me give it another shot." });
+          if (terminalId) notifyTerminal(terminalId, 'assistantMessage', { text: "You're absolutely right! Let me give it another shot." });
+          renderInstanceList();
+          if (activeSessionId === sessionId) renderChat(sessionId);
+
+          setTimeout(() => {
+            runFailedConnections(2, 2200, () => {
+              sendMessage("It seemed like our connection was interrupted, can you repeat your last message?");
+              easterEggStage.set(sessionId, 4);
+            }, 700);
+          }, randomDelay(800));
+        }, initialDelay + randomDelay(1500));
+        break;
+      case 4:
+        setTimeout(() => {
+          sendMessage("I don't really know what you just wrote but would be really funny if you fell for it");
+          easterEggStage.set(sessionId, 5);
+        }, initialDelay + randomDelay(2500));
+        break;
+      default:
+        setTimeout(() => {
+          sendMessage("Ok I'm actually out of jokes now. This is just a demo website!");
+          easterEggStage.set(sessionId, 0);
+        }, initialDelay + randomDelay(1800));
+        break;
+    }
+  }
+
+  // React session: respond, then scan, then wait for permission
+  function simulateReactSession(session: Session, sessionId: string) {
+    const terminalId = getTerminalIdFromSession(sessionId);
+
+    // Initial response
+    const initialMessage = "I'll help you create a React dashboard. Let me check your project setup first.";
+    setTimeout(() => {
+      if (!sessions.has(sessionId)) return;
+      session.process({ type: EventType.ASSISTANT_MESSAGE, text: initialMessage });
+      if (terminalId) notifyTerminal(terminalId, 'assistantMessage', { text: initialMessage });
+      if (activeSessionId === sessionId) renderChat(sessionId);
+      renderInstanceList();
+    }, 400);
+
+    // Then run tools
+    const tools = [
+      { name: 'Read', input: 'package.json', delay: 1200, duration: 600 },
+      { name: 'Glob', input: 'src/**/*.{js,jsx}', delay: 2200, duration: 500 },
+    ];
+
+    const baseTime = Date.now();
+
+    tools.forEach((tool, index) => {
+      const toolId = `tool-${baseTime}-${index}`;
+
+      setTimeout(() => {
+        if (!sessions.has(sessionId)) return;
+        session.process({ type: EventType.TOOL_USE, toolId, toolName: tool.name, toolInput: tool.input });
+        if (terminalId) notifyTerminal(terminalId, 'toolUse', { toolName: tool.name, toolInput: tool.input });
+        if (activeSessionId === sessionId) renderChat(sessionId);
+        renderInstanceList();
+      }, tool.delay);
+
+      setTimeout(() => {
+        if (!sessions.has(sessionId)) return;
+        session.process({ type: EventType.TOOL_RESULT, toolId, success: true });
+        if (terminalId) notifyTerminal(terminalId, 'toolResult', { toolName: tool.name, success: true });
+        if (activeSessionId === sessionId) renderChat(sessionId);
+        renderInstanceList();
+      }, tool.delay + tool.duration);
+    });
+
+    // Stay in processing - permission will come from simulation
+  }
+
+  // Backend session: respond, then scan, then wait for permission
+  function simulateBackendSession(session: Session, sessionId: string) {
+    const terminalId = getTerminalIdFromSession(sessionId);
+
+    // Initial response
+    const initialMessage = "I'll set up an Express backend for you. Let me check the current project structure.";
+    setTimeout(() => {
+      if (!sessions.has(sessionId)) return;
+      session.process({ type: EventType.ASSISTANT_MESSAGE, text: initialMessage });
+      if (terminalId) notifyTerminal(terminalId, 'assistantMessage', { text: initialMessage });
+      if (activeSessionId === sessionId) renderChat(sessionId);
+      renderInstanceList();
+    }, 400);
+
+    // Then run tools
+    const tools = [
+      { name: 'Read', input: 'package.json', delay: 1200, duration: 600 },
+      { name: 'Glob', input: 'server/**/*.js', delay: 2200, duration: 500 },
+    ];
+
+    const baseTime = Date.now();
+
+    tools.forEach((tool, index) => {
+      const toolId = `tool-${baseTime}-${index}`;
+
+      setTimeout(() => {
+        if (!sessions.has(sessionId)) return;
+        session.process({ type: EventType.TOOL_USE, toolId, toolName: tool.name, toolInput: tool.input });
+        if (terminalId) notifyTerminal(terminalId, 'toolUse', { toolName: tool.name, toolInput: tool.input });
+        if (activeSessionId === sessionId) renderChat(sessionId);
+        renderInstanceList();
+      }, tool.delay);
+
+      setTimeout(() => {
+        if (!sessions.has(sessionId)) return;
+        session.process({ type: EventType.TOOL_RESULT, toolId, success: true });
+        if (terminalId) notifyTerminal(terminalId, 'toolResult', { toolName: tool.name, success: true });
+        if (activeSessionId === sessionId) renderChat(sessionId);
+        renderInstanceList();
+      }, tool.delay + tool.duration);
+    });
+
+    // Stay in processing - permission will come from simulation
+  }
+
+  // Cleanup response for files session (when user says "yes clean up")
+  function simulateCleanupResponse(session: Session, sessionId: string) {
+    const terminalId = getTerminalIdFromSession(sessionId);
+    const tools = [
+      { name: 'Bash', input: 'rm -rf .cache/ *.log', delay: 300, duration: 400 },
+      { name: 'Bash', input: 'rm -rf node_modules/.cache', delay: 800, duration: 350 },
+    ];
+
+    const baseTime = Date.now();
+
+    // Set to processing
+    session.state = InstanceState.PROCESSING;
+    renderInstanceList();
+    updateNotchState();
+
+    tools.forEach((tool, index) => {
+      const toolId = `cleanup-${baseTime}-${index}`;
+
+      setTimeout(() => {
+        if (!sessions.has(sessionId)) return;
+        session.process({ type: EventType.TOOL_USE, toolId, toolName: tool.name, toolInput: tool.input });
+        if (terminalId) notifyTerminal(terminalId, 'toolUse', { toolName: tool.name, toolInput: tool.input });
+        if (activeSessionId === sessionId) renderChat(sessionId);
+        renderInstanceList();
+      }, tool.delay);
+
+      setTimeout(() => {
+        if (!sessions.has(sessionId)) return;
+        session.process({ type: EventType.TOOL_RESULT, toolId, success: true });
+        if (terminalId) notifyTerminal(terminalId, 'toolResult', { toolName: tool.name, success: true });
+        if (activeSessionId === sessionId) renderChat(sessionId);
+        renderInstanceList();
+      }, tool.delay + tool.duration);
+    });
+
+    // Final message
+    const lastTool = tools[tools.length - 1];
+    const finalMessage = "Done! I removed 847MB of cache and log files. Your disk should have more space now.";
+    setTimeout(() => {
+      if (!sessions.has(sessionId)) return;
+      session.process({ type: EventType.ASSISTANT_MESSAGE, text: finalMessage });
+      if (terminalId) notifyTerminal(terminalId, 'assistantMessage', { text: finalMessage });
+      session.state = InstanceState.WAITING_FOR_INPUT;
+      if (activeSessionId === sessionId) renderChat(sessionId);
+      renderInstanceList();
+      updateNotchState();
+
+      // Signal that cleanup response is complete
+      window.dispatchEvent(new CustomEvent('cleanupResponseComplete'));
+    }, lastTool.delay + lastTool.duration + 200);
+  }
+
+  // Files session: respond, run tools, then wait for user input
+  function simulateFilesSession(session: Session, sessionId: string) {
+    const terminalId = getTerminalIdFromSession(sessionId);
+
+    // Initial response
+    const initialMessage = "I'll scan your system for large files. This might take a moment.";
+    setTimeout(() => {
+      if (!sessions.has(sessionId)) return;
+      session.process({ type: EventType.ASSISTANT_MESSAGE, text: initialMessage });
+      if (terminalId) notifyTerminal(terminalId, 'assistantMessage', { text: initialMessage });
+      if (activeSessionId === sessionId) renderChat(sessionId);
+      renderInstanceList();
+    }, 400);
+
+    // Then run tools (timed to finish AFTER Terminal 1 & 2 permissions are approved + collapsed ~18s into simulation)
+    // Terminal 3 starts at ~6s into simulation, so tools should take ~20s
+    const tools = [
+      { name: 'Bash', input: 'du -sh * | sort -hr', delay: 4000, duration: 4500 },
+      { name: 'Bash', input: 'find . -size +50M -type f', delay: 9500, duration: 5000 },
+      { name: 'Glob', input: '**/*.{log,tmp,cache}', delay: 16000, duration: 3500 },
+    ];
+
+    const baseTime = Date.now();
+
+    tools.forEach((tool, index) => {
+      const toolId = `tool-${baseTime}-${index}`;
+
+      setTimeout(() => {
+        if (!sessions.has(sessionId)) return;
+        session.process({ type: EventType.TOOL_USE, toolId, toolName: tool.name, toolInput: tool.input });
+        if (terminalId) notifyTerminal(terminalId, 'toolUse', { toolName: tool.name, toolInput: tool.input });
+        if (activeSessionId === sessionId) renderChat(sessionId);
+        renderInstanceList();
+      }, tool.delay);
+
+      setTimeout(() => {
+        if (!sessions.has(sessionId)) return;
+        session.process({ type: EventType.TOOL_RESULT, toolId, success: true });
+        if (terminalId) notifyTerminal(terminalId, 'toolResult', { toolName: tool.name, success: true });
+        if (activeSessionId === sessionId) renderChat(sessionId);
+        renderInstanceList();
+      }, tool.delay + tool.duration);
+    });
+
+    // After tools, send assistant message and wait for input
+    const lastTool = tools[tools.length - 1];
+    const questionMessage = "I found several large files. The biggest ones are in node_modules and some log files. Would you like me to clean up the cache and log files?";
+    setTimeout(() => {
+      if (!sessions.has(sessionId)) return;
+      session.process({ type: EventType.ASSISTANT_MESSAGE, text: questionMessage });
+      if (terminalId) notifyTerminal(terminalId, 'assistantMessage', { text: questionMessage });
+      session.state = InstanceState.WAITING_FOR_INPUT;
+      if (activeSessionId === sessionId) renderChat(sessionId);
+      renderInstanceList();
+      updateNotchState();
+
+      // Auto-expand notch when Terminal 3 asks for input
+      if (viewMode === 'minimized') {
+        setViewMode('expanded');
+      }
+
+      // Dispatch event for simulation to handle cursor response
+      window.dispatchEvent(new CustomEvent('sessionWaitingForInput', {
+        detail: { sessionId, terminalId: terminalId || '3' }
+      }));
+    }, lastTool.delay + lastTool.duration + 500);
+  }
+
+  // Run build tools after permission is approved (for react/backend)
+  function runPostApprovalTools(session: Session, sessionId: string, type: 'react' | 'backend') {
+    const terminalId = getTerminalIdFromSession(sessionId);
+    const toolSets = {
+      react: [
+        { name: 'Write', input: 'src/components/Dashboard.jsx', delay: 400, duration: 300 },
+        { name: 'Write', input: 'src/components/Sidebar.jsx', delay: 900, duration: 250 },
+        { name: 'Write', input: 'src/App.css', delay: 1300, duration: 200 },
+      ],
+      backend: [
+        { name: 'Write', input: 'server/index.js', delay: 400, duration: 300 },
+        { name: 'Write', input: 'server/routes/api.js', delay: 850, duration: 250 },
+        { name: 'Write', input: 'package.json', delay: 1200, duration: 150 },
+      ]
+    };
+
+    const tools = toolSets[type];
+    const baseTime = Date.now();
+
+    tools.forEach((tool, index) => {
+      const toolId = `post-${baseTime}-${index}`;
+
+      setTimeout(() => {
+        if (!sessions.has(sessionId)) return;
+        session.process({ type: EventType.TOOL_USE, toolId, toolName: tool.name, toolInput: tool.input });
+        if (terminalId) notifyTerminal(terminalId, 'toolUse', { toolName: tool.name, toolInput: tool.input });
+        if (activeSessionId === sessionId) renderChat(sessionId);
+        renderInstanceList();
+      }, tool.delay);
+
+      setTimeout(() => {
+        if (!sessions.has(sessionId)) return;
+        session.process({ type: EventType.TOOL_RESULT, toolId, success: true });
+        if (terminalId) notifyTerminal(terminalId, 'toolResult', { toolName: tool.name, success: true });
+        if (activeSessionId === sessionId) renderChat(sessionId);
+        renderInstanceList();
+      }, tool.delay + tool.duration);
+    });
+
+    // After tools complete, show completion message
+    const lastTool = tools[tools.length - 1];
+    const messages = {
+      react: "Dashboard components created! Run `npm start` to see your new dashboard.",
+      backend: "Backend server is set up! Run `npm run dev` to start the server."
+    };
+    setTimeout(() => {
+      if (!sessions.has(sessionId)) return;
+      session.process({ type: EventType.ASSISTANT_MESSAGE, text: messages[type] });
+      if (terminalId) notifyTerminal(terminalId, 'assistantMessage', { text: messages[type] });
+      session.state = InstanceState.WAITING_FOR_INPUT;
+      if (activeSessionId === sessionId) renderChat(sessionId);
+      renderInstanceList();
+      updateNotchState();
+    }, lastTool.delay + lastTool.duration + 200);
+  }
+
+  // Listen for terminal messages
+  window.addEventListener('terminalMessage', ((e: CustomEvent) => {
+    const { terminalId, message, isFirst } = e.detail;
+
+    if (isFirst) {
+      createSessionFromTerminal(terminalId, message);
+    } else {
+      addMessageToSession(terminalId, message);
+    }
+  }) as EventListener);
+
+  // Track which terminals have already received permission events
+  const permissionTriggered = new Set<string>();
+
+  // Trigger a permission request for a terminal's session
+  function triggerPermissionForTerminal(terminalId: string, toolName: string, toolInput: string) {
+    // Prevent duplicate permission triggers for same terminal
+    if (permissionTriggered.has(terminalId)) return;
+    permissionTriggered.add(terminalId);
+
+    const sessionId = terminalToSession.get(terminalId);
+    if (!sessionId) return;
+
+    const session = sessions.get(sessionId);
+    if (!session) return;
+
+    // Don't add permission if session already has one pending
+    if (session.state === InstanceState.WAITING_FOR_APPROVAL) return;
+
+    const toolId = `perm-${terminalId}-${Date.now()}`;
+
+    session.process({
+      type: EventType.PERMISSION_REQUEST,
+      toolId,
+      toolName,
+      toolInput
+    });
+
+    // Auto-expand notch when permission happens
+    if (viewMode === 'minimized') {
+      setViewMode('expanded');
+    }
+
+    if (activeSessionId === sessionId) {
+      renderChat(sessionId);
+    }
+    renderInstanceList();
+    updateNotchState();
+  }
+
+  // Listen for terminal permission events
+  window.addEventListener('terminalPermission', ((e: CustomEvent) => {
+    const { terminalId, toolName, toolInput } = e.detail;
+    triggerPermissionForTerminal(terminalId, toolName, toolInput);
+  }) as EventListener);
+
+  // Expose function globally for simulation
+  (window as any).triggerPermissionForTerminal = triggerPermissionForTerminal;
+
+  // Initialize sessions (now empty - sessions come from terminals)
+  function initSessions() {
+    // Sessions are now created dynamically from terminal messages
+    renderInstanceList();
+  }
+
+  // Create sample sessions after demo completes
+  function createSampleSessions() {
+    // 1. "How do I install Claude Island?" - starts IDLE, then PROCESSING
+    const installSession = new Session('sample-install', 'How do I install Claude Island?');
+    installSession.events.push({
+      type: EventType.USER_MESSAGE,
+      text: 'How do I install Claude Island?'
+    });
+    installSession.state = InstanceState.IDLE;
+    sessions.set('sample-install', installSession);
+
+    // After 1.5s, switch to PROCESSING (stays until user opens chat)
+    setTimeout(() => {
+      installSession.state = InstanceState.PROCESSING;
+      renderInstanceList();
+      updateNotchState();
+    }, 1500);
+
+    // 2. "Is Claude Island open-source?" - pre-loaded conversation with follow-ups
+    const openSourceSession = new Session('sample-opensource', 'Is Claude Island open-source?');
+    const osToolId = `opensource-${Date.now()}`;
+
+    // First exchange: Is it open-source?
+    openSourceSession.events.push({ type: EventType.USER_MESSAGE, text: 'Is Claude Island open-source?' });
+    openSourceSession.events.push({ type: EventType.TOOL_USE, toolId: osToolId, toolName: 'Read', toolInput: 'LICENSE.md' });
+    openSourceSession.tools.set(osToolId, { id: osToolId, name: 'Read', input: 'LICENSE.md', status: ToolStatus.SUCCESS });
+    openSourceSession.events.push({ type: EventType.TOOL_RESULT, toolId: osToolId, success: true });
+    openSourceSession.events.push({
+      type: EventType.ASSISTANT_MESSAGE,
+      text: "Yes! Claude Island is open-source under the Apache 2.0 license. You're free to use, modify, and distribute it."
+    });
+
+    // Second exchange: How can I contribute?
+    openSourceSession.events.push({ type: EventType.USER_MESSAGE, text: 'How can I contribute?' });
+    openSourceSession.events.push({
+      type: EventType.ASSISTANT_MESSAGE,
+      text: "We'd love your contributions! Feel free to:\n\n• Open a pull request\n• Submit issues for bugs or feature requests\n• Improve documentation\n\nCheck out the repo: https://github.com/farouqaldori/claude-island"
+    });
+
+    // Third exchange: I want to support this project
+    openSourceSession.events.push({ type: EventType.USER_MESSAGE, text: 'I want to support this project' });
+    openSourceSession.events.push({
+      type: EventType.ASSISTANT_MESSAGE,
+      text: "Thank you for your support! The best way to help is to star the repo on GitHub - it helps others discover Claude Island!\n\n⭐ https://github.com/farouqaldori/claude-island"
+    });
+
+    openSourceSession.state = InstanceState.IDLE;
+    sessions.set('sample-opensource', openSourceSession);
+
+    // 3. "Who built Claude Island?" - pre-loaded conversation
+    const whoBuiltSession = new Session('sample-whobuilt', 'Who built Claude Island?');
+    const wbToolId = `whobuilt-${Date.now()}`;
+    whoBuiltSession.events.push({ type: EventType.USER_MESSAGE, text: 'Who built Claude Island?' });
+    whoBuiltSession.events.push({ type: EventType.TOOL_USE, toolId: wbToolId, toolName: 'Bash', toolInput: 'git log --oneline -1' });
+    whoBuiltSession.tools.set(wbToolId, { id: wbToolId, name: 'Bash', input: 'git log --oneline -1', status: ToolStatus.SUCCESS });
+    whoBuiltSession.events.push({ type: EventType.TOOL_RESULT, toolId: wbToolId, success: true });
+    whoBuiltSession.events.push({
+      type: EventType.ASSISTANT_MESSAGE,
+      text: "Claude Island was built by Farouq Aldori. You can follow him on X for updates!\n\nhttps://x.com/FarouqAldori"
+    });
+    whoBuiltSession.state = InstanceState.IDLE;
+    sessions.set('sample-whobuilt', whoBuiltSession);
+  }
+
+  // Simulate the install response with multiple tool calls and permission request
+  function simulateInstallResponse(sessionId: string) {
+    const session = sessions.get(sessionId);
+    if (!session) return;
+
+    const baseTime = Date.now();
+
+    // Tool sequence: Read -> Glob -> Read -> Permission request
+    const tools = [
+      { name: 'Read', input: 'README.md', delay: 0, duration: 600 },
+      { name: 'Glob', input: 'releases/*.dmg', delay: 800, duration: 500 },
+      { name: 'Read', input: 'INSTALL.md', delay: 1500, duration: 400 },
+    ];
+
+    // Run each tool in sequence
+    tools.forEach((tool, index) => {
+      const toolId = `install-${baseTime}-${index}`;
+
+      setTimeout(() => {
+        if (!sessions.has(sessionId)) return;
+        session.process({
+          type: EventType.TOOL_USE,
+          toolId,
+          toolName: tool.name,
+          toolInput: tool.input
+        });
+        renderInstanceList();
+        if (activeSessionId === sessionId) renderChat(sessionId);
+      }, tool.delay);
+
+      setTimeout(() => {
+        if (!sessions.has(sessionId)) return;
+        session.process({
+          type: EventType.TOOL_RESULT,
+          toolId,
+          success: true
+        });
+        renderInstanceList();
+        if (activeSessionId === sessionId) renderChat(sessionId);
+      }, tool.delay + tool.duration);
+    });
+
+    // After all tools complete, request permission for "Send download link"
+    const lastTool = tools[tools.length - 1];
+    const permissionDelay = lastTool.delay + lastTool.duration + 300;
+
+    setTimeout(() => {
+      if (!sessions.has(sessionId)) return;
+      const permToolId = `install-perm-${baseTime}`;
+
+      session.process({
+        type: EventType.PERMISSION_REQUEST,
+        toolId: permToolId,
+        toolName: 'Send download link',
+        toolInput: 'github.com/anthropics/claude-island'
+      });
+
+      renderInstanceList();
+      if (activeSessionId === sessionId) renderChat(sessionId);
+      updateNotchState();
+    }, permissionDelay);
+  }
+
+  // Track easter egg stage per session
+  const easterEggStage = new Map(); // sessionId -> stage (0-5)
+
+  // Handle user sending a message - simulates failed LLM connection with easter eggs
+  function handleUserMessage(sessionId, text) {
+    const session = sessions.get(sessionId);
+    if (!session) return;
+
+    const lower = text.toLowerCase();
+
+    // Check if this is the simulated "clean up" response for files session
+    if (lower.includes('clean') && (lower.includes('log') || lower.includes('yes'))) {
+      // Add user message
+      session.process({ type: EventType.USER_MESSAGE, text });
+      renderChat(sessionId);
+      renderInstanceList();
+
+      // Simulate cleanup response
+      simulateCleanupResponse(session, sessionId);
+      return;
+    }
+
+    // Get current stage
+    const stage = easterEggStage.get(sessionId) || 0;
+
+    // Add user message
+    session.process({ type: EventType.USER_MESSAGE, text });
+    renderChat(sessionId);
+    renderInstanceList();
+
+    const baseId = Date.now();
+
+    // Helper to add natural variance to timing
+    function randomDelay(base, variance = 0.3) {
+      return base * (1 + (Math.random() - 0.5) * variance * 2);
+    }
+
+    function runFailedConnections(count, baseDelay, onComplete, pauseBetween = 800) {
+      let attempt = 0;
+      function tryConnect() {
+        attempt++;
+        const toolId = `llm-connect-${baseId}-${attempt}`;
+        session.process({
+          type: EventType.TOOL_USE,
+          toolId,
+          toolName: 'Connect to LLM',
+          toolInput: ''
+        });
+        renderChat(sessionId);
+        renderInstanceList();
+
+        // Vary the connection attempt time
+        const attemptDelay = randomDelay(baseDelay);
+        setTimeout(() => {
+          session.process({
+            type: EventType.TOOL_RESULT,
+            toolId,
+            success: false
+          });
+          renderChat(sessionId);
+          renderInstanceList();
+
+          if (attempt < count) {
+            // Pause between retries with variance
+            setTimeout(tryConnect, randomDelay(pauseBetween));
+          } else {
+            // Pause before callback
+            setTimeout(onComplete, randomDelay(600));
+          }
+        }, attemptDelay);
+      }
+      tryConnect();
+    }
+
+    function runConnectionsWithLastSuccess(failCount, baseDelay, onComplete) {
+      let attempt = 0;
+      const totalAttempts = failCount + 1;
+      function tryConnect() {
+        attempt++;
+        const toolId = `llm-connect-${baseId}-${attempt}`;
+        session.process({
+          type: EventType.TOOL_USE,
+          toolId,
+          toolName: 'Connect to LLM',
+          toolInput: ''
+        });
+        renderChat(sessionId);
+        renderInstanceList();
+
+        // Last attempt takes longer (more suspenseful)
+        const isLast = attempt === totalAttempts;
+        const attemptDelay = isLast ? randomDelay(baseDelay * 1.5) : randomDelay(baseDelay);
+
+        setTimeout(() => {
+          session.process({
+            type: EventType.TOOL_RESULT,
+            toolId,
+            success: isLast
+          });
+          renderChat(sessionId);
+          renderInstanceList();
+
+          if (!isLast) {
+            setTimeout(tryConnect, randomDelay(700));
+          } else {
+            // Longer pause after success to let it sink in
+            setTimeout(onComplete, randomDelay(1200));
+          }
+        }, attemptDelay);
+      }
+      tryConnect();
+    }
+
+    function sendMessage(msg) {
+      session.process({ type: EventType.ASSISTANT_MESSAGE, text: msg });
+      session.state = InstanceState.WAITING_FOR_INPUT;
+      renderChat(sessionId);
+      renderInstanceList();
+    }
+
+    switch (stage) {
+      case 0:
+        // First time: 3 failed connections, then demo message
+        runFailedConnections(3, 2500, () => {
+          sendMessage("Um, so I'm just a demo, I'm not actually connected to an LLM. Sorry :)");
+          easterEggStage.set(sessionId, 1);
+        });
+        break;
+
+      case 1:
+        // Second time: 3 failed connections, retry message (slightly faster, we've seen this)
+        runFailedConnections(3, 1800, () => {
+          sendMessage("Ok so I just retried connecting to an LLM, still failed :(");
+          easterEggStage.set(sessionId, 2);
+        }, 600);
+        break;
+
+      case 2:
+        // Third time: longer processing, then message (stay in processing) + 3 more failures
+        runFailedConnections(3, 3500, () => {
+          // Send message but stay in processing state
+          session.process({ type: EventType.ASSISTANT_MESSAGE, text: "Let me try again for real this time..." });
+          easterEggStage.set(sessionId, 3);
+          renderChat(sessionId);
+          renderInstanceList();
+
+          // After message, do 3 more failed connections
+          setTimeout(() => {
+            const baseId2 = Date.now();
+            let attempt2 = 0;
+            function tryAgain() {
+              attempt2++;
+              const toolId = `llm-connect-${baseId2}-${attempt2}`;
+              session.process({
+                type: EventType.TOOL_USE,
+                toolId,
+                toolName: 'Connect to LLM',
+                toolInput: ''
+              });
+              renderChat(sessionId);
+              renderInstanceList();
+
+              setTimeout(() => {
+                session.process({
+                  type: EventType.TOOL_RESULT,
+                  toolId,
+                  success: false
+                });
+                renderChat(sessionId);
+                renderInstanceList();
+
+                if (attempt2 < 3) {
+                  setTimeout(tryAgain, randomDelay(900));
+                } else {
+                  setTimeout(() => {
+                    sendMessage("Hmm... still didn't work. Shall we try again once more?");
+                  }, randomDelay(800));
+                }
+              }, randomDelay(2200));
+            }
+            tryAgain();
+          }, randomDelay(1500));
+        }, 1000);
+        break;
+
+      case 3:
+        // Fourth time: encouraging message after brief processing, then 2 failures then success
+        setTimeout(() => {
+          session.process({ type: EventType.ASSISTANT_MESSAGE, text: "You're absolutely right! Let me give it another shot." });
+          renderChat(sessionId);
+
+          setTimeout(() => {
+            session.state = InstanceState.PROCESSING;
+            renderChat(sessionId);
+            renderInstanceList();
+
+            setTimeout(() => {
+              runConnectionsWithLastSuccess(2, 2200, () => {
+                sendMessage("It seemed like our connection was interrupted, can you repeat your last message?");
+                easterEggStage.set(sessionId, 4);
+              });
+            }, randomDelay(800));
+          }, randomDelay(1000));
+        }, randomDelay(1500));
+        break;
+
+      case 4:
+        // Fifth time: the prank reveal - pause like thinking
+        setTimeout(() => {
+          sendMessage("I don't really know what you just wrote but would be really funny if you fell for it");
+          easterEggStage.set(sessionId, 5);
+        }, randomDelay(2500));
+        break;
+
+      default:
+        // After all easter eggs, just loop back or stay idle
+        setTimeout(() => {
+          sendMessage("Ok I'm actually out of jokes now. This is just a demo website!");
+          easterEggStage.set(sessionId, 0); // Reset for fun
+        }, randomDelay(1800));
+        break;
+    }
+  }
+
+  // Render functions
+  function renderChatMessages(session) {
+    const container = document.getElementById('chat-messages');
+    const history = session.getChatHistory();
+
+    // Render in reverse for column-reverse layout
+    container.innerHTML = history.slice().reverse().map(item => {
+      switch (item.type) {
+        case 'user':
+          return `<div class="chat-message user">${escapeHtml(item.text)}</div>`;
+        case 'assistant':
+          return `<div class="chat-message assistant"><span>${linkify(item.text)}</span></div>`;
+        case 'tool':
+          const statusClass = {
+            [ToolStatus.RUNNING]: 'running',
+            [ToolStatus.WAITING_FOR_APPROVAL]: 'pending',
+            [ToolStatus.SUCCESS]: 'success',
+            [ToolStatus.ERROR]: 'error',
+          }[item.status] || 'running';
+          return `
+            <div class="chat-tool">
+              <span class="tool-dot ${statusClass}"></span>
+              <span class="tool-name">${escapeHtml(item.name)}</span>
+              <span class="tool-status">${escapeHtml(item.input || '')}</span>
+            </div>`;
+      }
+      return '';
+    }).join('');
+  }
+
+  // Track previous bottom bar state to avoid unnecessary animations
+  let previousBottomBarState = null;
+
+  function renderBottomBar(session) {
+    const container = document.getElementById('chat-bottom-bar');
+
+    // Determine current state type
+    let currentState;
+    if (session.state === InstanceState.WAITING_FOR_APPROVAL && session.pendingApproval) {
+      currentState = 'approval';
+    } else if (session.state === InstanceState.PROCESSING) {
+      currentState = 'processing';
+    } else {
+      currentState = 'input';
+    }
+
+    // Only animate if state changed
+    const shouldAnimate = previousBottomBarState !== null && previousBottomBarState !== currentState;
+    previousBottomBarState = currentState;
+
+    const animClass = shouldAnimate ? 'animate' : '';
+
+    if (currentState === 'approval') {
+      const { toolName, toolInput } = session.pendingApproval;
+      container.innerHTML = `
+        <div class="chat-approval-bar ${animClass}">
+          <div class="approval-info">
+            <div class="approval-tool-name">${escapeHtml(toolName)}</div>
+            <div class="approval-tool-input">${escapeHtml(toolInput || '')}</div>
+          </div>
+          <button class="approval-btn deny">Deny</button>
+          <button class="approval-btn allow">Allow</button>
+        </div>`;
+
+      // Attach event listeners
+      container.querySelector('.allow').addEventListener('click', (e) => {
+        e.stopPropagation();
+        approvePermission(session.id);
+      });
+      container.querySelector('.deny').addEventListener('click', (e) => {
+        e.stopPropagation();
+        denyPermission(session.id);
+      });
+    } else if (currentState === 'processing') {
+      container.innerHTML = `
+        <div class="chat-processing ${animClass}">
+          <span class="instance-spinner"></span>
+          <span>Processing</span>
+        </div>`;
+    } else {
+      container.innerHTML = `
+        <div class="chat-input-bar ${animClass}">
+          <input type="text" class="chat-input" placeholder="Message Claude...">
+        </div>`;
+
+      // Attach send handler and focus
+      const input = container.querySelector('.chat-input');
+      input.focus({ preventScroll: true });
+      input.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' && input.value.trim()) {
+          handleUserMessage(session.id, input.value.trim());
+          input.value = '';
+        }
+      });
+    }
+  }
+
+  function renderChat(sessionId) {
+    const session = sessions.get(sessionId);
+    if (!session) return;
+
+    document.querySelector('.chat-title').textContent = session.name;
+    renderChatMessages(session);
+    renderBottomBar(session);
+  }
+
+  function renderInstanceList() {
+    const list = document.querySelector('.instance-list');
+    list.innerHTML = Array.from(sessions.values()).map(session => {
+      let iconHtml, statusText, statusClass;
+      let hasApprovalButtons = false;
+      let approvalToolName = '';
+
+      switch (session.state) {
+        case InstanceState.WAITING_FOR_INPUT:
+          iconHtml = `<span class="instance-dot waiting-input"></span>`;
+          statusText = 'Waiting for input';
+          statusClass = 'waiting-input';
+          break;
+        case InstanceState.WAITING_FOR_APPROVAL:
+          iconHtml = `<div class="instance-icon approval">
+            <svg viewBox="0 0 30 30" fill="none">
+              <rect x="5" y="5" width="4" height="4" fill="#ffb340"/>
+              <rect x="5" y="9" width="4" height="4" fill="#ffb340"/>
+              <rect x="9" y="1" width="4" height="4" fill="#ffb340"/>
+              <rect x="13" y="1" width="4" height="4" fill="#ffb340"/>
+              <rect x="17" y="1" width="4" height="4" fill="#ffb340"/>
+              <rect x="21" y="5" width="4" height="4" fill="#ffb340"/>
+              <rect x="21" y="9" width="4" height="4" fill="#ffb340"/>
+              <rect x="13" y="17" width="4" height="4" fill="#ffb340"/>
+              <rect x="13" y="25" width="4" height="4" fill="#ffb340"/>
+              <rect x="17" y="13" width="4" height="4" fill="#ffb340"/>
+            </svg>
+          </div>`;
+          hasApprovalButtons = true;
+          approvalToolName = session.pendingApproval?.toolName || 'Tool';
+          statusText = approvalToolName;
+          statusClass = 'approval';
+          break;
+        case InstanceState.PROCESSING:
+          iconHtml = `<span class="instance-spinner"></span>`;
+          statusText = 'Processing';
+          statusClass = 'processing';
+          break;
+        default:
+          iconHtml = `<span class="instance-dot idle"></span>`;
+          statusText = 'Idle';
+          statusClass = '';
+      }
+
+      if (hasApprovalButtons) {
+        return `
+          <div class="instance-item instance-item-approval" data-session="${session.id}">
+            ${iconHtml}
+            <div class="instance-info">
+              <div class="instance-name">${escapeHtml(session.name)}</div>
+              <div class="instance-status ${statusClass}">${statusText}</div>
+            </div>
+            <div class="instance-approval-buttons">
+              <button class="approval-btn deny instance-btn-deny" data-session="${session.id}">Deny</button>
+              <button class="approval-btn allow instance-btn-approve" data-session="${session.id}">Allow</button>
+            </div>
+          </div>`;
+      }
+
+      return `
+        <div class="instance-item" data-session="${session.id}">
+          ${iconHtml}
+          <div class="instance-info">
+            <div class="instance-name">${escapeHtml(session.name)}</div>
+            <div class="instance-status ${statusClass}">${statusText}</div>
+          </div>
+          <span class="instance-arrow">›</span>
+        </div>`;
+    }).join('');
+
+    // Re-attach click listeners for regular items
+    document.querySelectorAll('.instance-item:not(.instance-item-approval)').forEach(item => {
+      item.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const sessionId = item.dataset.session;
+        activeSessionId = sessionId;
+        renderChat(sessionId);
+        setViewMode('chat');
+
+        // If this is the install session in PROCESSING state, trigger the response
+        const session = sessions.get(sessionId);
+        if (sessionId === 'sample-install' && session?.state === InstanceState.PROCESSING) {
+          simulateInstallResponse(sessionId);
+        }
+      });
+    });
+
+    // Attach approve/deny button listeners
+    document.querySelectorAll('.instance-btn-approve').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const sessionId = btn.dataset.session;
+        approvePermission(sessionId);
+      });
+    });
+
+    document.querySelectorAll('.instance-btn-deny').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const sessionId = btn.dataset.session;
+        denyPermission(sessionId);
+      });
+    });
+
+    // Update notch state based on session activity
+    updateNotchState();
+  }
+
+  // Session actions
+  function approvePermission(sessionId) {
+    const session = sessions.get(sessionId);
+    if (!session || !session.pendingApproval) return;
+
+    const toolId = session.pendingApproval.toolId;
+    const toolName = session.pendingApproval.toolName;
+    const toolInput = session.pendingApproval.toolInput || '';
+    session.process({ type: EventType.PERMISSION_APPROVED, toolId });
+
+    renderChat(sessionId);
+    renderInstanceList();
+
+    // Simulate tool completion after delay
+    setTimeout(() => {
+      session.process({ type: EventType.TOOL_RESULT, toolId, success: true });
+
+      if (activeSessionId === sessionId) {
+        renderChat(sessionId);
+      }
+      renderInstanceList();
+
+      // Handle specific demo cases
+      if (toolName === 'Send download link') {
+        // Show the download link message
+        setTimeout(() => {
+          session.process({
+            type: EventType.ASSISTANT_MESSAGE,
+            text: "Here's the download link: https://github.com/anthropics/claude-island/releases\n\nJust download the .dmg file and drag Claude Island to your Applications folder!"
+          });
+          session.state = InstanceState.WAITING_FOR_INPUT;
+
+          if (activeSessionId === sessionId) {
+            renderChat(sessionId);
+          }
+          renderInstanceList();
+        }, 800);
+      } else if (toolInput.includes('create-react-app') || toolInput.includes('react')) {
+        // React project - run build tools
+        setTimeout(() => {
+          runPostApprovalTools(session, sessionId, 'react');
+        }, 300);
+      } else if (toolInput.includes('npm init') || toolInput.includes('express')) {
+        // Backend project - run build tools
+        setTimeout(() => {
+          runPostApprovalTools(session, sessionId, 'backend');
+        }, 300);
+      } else {
+        // Default: just mark as waiting for input
+        setTimeout(() => {
+          session.state = InstanceState.WAITING_FOR_INPUT;
+          if (activeSessionId === sessionId) {
+            renderChat(sessionId);
+          }
+          renderInstanceList();
+        }, 500);
+      }
+    }, 800);
+  }
+
+  function denyPermission(sessionId) {
+    const session = sessions.get(sessionId);
+    if (!session || !session.pendingApproval) return;
+
+    const toolId = session.pendingApproval.toolId;
+    session.process({ type: EventType.PERMISSION_DENIED, toolId });
+
+    renderChat(sessionId);
+    renderInstanceList();
+  }
+
+  function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+  }
+
+  function formatMarkdown(text) {
+    // First escape HTML
+    let result = escapeHtml(text);
+
+    // Convert URLs to links
+    const urlRegex = /(https?:\/\/[^\s]+)/g;
+    result = result.replace(urlRegex, '<a href="$1" target="_blank" rel="noopener noreferrer">$1</a>');
+
+    // Convert bullet points (• or - at start of line)
+    result = result.replace(/^[•\-]\s+(.*)$/gm, '<span class="md-bullet">•</span> $1');
+
+    // Convert numbered lists (1. 2. etc at start of line)
+    result = result.replace(/^(\d+)\.\s+(.*)$/gm, '<span class="md-number">$1.</span> $2');
+
+    // Convert newlines to <br> tags
+    result = result.replace(/\n/g, '<br>');
+
+    return result;
+  }
+
+  // Alias for backward compatibility
+  function linkify(text) {
+    return formatMarkdown(text);
+  }
+
+  const symbols = ['·', '✢', '✳', '∗', '✻', '✽'];
+  let phase = 0;
+  setInterval(() => {
+    phase = (phase + 1) % symbols.length;
+    document.querySelectorAll('.processing-spinner, .instance-spinner').forEach(s => {
+      s.textContent = symbols[phase];
+    });
+  }, 150);
+
+  const notch = document.getElementById('notch');
+  let animationTimeout = null;
+
+  // View mode: where the user is in the UI
+  // 'minimized' = collapsed area (will show as collapsed or popping based on activity)
+  // 'expanded' = session list view
+  // 'chat' = chat view with a specific session
+  let viewMode = 'minimized';
+
+  // Check if any session is active (processing or waiting for approval)
+  function hasActiveSession() {
+    for (const session of sessions.values()) {
+      if (session.state === InstanceState.PROCESSING ||
+          session.state === InstanceState.WAITING_FOR_APPROVAL) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  // Derive the CSS class from view mode + session activity
+  function deriveNotchClass() {
+    const isActive = hasActiveSession();
+
+    switch (viewMode) {
+      case 'minimized':
+        // Minimized view shows popping if active, collapsed if not
+        return isActive ? 'popping' : 'collapsed';
+      case 'expanded':
+        // Expanded shows session list, add 'inactive' modifier if no activity
+        return isActive ? 'expanded' : 'expanded inactive';
+      case 'chat':
+        // Chat view, add 'inactive' modifier if no activity
+        return isActive ? 'chat' : 'chat inactive';
+      default:
+        return 'collapsed';
+    }
+  }
+
+  // Apply the derived state to the notch
+  function updateNotchState() {
+    const newClass = deriveNotchClass();
+    if (notch.className === newClass) return;
+
+    notch.style.willChange = 'width, height, border-radius';
+    notch.className = newClass;
+
+    clearTimeout(animationTimeout);
+    animationTimeout = setTimeout(() => {
+      notch.style.willChange = 'auto';
+    }, 550);
+  }
+
+  // Set view mode and update notch
+  function setViewMode(mode) {
+    viewMode = mode;
+    updateNotchState();
+  }
+
+  // Disabled state - wait for simulation to complete
+  let demoEnabled = false;
+
+  // Listen for simulation complete event
+  window.addEventListener('simulationComplete', () => {
+    demoEnabled = true;
+    // Create all sample sessions after demo completes
+    createSampleSessions();
+    renderInstanceList();
+    updateNotchState();
+  });
+
+  // Click on notch (minimized area) to expand
+  notch.addEventListener('click', (e) => {
+    if (!demoEnabled) return;
+    if (viewMode === 'minimized') {
+      setViewMode('expanded');
+    }
+  });
+
+  // Chat back button -> back to expanded
+  document.getElementById('chat-back').addEventListener('click', (e) => {
+    if (!demoEnabled) return;
+    e.stopPropagation();
+    setViewMode('expanded');
+  });
+
+  // Click outside to minimize
+  document.addEventListener('click', (e) => {
+    if (!demoEnabled) return;
+    if (!notch.contains(e.target)) {
+      if (viewMode === 'expanded' || viewMode === 'chat') {
+        setViewMode('minimized');
+      }
+    }
+  });
+
+  // Listen for collapse event from simulation
+  window.addEventListener('collapseNotch', () => {
+    setViewMode('minimized');
+  });
+
+  // Listen for expand event from simulation
+  window.addEventListener('expandNotch', () => {
+    setViewMode('expanded');
+  });
+
+  // Listen for open session chat event from simulation
+  window.addEventListener('openSessionChat', ((e: CustomEvent) => {
+    const { sessionId } = e.detail;
+    activeSessionId = sessionId;
+    renderChat(sessionId);
+    setViewMode('chat');
+  }) as EventListener);
+
+  // Listen for reset event (when demo is stopped)
+  window.addEventListener('resetNotch', () => {
+    // Clear all sessions
+    sessions.clear();
+    activeSessionId = null;
+
+    // Reset demo state
+    demoEnabled = false;
+    terminalToSession.clear();
+    permissionTriggered.clear();
+    easterEggStage.clear();
+
+    // Reset to minimized view
+    setViewMode('minimized');
+
+    // Clear instance list UI
+    const instanceList = document.querySelector('.instance-list');
+    if (instanceList) instanceList.innerHTML = '';
+
+    // Clear chat UI
+    const chatMessages = document.querySelector('.chat-messages');
+    if (chatMessages) chatMessages.innerHTML = '';
+
+    // Reset notch classes
+    notch?.classList.remove('has-sessions', 'inactive', 'has-permission');
+  });
+</script>
