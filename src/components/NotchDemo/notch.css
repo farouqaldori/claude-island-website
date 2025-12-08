@@ -71,6 +71,7 @@ header#notch.popping {
   border-radius: 0 0 14px 14px;
   box-shadow: 0 0 0 rgba(0, 0, 0, 0);
 }
+
 header#notch.popping:hover {
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
 }
@@ -87,7 +88,9 @@ header#notch.expanded {
 }
 
 /* All content layers are absolutely positioned and crossfade */
-.notch-popping, .notch-expanded, .notch-chat {
+.notch-popping,
+.notch-expanded,
+.notch-chat {
   position: absolute;
   top: 0;
   left: 0;
@@ -142,7 +145,8 @@ header#notch.expanded .notch-chat {
   top: 0;
   left: 0;
   right: 0;
-  height: 42px; /* Fixed height matching popping state */
+  height: 42px;
+  /* Fixed height matching popping state */
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -168,6 +172,7 @@ header#notch.collapsed .processing-spinner {
 header#notch.popping .notch-persistent {
   padding: 0 15px;
 }
+
 header#notch.popping .notch-crab,
 header#notch.popping .processing-spinner {
   opacity: 1;
@@ -177,6 +182,7 @@ header#notch.popping .processing-spinner {
 header#notch.expanded .notch-persistent {
   padding: 0 19px;
 }
+
 header#notch.expanded .notch-crab,
 header#notch.expanded .processing-spinner {
   opacity: 1;
@@ -186,6 +192,7 @@ header#notch.expanded .processing-spinner {
 header#notch.chat .notch-persistent {
   padding: 0 19px;
 }
+
 header#notch.chat .notch-crab,
 header#notch.chat .processing-spinner {
   opacity: 1;
@@ -207,56 +214,83 @@ header#notch.inactive .processing-spinner {
 .notch-expanded {
   flex-direction: column;
   gap: 0;
-  padding-top: 38px; /* Space for persistent crab/spinner row */
+  padding-top: 38px;
+  /* Space for persistent crab/spinner row */
 }
 
 /* Instance list with smooth transitions */
-.instance-list { display: flex; flex-direction: column; gap: 2px; margin-left: -10px; flex: 1; overflow-y: auto; min-height: 0; }
+.instance-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-left: -10px;
+  flex: 1;
+  overflow-y: auto;
+  min-height: 0;
+}
+
 .instance-item {
-  display: flex; align-items: center; gap: 10px;
-  padding: 8px 10px; border-radius: 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  border-radius: 10px;
   cursor: pointer;
   transition:
     background 0.2s ease,
     transform 0.25s cubic-bezier(0.32, 0.72, 0, 1),
     opacity 0.25s cubic-bezier(0.32, 0.72, 0, 1);
-  text-decoration: none; color: inherit;
+  text-decoration: none;
+  color: inherit;
 }
 
 .instance-item:hover {
   background: rgba(255, 255, 255, 0.08);
 }
-.instance-item:active { transform: scale(0.98); }
+
+.instance-item:active {
+  transform: scale(0.98);
+}
 
 /* Instance status icons */
 .instance-icon {
-  width: 14px; height: 14px;
+  width: 14px;
+  height: 14px;
   flex-shrink: 0;
   display: flex;
   align-items: center;
   justify-content: center;
 }
+
 .instance-icon svg {
-  width: 12px; height: 12px;
+  width: 12px;
+  height: 12px;
 }
+
 .instance-icon.approval svg {
   animation: statusPulse 1.5s ease-in-out infinite;
 }
 
 .instance-dot {
-  width: 14px; height: 14px;
+  width: 14px;
+  height: 14px;
   flex-shrink: 0;
   display: flex;
   align-items: center;
   justify-content: center;
 }
+
 .instance-dot::after {
   content: '';
-  width: 6px; height: 6px; border-radius: 50%;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
 }
+
 .instance-dot.idle::after {
   background: rgba(255, 255, 255, 0.3);
 }
+
 .instance-dot.waiting-input::after {
   background: #30d158;
 }
@@ -272,37 +306,82 @@ header#notch.inactive .processing-spinner {
   flex-shrink: 0;
 }
 
-.instance-info { flex: 1; min-width: 0; }
-.instance-name { font-size: 13px; font-weight: 600; color: var(--text-light); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.instance-status { font-size: 11px; color: var(--text-muted); }
-.instance-status.waiting-input { color: #30d158; }
-.instance-status.approval { color: #ffb340; }
-.instance-status.processing { color: var(--accent-pink); }
+.instance-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.instance-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-light);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.instance-status {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.instance-status.waiting-input {
+  color: #30d158;
+}
+
+.instance-status.approval {
+  color: #ffb340;
+}
+
+.instance-status.processing {
+  color: var(--accent-pink);
+}
+
 .instance-arrow {
-  color: rgba(255,255,255,0.2); font-size: 14px; font-weight: 300;
+  color: rgba(255, 255, 255, 0.2);
+  font-size: 14px;
+  font-weight: 300;
   transition: color 0.2s ease;
 }
+
 .instance-item:hover .instance-arrow {
-  color: rgba(255,255,255,0.5);
+  color: rgba(255, 255, 255, 0.5);
 }
 
-@keyframes statusPulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+@keyframes statusPulse {
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.4;
+  }
+}
 
 .instance-divider {
-  height: 1px; background: rgba(255, 255, 255, 0.06); margin: 8px 0;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.06);
+  margin: 8px 0;
 }
 
 /* Menu items with smooth transitions */
 .menu-item {
-  display: flex; align-items: center; gap: 10px;
-  padding: 8px 10px; border-radius: 8px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  border-radius: 8px;
   cursor: pointer;
   transition:
     background 0.15s ease,
     transform 0.2s cubic-bezier(0.32, 0.72, 0, 1),
     color 0.15s ease,
     opacity 0.25s cubic-bezier(0.32, 0.72, 0, 1);
-  text-decoration: none; color: var(--text-muted); font-size: 13px;
+  text-decoration: none;
+  color: var(--text-muted);
+  font-size: 13px;
 }
 
 .menu-item:hover {
@@ -310,9 +389,21 @@ header#notch.inactive .processing-spinner {
   color: var(--text-light);
   transform: translateX(2px);
 }
-.menu-item:active { transform: scale(0.98); }
-.menu-item svg { width: 15px; height: 15px; opacity: 0.5; transition: opacity 0.15s ease; }
-.menu-item:hover svg { opacity: 1; }
+
+.menu-item:active {
+  transform: scale(0.98);
+}
+
+.menu-item svg {
+  width: 15px;
+  height: 15px;
+  opacity: 0.5;
+  transition: opacity 0.15s ease;
+}
+
+.menu-item:hover svg {
+  opacity: 1;
+}
 
 /* CHAT state (opened: top 19, bottom 24) */
 header#notch.chat {
@@ -327,28 +418,47 @@ header#notch.chat {
 
 .notch-chat {
   flex-direction: column;
-  padding-top: 38px; /* Space for persistent crab/spinner row */
+  padding-top: 38px;
+  /* Space for persistent crab/spinner row */
 }
 
 /* Chat header */
 .chat-header {
-  display: flex; align-items: center; gap: 8px;
-  padding: 8px 10px; border-radius: 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  border-radius: 10px;
   cursor: pointer;
   transition: background 0.2s ease, transform 0.15s ease;
   margin-bottom: 10px;
 }
-.chat-header:hover { background: rgba(255, 255, 255, 0.08); }
-.chat-header:active { transform: scale(0.98); }
+
+.chat-header:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.chat-header:active {
+  transform: scale(0.98);
+}
+
 .chat-back {
-  color: rgba(255,255,255,0.5); font-size: 18px; font-weight: 500;
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 18px;
+  font-weight: 500;
   transition: transform 0.2s ease, color 0.2s ease;
 }
+
 .chat-header:hover .chat-back {
-  color: rgba(255,255,255,0.8);
+  color: rgba(255, 255, 255, 0.8);
   transform: translateX(-2px);
 }
-.chat-title { font-size: 14px; font-weight: 600; color: var(--text-light); }
+
+.chat-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-light);
+}
 
 /* Chat messages - use column-reverse to anchor content at bottom */
 .chat-messages {
@@ -360,8 +470,10 @@ header#notch.chat {
   padding: 8px 0;
   min-height: 0;
 }
+
 .chat-message {
-  font-size: 13px; line-height: 1.5;
+  font-size: 13px;
+  line-height: 1.5;
   transition:
     opacity 0.3s cubic-bezier(0.32, 0.72, 0, 1),
     transform 0.3s cubic-bezier(0.32, 0.72, 0, 1);
@@ -369,38 +481,50 @@ header#notch.chat {
 
 .chat-message.user {
   align-self: flex-end;
-  background: rgba(255,255,255,0.15);
+  background: rgba(255, 255, 255, 0.15);
   padding: 10px 14px;
   border-radius: 18px 18px 4px 18px;
   max-width: 85%;
 }
+
 .chat-message.assistant {
-  display: flex; gap: 8px; align-items: flex-start;
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
 }
+
 .chat-message.assistant::before {
   content: '';
-  width: 6px; height: 6px;
-  background: rgba(255,255,255,0.5);
+  width: 6px;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.5);
   border-radius: 50%;
   margin-top: 7px;
   flex-shrink: 0;
 }
-.chat-message.assistant span { color: rgba(255,255,255,0.85); }
+
+.chat-message.assistant span {
+  color: rgba(255, 255, 255, 0.85);
+}
+
 .chat-message.assistant a {
   color: var(--accent-pink);
   text-decoration: none;
   transition: opacity 0.2s ease;
 }
+
 .chat-message.assistant a:hover {
   opacity: 0.8;
   text-decoration: underline;
 }
+
 /* Markdown styling in assistant messages */
 .chat-message.assistant .md-bullet {
   color: var(--accent-pink);
   font-weight: 600;
   margin-right: 2px;
 }
+
 .chat-message.assistant .md-number {
   color: var(--accent-pink);
   font-weight: 600;
@@ -409,8 +533,11 @@ header#notch.chat {
 
 /* Tool call in chat */
 .chat-tool {
-  display: flex; align-items: center; gap: 6px;
-  font-size: 12px; color: rgba(255,255,255,0.6);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.6);
   padding: 4px 0;
   transition:
     opacity 0.3s cubic-bezier(0.32, 0.72, 0, 1),
@@ -418,15 +545,37 @@ header#notch.chat {
 }
 
 .chat-tool .tool-dot {
-  width: 6px; height: 6px; border-radius: 50%;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
   transition: background 0.3s ease;
 }
-.chat-tool .tool-dot.success { background: #30d158; }
-.chat-tool .tool-dot.error { background: #ff453a; }
-.chat-tool .tool-dot.pending { background: #ffb340; animation: statusPulse 1.5s infinite; }
-.chat-tool .tool-dot.running { background: #fff; animation: statusPulse 1.5s infinite; }
-.chat-tool .tool-name { font-weight: 600; }
-.chat-tool .tool-status { opacity: 0.6; }
+
+.chat-tool .tool-dot.success {
+  background: #30d158;
+}
+
+.chat-tool .tool-dot.error {
+  background: #ff453a;
+}
+
+.chat-tool .tool-dot.pending {
+  background: #ffb340;
+  animation: statusPulse 1.5s infinite;
+}
+
+.chat-tool .tool-dot.running {
+  background: #fff;
+  animation: statusPulse 1.5s infinite;
+}
+
+.chat-tool .tool-name {
+  font-weight: 600;
+}
+
+.chat-tool .tool-status {
+  opacity: 0.6;
+}
 
 /* Bottom bar container */
 .chat-bottom-bar {
@@ -439,6 +588,7 @@ header#notch.chat {
     opacity: 0;
     transform: translateY(8px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -447,23 +597,30 @@ header#notch.chat {
 
 /* Approval bar in chat */
 .chat-approval-bar {
-  display: flex; align-items: center; gap: 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
   min-height: 44px;
 }
+
 .chat-approval-bar.animate {
   animation: bottomBarFadeIn 0.3s cubic-bezier(0.32, 0.72, 0, 1);
 }
 
 /* Processing indicator */
 .chat-processing {
-  display: flex; align-items: center; gap: 6px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
   min-height: 44px;
   font-size: 12px;
   color: var(--accent-pink);
 }
+
 .chat-processing.animate {
   animation: bottomBarFadeIn 0.3s cubic-bezier(0.32, 0.72, 0, 1);
 }
+
 .chat-processing .instance-spinner {
   width: 6px;
   font-size: 8px;
@@ -472,67 +629,123 @@ header#notch.chat {
   justify-content: center;
 }
 
-.approval-info { flex: 1; min-width: 0; }
+.approval-info {
+  flex: 1;
+  min-width: 0;
+}
+
 .approval-tool-name {
-  font-size: 12px; font-weight: 600;
+  font-size: 12px;
+  font-weight: 600;
   font-family: 'JetBrains Mono', monospace;
   color: #ffb340;
 }
+
 .approval-tool-input {
-  font-size: 11px; color: rgba(255,255,255,0.5);
-  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.5);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
+
 .approval-btn {
-  padding: 8px 18px; border-radius: 20px;
-  font-size: 13px; font-weight: 600;
-  font-family: inherit; cursor: pointer;
+  padding: 8px 18px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
   transition: all 0.2s cubic-bezier(0.32, 0.72, 0, 1);
   border: none;
 }
-.approval-btn:active { transform: scale(0.95); }
+
+.approval-btn:active {
+  transform: scale(0.95);
+}
+
 .approval-btn.deny {
-  background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.7);
+  background: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.7);
 }
-.approval-btn.deny:hover { background: rgba(255,255,255,0.15); }
+
+.approval-btn.deny:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
 .approval-btn.allow {
-  background: rgba(255,255,255,0.95); color: #000;
+  background: rgba(255, 255, 255, 0.95);
+  color: #000;
 }
-.approval-btn.allow:hover { background: #fff; transform: scale(1.02); }
+
+.approval-btn.allow:hover {
+  background: #fff;
+  transform: scale(1.02);
+}
 
 /* Chat input */
 .chat-input-bar {
-  display: flex; align-items: center; gap: 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
   min-height: 44px;
-  border-top: 1px solid rgba(255,255,255,0.08);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
   padding-top: 8px;
 }
+
 .chat-input-bar.animate {
   animation: bottomBarFadeIn 0.3s cubic-bezier(0.32, 0.72, 0, 1);
 }
+
 .chat-input {
-  flex: 1; background: rgba(255,255,255,0.08);
-  border: 1px solid rgba(255,255,255,0.1);
-  border-radius: 20px; padding: 10px 14px;
-  font-size: 13px; font-family: inherit;
-  color: var(--text-light); outline: none;
+  flex: 1;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  padding: 10px 14px;
+  font-size: 13px;
+  font-family: inherit;
+  color: var(--text-light);
+  outline: none;
   transition: border-color 0.2s ease, background 0.2s ease;
 }
+
 .chat-input:focus {
-  border-color: rgba(255,255,255,0.2);
-  background: rgba(255,255,255,0.1);
+  border-color: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.1);
 }
-.chat-input::placeholder { color: rgba(255,255,255,0.4); }
+
+.chat-input::placeholder {
+  color: rgba(255, 255, 255, 0.4);
+}
+
 .chat-send {
-  width: 32px; height: 32px;
-  background: rgba(255,255,255,0.9);
-  border-radius: 50%; border: none;
-  display: flex; align-items: center; justify-content: center;
+  width: 32px;
+  height: 32px;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 50%;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
   transition: all 0.2s cubic-bezier(0.32, 0.72, 0, 1);
 }
-.chat-send:hover { background: #fff; transform: scale(1.05); }
-.chat-send:active { transform: scale(0.95); }
-.chat-send svg { width: 16px; height: 16px; color: #000; }
+
+.chat-send:hover {
+  background: #fff;
+  transform: scale(1.05);
+}
+
+.chat-send:active {
+  transform: scale(0.95);
+}
+
+.chat-send svg {
+  width: 16px;
+  height: 16px;
+  color: #000;
+}
 
 /* Animated Crab */
 .notch-crab {
@@ -546,7 +759,11 @@ header#notch.chat {
 }
 
 /* Leg animation matching SwiftUI - alternating up/down pattern */
-/* Legs move up/down by translating, staying attached to body */
+/* Legs scale from their top edge so they stay attached to body */
+.crab-leg {
+  transform-origin: center top;
+}
+
 .crab-leg.leg-1,
 .crab-leg.leg-3 {
   animation: legWalk1 0.6s steps(1) infinite;
@@ -558,17 +775,49 @@ header#notch.chat {
 }
 
 @keyframes legWalk1 {
-  0% { transform: translateY(2px); }   /* Phase 0: down */
-  25% { transform: translateY(0); }    /* Phase 1: neutral */
-  50% { transform: translateY(-2px); } /* Phase 2: up */
-  75% { transform: translateY(0); }    /* Phase 3: neutral */
+  0% {
+    transform: scaleY(1.15);
+  }
+
+  /* Phase 0: extended */
+  25% {
+    transform: scaleY(1);
+  }
+
+  /* Phase 1: neutral */
+  50% {
+    transform: scaleY(0.85);
+  }
+
+  /* Phase 2: contracted */
+  75% {
+    transform: scaleY(1);
+  }
+
+  /* Phase 3: neutral */
 }
 
 @keyframes legWalk2 {
-  0% { transform: translateY(-2px); }  /* Phase 0: up */
-  25% { transform: translateY(0); }    /* Phase 1: neutral */
-  50% { transform: translateY(2px); }  /* Phase 2: down */
-  75% { transform: translateY(0); }    /* Phase 3: neutral */
+  0% {
+    transform: scaleY(0.85);
+  }
+
+  /* Phase 0: contracted */
+  25% {
+    transform: scaleY(1);
+  }
+
+  /* Phase 1: neutral */
+  50% {
+    transform: scaleY(1.15);
+  }
+
+  /* Phase 2: extended */
+  75% {
+    transform: scaleY(1);
+  }
+
+  /* Phase 3: neutral */
 }
 
 /* Processing Spinner - matches SwiftUI ProcessingSpinner */
@@ -579,4 +828,277 @@ header#notch.chat {
   width: 14px;
   text-align: center;
   font-family: sans-serif;
+}
+
+/* ============================================================
+   RESPONSIVE STYLES
+   ============================================================ */
+
+/* Large tablets / small laptops */
+@media (max-width: 1300px) {
+  header#notch {
+    width: 210px;
+    height: 40px;
+  }
+
+  header#notch.collapsed {
+    width: 210px;
+    height: 40px;
+  }
+
+  header#notch.popping {
+    width: 290px;
+    height: 40px;
+  }
+
+  header#notch.expanded {
+    width: 390px;
+    height: 310px;
+  }
+
+  header#notch.chat {
+    width: 460px;
+    height: 460px;
+  }
+}
+
+/* Medium screens (tablets) */
+@media (max-width: 768px) {
+
+  /* Notch - slightly smaller on tablets */
+  header#notch {
+    width: 200px;
+    height: 40px;
+  }
+
+  header#notch.collapsed {
+    width: 200px;
+    height: 40px;
+  }
+
+  header#notch.popping {
+    width: 280px;
+    height: 40px;
+  }
+
+  header#notch.expanded {
+    width: 380px;
+    height: 300px;
+  }
+
+  header#notch.chat {
+    width: 440px;
+    height: 440px;
+  }
+}
+
+/* Mobile screens */
+@media (max-width: 900px) {
+
+  /* Base notch dimensions - smaller on mobile */
+  header#notch {
+    width: 160px;
+    height: 36px;
+    border-radius: 0 0 12px 12px;
+  }
+
+  header#notch::before,
+  header#notch::after {
+    width: 10px;
+    height: 20px;
+  }
+
+  header#notch::before {
+    left: -10px;
+    box-shadow: 4px 0 0 0 #000;
+  }
+
+  header#notch::after {
+    right: -10px;
+    box-shadow: -4px 0 0 0 #000;
+  }
+
+  /* COLLAPSED state - mobile */
+  header#notch.collapsed {
+    width: 160px;
+    height: 36px;
+  }
+
+  /* POPPING state - mobile */
+  header#notch.popping {
+    width: 220px;
+    height: 36px;
+    padding: 0 12px;
+    border-radius: 0 0 12px 12px;
+  }
+
+  /* EXPANDED state - mobile */
+  header#notch.expanded {
+    padding: 10px 14px 12px;
+    width: calc(100vw - 32px);
+    max-width: 340px;
+    height: 280px;
+    border-radius: 0 0 20px 20px;
+  }
+
+  /* CHAT state - mobile */
+  header#notch.chat {
+    padding: 10px 14px 12px;
+    width: calc(100vw - 32px);
+    max-width: 340px;
+    height: 400px;
+    border-radius: 0 0 20px 20px;
+  }
+
+  /* Persistent layer adjustments */
+  .notch-persistent {
+    height: 36px;
+    padding: 0 12px;
+  }
+
+  header#notch.expanded .notch-persistent,
+  header#notch.chat .notch-persistent {
+    padding: 0 14px;
+  }
+
+  /* Expanded/Chat content padding */
+  .notch-expanded,
+  .notch-chat {
+    padding-top: 32px;
+  }
+
+  /* Instance list - mobile */
+  .instance-list {
+    margin-left: -8px;
+  }
+
+  .instance-item {
+    padding: 6px 8px;
+    gap: 8px;
+  }
+
+  .instance-name {
+    font-size: 12px;
+  }
+
+  .instance-status {
+    font-size: 10px;
+  }
+
+  /* Menu items - mobile */
+  .menu-item {
+    padding: 6px 8px;
+    font-size: 12px;
+  }
+
+  /* Chat header - mobile */
+  .chat-header {
+    padding: 6px 8px;
+    margin-bottom: 8px;
+  }
+
+  .chat-title {
+    font-size: 13px;
+  }
+
+  /* Chat messages - mobile */
+  .chat-messages {
+    gap: 10px;
+    padding: 6px 0;
+  }
+
+  .chat-message {
+    font-size: 12px;
+  }
+
+  .chat-message.user {
+    padding: 8px 12px;
+    border-radius: 16px 16px 4px 16px;
+  }
+
+  /* Chat tool - mobile */
+  .chat-tool {
+    font-size: 11px;
+  }
+
+  /* Approval bar - mobile */
+  .chat-approval-bar {
+    gap: 6px;
+    min-height: 32px;
+  }
+
+  .approval-tool-name {
+    font-size: 11px;
+  }
+
+  .approval-tool-input {
+    font-size: 10px;
+  }
+
+  .approval-btn {
+    padding: 6px 14px;
+    font-size: 12px;
+  }
+
+  /* Chat bottom bar - mobile */
+  .chat-bottom-bar {
+    padding-top: 4px;
+  }
+
+  /* Chat input - mobile */
+  .chat-input-bar {
+    min-height: 28px;
+    padding-top: 4px;
+  }
+
+  .chat-input {
+    padding: 6px 10px;
+    font-size: 11px;
+  }
+
+  .chat-send {
+    width: 24px;
+    height: 24px;
+  }
+
+  .chat-send svg {
+    width: 12px;
+    height: 12px;
+  }
+
+  /* Chat messages - smaller on mobile */
+  .chat-message {
+    font-size: 11px;
+    /* padding: 6px 10px; */
+  }
+
+  .chat-message.user {
+    padding: 6px 10px;
+    border-radius: 12px 12px 3px 12px;
+  }
+
+  .chat-tool {
+    font-size: 10px;
+  }
+
+  .chat-processing {
+    font-size: 10px;
+    min-height: 28px;
+  }
+
+  .chat-processing span {
+    font-size: 10px;
+  }
+
+  /* Crab - smaller on mobile */
+  .notch-crab svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  /* Processing spinner - mobile */
+  .processing-spinner {
+    font-size: 10px;
+    width: 12px;
+  }
 }

@@ -518,6 +518,186 @@ import Simulation from './Simulation.astro';
   #terminal-dock-icon {
     cursor: pointer;
   }
+
+  /* ============================================================
+     RESPONSIVE STYLES - Scoped
+     ============================================================ */
+
+  /* Large tablets / small laptops */
+  @media (max-width: 1300px) {
+    .showcase .container {
+      max-width: 100%;
+      padding: 0 24px;
+    }
+
+    .showcase-wrapper {
+      border-radius: 32px;
+    }
+
+    .showcase-image {
+      border-radius: 32px;
+    }
+
+    .dock-bar {
+      bottom: 20px;
+    }
+
+    .dock-content {
+      gap: 6px;
+      padding: 8px 8px 7px 8px;
+      border-radius: 18px;
+    }
+
+    .dock-content::before {
+      border-radius: 18px;
+    }
+
+    .dock-icon-size {
+      width: 44px;
+      height: 44px;
+    }
+
+    .dock-placeholder {
+      width: 36px;
+      height: 36px;
+      border-radius: 9px;
+    }
+  }
+
+  /* Medium screens (tablets) */
+  @media (max-width: 768px) {
+    .showcase {
+      padding: 0 0 80px;
+    }
+
+    .showcase-wrapper {
+      border-radius: 32px;
+    }
+
+    .showcase-image {
+      height: 28rem;
+      border-radius: 32px;
+      filter: none;
+    }
+
+    .demo-stop-btn {
+      left: 70px;
+      padding: 16px;
+    }
+
+    .dock-bar {
+      bottom: 20px;
+    }
+
+    .dock-content {
+      gap: 6px;
+      padding: 10px 10px 9px 10px;
+      border-radius: 20px;
+    }
+
+    .dock-content::before {
+      border-radius: 20px;
+    }
+
+    .dock-icon-size {
+      width: 48px;
+      height: 48px;
+    }
+
+    .dock-placeholder {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+    }
+
+    .notch-container {
+      height: 460px;
+    }
+  }
+
+  /* Mobile screens */
+  @media (max-width: 900px) {
+    .showcase {
+      padding: 0 0 60px;
+    }
+
+    .showcase .container {
+      padding: 0;
+    }
+
+    .showcase-wrapper {
+      margin: 0;
+      border-radius: 0;
+    }
+
+    .showcase-image {
+      height: 70vh;
+      min-height: 480px;
+      max-height: 600px;
+      border-radius: 0;
+      filter: none;
+      object-fit: cover;
+    }
+
+    /* Stop/Replay button - mobile (above dock) */
+    .demo-stop-btn {
+      top: auto;
+      bottom: 74px;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 0;
+    }
+
+    .demo-stop-btn-inner {
+      height: 32px;
+      padding: 0 14px;
+      gap: 6px;
+      font-size: 12px;
+      border-radius: 16px;
+    }
+
+    .demo-stop-btn svg {
+      width: 12px;
+      height: 12px;
+    }
+
+    /* Hide apple menu and status bar on mobile */
+    .apple-menu,
+    .status-bar {
+      display: none;
+    }
+
+    /* Dock bar - mobile (smaller) */
+    .dock-bar {
+      bottom: 12px;
+    }
+
+    .dock-content {
+      gap: 4px;
+      padding: 6px 6px 5px 6px;
+      border-radius: 14px;
+    }
+
+    .dock-content::before {
+      border-radius: 14px;
+    }
+
+    .dock-icon-size {
+      width: 36px;
+      height: 36px;
+    }
+
+    .dock-placeholder {
+      width: 30px;
+      height: 30px;
+      border-radius: 8px;
+    }
+
+    /* Notch container - mobile */
+    .notch-container {
+      height: 420px;
+    }
+  }
 </style>
 
 <style is:global>
@@ -1173,6 +1353,257 @@ import Simulation from './Simulation.astro';
   .email-send-btn.sent {
     color: #f5f5f7;
   }
+
+  /* ============================================================
+     RESPONSIVE STYLES - Global (Windows)
+     ============================================================ */
+
+  /* Large tablets / small laptops */
+  @media (max-width: 1300px) {
+    .terminal-window {
+      width: 520px;
+      height: 280px;
+    }
+
+    .browser-window {
+      width: 600px;
+    }
+
+    .youtube-gif-container,
+    .youtube-gif {
+      height: 250px;
+    }
+
+    .email-window {
+      width: 480px;
+    }
+  }
+
+  /* Medium screens (tablets) */
+  @media (max-width: 768px) {
+    .terminal-window {
+      width: 500px;
+      height: 280px;
+    }
+
+    .browser-window {
+      width: 580px;
+    }
+
+    .youtube-gif-container,
+    .youtube-gif {
+      height: 240px;
+    }
+
+    .email-window {
+      width: 460px;
+    }
+
+    .email-content {
+      height: 300px;
+    }
+  }
+
+  /* Mobile screens */
+  @media (max-width: 900px) {
+    /* Terminal window - mobile */
+    .terminal-window {
+      width: 280px;
+      max-width: 70%;
+      height: 180px;
+      border-radius: 6px;
+    }
+
+    .terminal-titlebar {
+      padding: 6px 10px;
+    }
+
+    .terminal-buttons {
+      gap: 4px;
+      padding-right: 6px;
+      margin-right: 6px;
+    }
+
+    .terminal-btn {
+      width: 8px;
+      height: 8px;
+    }
+
+    .terminal-title {
+      font-size: 9px;
+      max-width: 50%;
+    }
+
+    .terminal-body {
+      padding: 8px;
+      font-size: 9px;
+    }
+
+    .terminal-input-area {
+      font-size: 8px;
+    }
+
+    .terminal-input-area input {
+      font-size: 8px !important;
+    }
+
+    .terminal-input-line {
+      padding: 3px 6px;
+      gap: 3px;
+    }
+
+    .terminal-mode-line {
+      padding: 2px 6px 4px;
+    }
+
+    .terminal-mode {
+      font-size: 7px;
+    }
+
+    .terminal-tool,
+    .terminal-tool-result,
+    .terminal-processing {
+      font-size: 9px;
+    }
+
+    .terminal-response-text {
+      font-size: 9px;
+    }
+
+    /* Browser window - mobile */
+    .browser-window {
+      width: 300px;
+      max-width: 75%;
+      border-radius: 6px;
+    }
+
+    .browser-titlebar {
+      padding: 6px 10px;
+      gap: 6px;
+    }
+
+    .browser-url-bar {
+      padding: 3px 8px;
+    }
+
+    .browser-url {
+      font-size: 9px;
+    }
+
+    .youtube-player {
+      padding: 8px;
+      gap: 8px;
+    }
+
+    .youtube-gif-container {
+      height: 120px;
+    }
+
+    .youtube-gif {
+      height: 120px;
+    }
+
+    .youtube-controls {
+      padding: 12px 8px 4px;
+    }
+
+    .youtube-control-icon {
+      width: 12px;
+      height: 12px;
+    }
+
+    .youtube-time {
+      font-size: 8px;
+    }
+
+    .youtube-title {
+      font-size: 10px;
+    }
+
+    .youtube-channel {
+      font-size: 8px;
+    }
+
+    /* Email window - mobile */
+    .email-window {
+      width: 260px;
+      max-width: 65%;
+      border-radius: 6px;
+    }
+
+    .email-window .email-titlebar {
+      padding: 6px 8px;
+      gap: 6px;
+    }
+
+    .email-toolbar {
+      margin-left: 2px;
+      gap: 0;
+    }
+
+    .email-toolbar-btn {
+      width: 20px;
+      height: 16px;
+    }
+
+    .email-toolbar-btn svg {
+      width: 12px;
+      height: 12px;
+    }
+
+    .email-content {
+      height: 180px;
+    }
+
+    .email-header {
+      padding: 8px 10px;
+    }
+
+    .email-header-row {
+      font-size: 9px;
+      margin-bottom: 3px;
+    }
+
+    .email-label {
+      width: 40px;
+    }
+
+    .email-body {
+      padding: 8px;
+    }
+
+    .email-message {
+      font-size: 9px;
+    }
+
+    .email-signature {
+      font-size: 8px;
+    }
+
+    .email-reply-bar {
+      gap: 6px;
+      padding: 8px 10px;
+    }
+
+    .email-reply-input {
+      padding: 6px 8px;
+      font-size: 9px;
+    }
+
+    .email-send-btn {
+      width: 24px;
+      height: 24px;
+    }
+
+    .email-send-btn svg {
+      width: 12px;
+      height: 12px;
+    }
+
+    .email-sent-message p {
+      font-size: 9px;
+    }
+  }
 </style>
 
 <script>
@@ -1473,7 +1904,7 @@ It's designed to be your AI-powered productivity companion!`
     addToolUsage(tool: string, result?: string) {
       const line = document.createElement('div');
       line.className = 'terminal-tool';
-      line.innerHTML = `<span class="terminal-tool-icon">⏺</span> ${tool}`;
+      line.innerHTML = `<span class="terminal-tool-icon">•</span> ${tool}`;
       this.output.appendChild(line);
 
       if (result) {
@@ -1487,7 +1918,7 @@ It's designed to be your AI-powered productivity companion!`
     addResponse(text: string) {
       const line = document.createElement('div');
       line.className = 'terminal-response';
-      line.innerHTML = `<span class="terminal-response-icon">⏺</span> <span class="terminal-response-text">${text.replace(/\n/g, '<br>')}</span>`;
+      line.innerHTML = `<span class="terminal-response-icon">•</span> <span class="terminal-response-text">${text.replace(/\n/g, '<br>')}</span>`;
       this.output.appendChild(line);
     }
 
@@ -1531,7 +1962,7 @@ It's designed to be your AI-powered productivity companion!`
       if (show) {
         const line = document.createElement('div');
         line.className = 'terminal-processing';
-        line.innerHTML = `<span class="terminal-spinner">⏺</span> Processing...`;
+        line.innerHTML = `<span class="terminal-spinner">•</span> Processing...`;
         this.output.appendChild(line);
       }
     }

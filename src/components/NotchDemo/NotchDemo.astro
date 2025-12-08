@@ -1185,9 +1185,12 @@ import ChatView from './ChatView.astro';
           <input type="text" class="chat-input" placeholder="Message Claude...">
         </div>`;
 
-      // Attach send handler and focus
+      // Attach send handler and focus (skip autofocus on touch devices to avoid keyboard popup)
       const input = container.querySelector('.chat-input');
-      input.focus({ preventScroll: true });
+      const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+      if (!isTouchDevice) {
+        input.focus({ preventScroll: true });
+      }
       input.addEventListener('keydown', (e) => {
         if (e.key === 'Enter' && input.value.trim()) {
           handleUserMessage(session.id, input.value.trim());
@@ -1427,7 +1430,7 @@ import ChatView from './ChatView.astro';
   // SECTION 11: UI STATE & ANIMATION
   // ============================================================
 
-  const symbols = ['·', '✢', '✳', '∗', '✻', '✽'];
+  const symbols = ['·', '✢', '∗', '✻', '✽'];
   let phase = 0;
   setInterval(() => {
     phase = (phase + 1) % symbols.length;

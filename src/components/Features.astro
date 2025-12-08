@@ -138,4 +138,50 @@ const features = [
       grid-template-columns: 1fr;
     }
   }
+
+  @media (max-width: 900px) {
+    .section-header {
+      margin-bottom: 48px;
+    }
+
+    .section-label {
+      font-size: 11px;
+      margin-bottom: 12px;
+    }
+
+    .section-title {
+      font-size: clamp(24px, 6vw, 32px);
+    }
+
+    .features-grid {
+      gap: 16px;
+    }
+
+    .feature-card {
+      padding: 24px;
+      border-radius: 16px;
+    }
+
+    .feature-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      margin-bottom: 16px;
+    }
+
+    .feature-icon :global(svg) {
+      width: 20px;
+      height: 20px;
+    }
+
+    .feature-title {
+      font-size: 16px;
+      margin-bottom: 8px;
+    }
+
+    .feature-description {
+      font-size: 13px;
+      line-height: 1.6;
+    }
+  }
 </style>

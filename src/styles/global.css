@@ -34,3 +34,71 @@ body {
   margin: 0 auto;
   padding: 0 32px;
 }
+
+/* ============================================================
+   RESPONSIVE STYLES
+   ============================================================ */
+
+/* Medium screens (tablets) */
+@media (max-width: 768px) {
+  .container {
+    padding: 0 24px;
+  }
+}
+
+/* Mobile screens */
+@media (max-width: 900px) {
+  .container {
+    padding: 0 16px;
+  }
+}
+
+/* Touch-friendly adjustments */
+@media (max-width: 900px) {
+  /* Prevent text selection on interactive elements */
+  button,
+  [role="button"],
+  .dock-item,
+  .instance-item,
+  .menu-item,
+  .chat-header {
+    -webkit-user-select: none;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* Ensure dock icons are touch-friendly */
+  .dock-item {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  /* Smooth scrolling for chat messages */
+  .chat-messages,
+  .email-body,
+  .terminal-body {
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+  }
+
+  /* Prevent zoom on input focus (iOS) */
+  input,
+  textarea,
+  select,
+  [contenteditable="true"] {
+    font-size: 16px !important;
+  }
+
+  /* Better touch response for buttons */
+  .approval-btn,
+  .chat-send,
+  .email-send-btn,
+  .terminal-btn {
+    touch-action: manipulation;
+  }
+
+  /* Ensure the showcase area handles touch properly */
+  .showcase-wrapper {
+    touch-action: pan-y pinch-zoom;
+  }
+}

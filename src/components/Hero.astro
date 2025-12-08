@@ -196,4 +196,71 @@
       gap: 24px;
     }
   }
+
+  @media (max-width: 900px) {
+    .hero {
+      padding: 100px 0 40px;
+    }
+
+    .hero-icon-wrapper {
+      width: 96px;
+      height: 96px;
+      margin-bottom: 20px;
+    }
+
+    .hero-icon {
+      width: 96px;
+      height: 96px;
+      border-radius: 22px;
+    }
+
+    .hero-icon-wrapper::after {
+      border-radius: 22px 22px 32px 32px;
+    }
+
+    h1 {
+      font-size: clamp(32px, 8vw, 48px);
+      margin-bottom: 28px;
+    }
+
+    .hero-row {
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .btn-primary {
+      width: 100%;
+      justify-content: center;
+      padding: 16px 24px;
+      font-size: 15px;
+      border-radius: 14px;
+    }
+
+    .btn-primary svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    .badges {
+      width: 100%;
+      justify-content: center;
+    }
+
+    .badge {
+      gap: 10px;
+    }
+
+    .badge-icon svg {
+      width: 28px;
+      height: 28px;
+    }
+
+    .badge-label {
+      font-size: 10px;
+    }
+
+    .badge-value {
+      font-size: 13px;
+    }
+  }
 </style>
