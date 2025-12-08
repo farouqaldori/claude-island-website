@@ -1,13 +1,14 @@
-<?xml version="1.0" encoding="utf-8"?>
-<rss version="2.0" xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle" xmlns:dc="http://purl.org/dc/elements/1.1/">
+<?xml version="1.0" standalone="yes"?>
+<rss xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle" version="2.0">
     <channel>
-        <title>Claude Island Updates</title>
-        <link>https://claudeisland.com/appcast.xml</link>
-        <description>Most recent updates for Claude Island</description>
-        <language>en</language>
-
-        <!-- This file will be automatically updated by create-release.sh -->
-        <!-- Each release adds a new <item> entry below -->
-
+        <title>ClaudeIsland</title>
+        <item>
+            <title>1.0</title>
+            <pubDate>Mon, 08 Dec 2025 19:01:59 +0100</pubDate>
+            <sparkle:version>1</sparkle:version>
+            <sparkle:shortVersionString>1.0</sparkle:shortVersionString>
+            <sparkle:minimumSystemVersion>15.6</sparkle:minimumSystemVersion>
+            <enclosure url="https://github.com/farouqaldori/claude-island/releases/download/v1.0/ClaudeIsland-1.0.dmg" length="4118483" type="application/octet-stream" sparkle:edSignature="HCdX0Tg/d1/nfHGDc1HRmHeRhMHh+o4WLCXIe6ocN/YBpTXBtEdAEash3MDo8+WQ4gujGO7A7FpLwl/HdyfKCw=="/>
+        </item>
     </channel>
 </rss>
