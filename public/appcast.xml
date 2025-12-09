@@ -8,7 +8,7 @@
             <sparkle:version>1</sparkle:version>
             <sparkle:shortVersionString>1.0</sparkle:shortVersionString>
             <sparkle:minimumSystemVersion>15.6</sparkle:minimumSystemVersion>
-            <enclosure url="https://github.com/farouqaldori/claude-island/releases/download/v1.0/ClaudeIsland-1.0.dmg" length="4027376" type="application/octet-stream" sparkle:edSignature="UWgMZa9MKjgLM1SEdALLpsh91tMjGi1AUevaLZQ2FyCXEOh/yGHcX89inYPvbIlXSzfXa36MEKUInGyMYiSeAw=="/>
+            <enclosure url="https://github.com/farouqaldori/claude-island/releases/download/v1.0/ClaudeIsland-1.0.dmg" length="4027376" type="application/octet-stream" sparkle:edSignature="lFNKDXsJPKcViuRzr8W6zM8SH27Qk944oVDXIQziMlc1wD4gwrNIT00BJjeP38wHWUSyrOPtO00VSpA9CuqgBg=="/>
         </item>
     </channel>
 </rss>
