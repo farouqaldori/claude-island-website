@@ -76,13 +76,6 @@ import Simulation from './Simulation.astro';
               </div>
             </span>
           </div>
-          <div class="dock-item" id="email-dock-icon">
-            <span class="dock-icon-wrapper">
-              <div class="dock-icon-size">
-                <img class="dock-icon-img" src="/mail.png" alt="Mail App Icon" draggable="false">
-              </div>
-            </span>
-          </div>
           <div class="dock-placeholder"></div>
         </div>
       </div>
@@ -165,65 +158,6 @@ import Simulation from './Simulation.astro';
               <div class="youtube-title">Ultimate Capybara Compilation</div>
               <div class="youtube-channel">CapybaraWorld • 12M views • 2 days ago</div>
             </div>
-          </div>
-        </div>
-      </div>
-      <!-- Email window - macOS Mail style -->
-      <div class="email-window" id="email-window">
-        <div class="email-titlebar">
-          <div class="terminal-buttons">
-            <button class="terminal-btn terminal-btn-close" id="email-close" aria-label="Close"></button>
-            <button class="terminal-btn terminal-btn-minimize" id="email-minimize" aria-label="Minimize"></button>
-            <button class="terminal-btn terminal-btn-maximize" aria-label="Maximize"></button>
-          </div>
-          <div class="email-toolbar">
-            <button class="email-toolbar-btn" aria-label="Reply">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 17l-5-5 5-5M4 12h16"/></svg>
-            </button>
-            <button class="email-toolbar-btn" aria-label="Delete">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
-            </button>
-            <button class="email-toolbar-btn" aria-label="Archive">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"/></svg>
-            </button>
-            <div class="email-toolbar-spacer"></div>
-            <button class="email-toolbar-btn" aria-label="Flag">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 21v-18M3 7l9-4 9 4v8l-9 4-9-4"/></svg>
-            </button>
-          </div>
-        </div>
-        <div class="email-content">
-          <div class="email-header">
-            <div class="email-header-row">
-              <span class="email-label">From:</span>
-              <span class="email-value">
-                <span class="email-sender-name">James Mitchell</span>
-                <span class="email-sender-email">&lt;j.mitchell@company.com&gt;</span>
-              </span>
-            </div>
-            <div class="email-header-row">
-              <span class="email-label">Subject:</span>
-              <span class="email-value email-subject">Website Status Update</span>
-            </div>
-            <div class="email-header-row">
-              <span class="email-label">Date:</span>
-              <span class="email-value email-date">December 8, 2024 at 3:42 PM</span>
-            </div>
-          </div>
-          <div class="email-body" id="email-thread">
-            <div class="email-message">
-              <p>Hello,</p>
-              <p>What's the status on our new website?</p>
-              <p class="email-signature">—<br>James Mitchell<br>CEO</p>
-            </div>
-          </div>
-          <div class="email-reply-bar">
-            <div class="email-reply-input-wrapper">
-              <div class="email-reply-input" id="email-reply-input" contenteditable="false" data-placeholder="Reply..."></div>
-            </div>
-            <button class="email-send-btn" id="email-send-btn" aria-label="Send">
-              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
-            </button>
           </div>
         </div>
       </div>
@@ -1087,273 +1021,6 @@ import Simulation from './Simulation.astro';
     cursor: pointer;
   }
 
-  #email-dock-icon {
-    cursor: pointer;
-  }
-
-  /* Email window styles - macOS Mail */
-  .email-window {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%) scale(0.95);
-    width: 520px;
-    max-width: 90%;
-    background: #1d1d1f;
-    border-radius: 10px;
-    box-shadow:
-      0 0 0 0.5px rgba(255, 255, 255, 0.1),
-      0 25px 50px -12px rgba(0, 0, 0, 0.6);
-    overflow: hidden;
-    z-index: 45;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.2s ease, transform 0.2s ease;
-    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
-  }
-
-  .email-window.open {
-    opacity: 1;
-    pointer-events: auto;
-    transform: translate(-50%, -50%) scale(1);
-  }
-
-  .email-window.minimized {
-    opacity: 0;
-    pointer-events: none;
-    transform: translate(-50%, 100%) scale(0.5);
-  }
-
-  /* Titlebar with toolbar */
-  .email-window .email-titlebar {
-    display: flex;
-    align-items: center;
-    padding: 10px 12px;
-    background: linear-gradient(180deg, #3a3a3c 0%, #2c2c2e 100%);
-    border-bottom: 1px solid rgba(0, 0, 0, 0.4);
-    gap: 12px;
-  }
-
-  .email-toolbar {
-    display: flex;
-    align-items: center;
-    gap: 2px;
-    margin-left: 8px;
-  }
-
-  .email-toolbar-btn {
-    width: 28px;
-    height: 24px;
-    background: transparent;
-    border: none;
-    border-radius: 4px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    color: #98989d;
-    transition: background 0.15s, color 0.15s;
-  }
-
-  .email-toolbar-btn:hover {
-    background: rgba(255, 255, 255, 0.1);
-    color: #fff;
-  }
-
-  .email-toolbar-btn svg {
-    width: 16px;
-    height: 16px;
-  }
-
-  .email-toolbar-spacer {
-    flex: 1;
-  }
-
-  /* Email content area */
-  .email-content {
-    display: flex;
-    flex-direction: column;
-    height: 320px;
-    background: #1d1d1f;
-  }
-
-  /* Email header - From/Subject/Date rows */
-  .email-header {
-    padding: 14px 16px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-    background: #232325;
-  }
-
-  .email-header-row {
-    display: flex;
-    align-items: baseline;
-    margin-bottom: 6px;
-    font-size: 13px;
-    line-height: 1.4;
-  }
-
-  .email-header-row:last-child {
-    margin-bottom: 0;
-  }
-
-  .email-label {
-    width: 60px;
-    color: #86868b;
-    font-weight: 400;
-    flex-shrink: 0;
-  }
-
-  .email-value {
-    color: #f5f5f7;
-    flex: 1;
-  }
-
-  .email-sender-name {
-    font-weight: 500;
-  }
-
-  .email-sender-email {
-    color: #86868b;
-    margin-left: 4px;
-  }
-
-  .email-subject {
-    font-weight: 500;
-  }
-
-  .email-date {
-    color: #86868b;
-  }
-
-  /* Email body */
-  .email-body {
-    flex: 1;
-    padding: 16px;
-    overflow-y: auto;
-    background: #1d1d1f;
-  }
-
-  .email-body::-webkit-scrollbar {
-    width: 8px;
-  }
-
-  .email-body::-webkit-scrollbar-track {
-    background: transparent;
-  }
-
-  .email-body::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.15);
-    border-radius: 4px;
-  }
-
-  .email-message {
-    font-size: 13px;
-    line-height: 1.6;
-    color: #e5e5e7;
-  }
-
-  .email-message p {
-    margin: 0 0 12px 0;
-  }
-
-  .email-message p:last-child {
-    margin-bottom: 0;
-  }
-
-  .email-signature {
-    color: #86868b;
-    font-size: 12px;
-    margin-top: 20px !important;
-  }
-
-  /* Sent message styling - plain text like native Mail */
-  .email-sent-message {
-    margin-top: 16px;
-    padding-top: 16px;
-    border-top: 1px solid rgba(255, 255, 255, 0.08);
-  }
-
-  .email-sent-message p {
-    font-size: 13px;
-    line-height: 1.6;
-    color: #e5e5e7;
-    margin: 0;
-  }
-
-  /* Reply bar */
-  .email-reply-bar {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 12px 16px;
-    background: #1d1d1f;
-    border-top: 1px solid rgba(255, 255, 255, 0.06);
-  }
-
-  .email-reply-input-wrapper {
-    flex: 1;
-    background: #2a2a2c;
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 6px;
-    transition: border-color 0.15s ease;
-  }
-
-  .email-reply-input {
-    width: 100%;
-    padding: 10px 12px;
-    font-size: 13px;
-    color: #f5f5f7;
-    background: transparent;
-    border: none;
-    outline: none;
-    min-height: 18px;
-    max-height: 80px;
-    overflow-y: auto;
-    line-height: 1.4;
-    box-sizing: border-box;
-  }
-
-  .email-reply-input:empty::before {
-    content: attr(data-placeholder);
-    color: #636366;
-  }
-
-  .email-reply-input-wrapper:focus-within {
-    border-color: rgba(255, 255, 255, 0.15);
-  }
-
-  .email-send-btn {
-    width: 32px;
-    height: 32px;
-    background: transparent;
-    border: none;
-    border-radius: 6px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    color: #48484a;
-    flex-shrink: 0;
-    transition: color 0.15s ease;
-  }
-
-  .email-send-btn svg {
-    width: 16px;
-    height: 16px;
-  }
-
-  .email-send-btn:hover {
-    color: #f5f5f7;
-  }
-
-  .email-send-btn:active {
-    transform: scale(0.92);
-  }
-
-  .email-send-btn.sent {
-    color: #f5f5f7;
-  }
-
   /* ============================================================
      RESPONSIVE STYLES - Global (Windows)
      ============================================================ */
@@ -1373,10 +1040,6 @@ import Simulation from './Simulation.astro';
     .youtube-gif {
       height: 250px;
     }
-
-    .email-window {
-      width: 480px;
-    }
   }
 
   /* Medium screens (tablets) */
@@ -1393,14 +1056,6 @@ import Simulation from './Simulation.astro';
     .youtube-gif-container,
     .youtube-gif {
       height: 240px;
-    }
-
-    .email-window {
-      width: 460px;
-    }
-
-    .email-content {
-      height: 300px;
     }
   }
 
@@ -1523,86 +1178,6 @@ import Simulation from './Simulation.astro';
     .youtube-channel {
       font-size: 8px;
     }
-
-    /* Email window - mobile */
-    .email-window {
-      width: 260px;
-      max-width: 65%;
-      border-radius: 6px;
-    }
-
-    .email-window .email-titlebar {
-      padding: 6px 8px;
-      gap: 6px;
-    }
-
-    .email-toolbar {
-      margin-left: 2px;
-      gap: 0;
-    }
-
-    .email-toolbar-btn {
-      width: 20px;
-      height: 16px;
-    }
-
-    .email-toolbar-btn svg {
-      width: 12px;
-      height: 12px;
-    }
-
-    .email-content {
-      height: 180px;
-    }
-
-    .email-header {
-      padding: 8px 10px;
-    }
-
-    .email-header-row {
-      font-size: 9px;
-      margin-bottom: 3px;
-    }
-
-    .email-label {
-      width: 40px;
-    }
-
-    .email-body {
-      padding: 8px;
-    }
-
-    .email-message {
-      font-size: 9px;
-    }
-
-    .email-signature {
-      font-size: 8px;
-    }
-
-    .email-reply-bar {
-      gap: 6px;
-      padding: 8px 10px;
-    }
-
-    .email-reply-input {
-      padding: 6px 8px;
-      font-size: 9px;
-    }
-
-    .email-send-btn {
-      width: 24px;
-      height: 24px;
-    }
-
-    .email-send-btn svg {
-      width: 12px;
-      height: 12px;
-    }
-
-    .email-sent-message p {
-      font-size: 9px;
-    }
   }
 </style>
 
@@ -1702,7 +1277,6 @@ import Simulation from './Simulation.astro';
 
     // Close all windows
     document.getElementById('browser-window')?.classList.remove('open', 'minimized');
-    document.getElementById('email-window')?.classList.remove('open', 'minimized');
 
     // Clear all terminals
     const terminalsContainer = document.getElementById('terminals-container');
@@ -1713,18 +1287,6 @@ import Simulation from './Simulation.astro';
       (window as any).terminalManager.terminals.clear();
       (window as any).terminalManager.nextId = 1;
     }
-
-    // Reset email thread
-    const emailThread = document.getElementById('email-thread');
-    if (emailThread) {
-      const sentMessages = emailThread.querySelectorAll('.email-sent-message');
-      sentMessages.forEach(msg => msg.remove());
-    }
-
-    // Reset email input and send button
-    const emailInput = document.getElementById('email-reply-input');
-    if (emailInput) emailInput.textContent = '';
-    document.getElementById('email-send-btn')?.classList.remove('sent');
 
     // Collapse notch
     window.dispatchEvent(new CustomEvent('collapseNotch'));
@@ -2103,63 +1665,10 @@ It's designed to be your AI-powered productivity companion!`
     browserWindow?.classList.add('minimized');
   });
 
-  // Email window
-  const emailDockIcon = document.getElementById('email-dock-icon');
-  const emailWindow = document.getElementById('email-window');
-  const emailClose = document.getElementById('email-close');
-  const emailMinimize = document.getElementById('email-minimize');
-  const emailReplyInput = document.getElementById('email-reply-input');
-  const emailSendBtn = document.getElementById('email-send-btn');
-
-  emailDockIcon?.addEventListener('click', () => {
-    emailWindow?.classList.remove('minimized');
-    emailWindow?.classList.add('open');
-  });
-
-  emailClose?.addEventListener('click', () => {
-    emailWindow?.classList.remove('open');
-    emailWindow?.classList.remove('minimized');
-  });
-
-  emailMinimize?.addEventListener('click', () => {
-    emailWindow?.classList.remove('open');
-    emailWindow?.classList.remove('minimized');
-  });
-
   // Listen for simulation events
-  window.addEventListener('openEmail', () => {
-    emailWindow?.classList.remove('minimized');
-    emailWindow?.classList.add('open');
-  });
-
-  window.addEventListener('closeEmail', () => {
-    emailWindow?.classList.remove('open');
-    emailWindow?.classList.remove('minimized');
-  });
-
   window.addEventListener('closeBrowser', () => {
     browserWindow?.classList.remove('open');
     browserWindow?.classList.remove('minimized');
-  });
-
-  window.addEventListener('sendEmail', () => {
-    const emailBody = document.getElementById('email-thread');
-    const input = document.getElementById('email-reply-input');
-    const text = input?.textContent || '';
-
-    if (emailBody && text) {
-      // Create sent reply - plain text like native Mail
-      const sentMessage = document.createElement('div');
-      sentMessage.className = 'email-sent-message';
-      sentMessage.innerHTML = `<p>${text}</p>`;
-      emailBody.appendChild(sentMessage);
-      emailBody.scrollTop = emailBody.scrollHeight;
-
-      // Clear input
-      if (input) input.textContent = '';
-    }
-
-    emailSendBtn?.classList.add('sent');
   });
 
   // GIF cycling with smooth crossfade

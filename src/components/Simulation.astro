@@ -530,56 +530,17 @@
       window.dispatchEvent(new CustomEvent('collapseNotch'));
     }},
 
-    // === PHASE 5: Email demo ===
-    { type: 'wait', duration: 4000 },
+    // Wait a moment, then close Safari
+    { type: 'wait', duration: 2000 },
 
     // Close Safari by clicking the close button
-    { type: 'move', target: '#browser-close', duration: 250 },
-    { type: 'wait', duration: 100 },
+    { type: 'move', target: '#browser-close', duration: 300 },
+    { type: 'wait', duration: 150 },
     { type: 'click', target: '#browser-close' },
     { type: 'callback', callback: () => {
       window.dispatchEvent(new CustomEvent('closeBrowser'));
     }},
-    { type: 'wait', duration: 400 },
-
-    // Open email
-    { type: 'move', target: '#email-dock-icon', duration: 300 },
-    { type: 'wait', duration: 100 },
-    { type: 'click', target: '#email-dock-icon' },
-    { type: 'callback', callback: () => {
-      window.dispatchEvent(new CustomEvent('openEmail'));
-    }},
     { type: 'wait', duration: 800 },
-
-    // Move to reply input and click
-    { type: 'move', target: '#email-reply-input', duration: 300 },
-    { type: 'click' },
-    { type: 'wait', duration: 200 },
-
-    // Type initial response with "5 minutes"
-    { type: 'typeElement', target: '#email-reply-input', text: 'Hello, I just spent 5 minutes', duration: 40 },
-    { type: 'wait', duration: 800 },
-
-    // Backspace to remove "5 minutes"
-    { type: 'backspace', target: '#email-reply-input', count: 9, duration: 60 },
-    { type: 'wait', duration: 300 },
-
-    // Type the correction
-    { type: 'typeElement', target: '#email-reply-input', text: 'the last 7 days', duration: 40 },
-    { type: 'wait', duration: 200 },
-
-    // Continue typing the rest
-    { type: 'typeElement', target: '#email-reply-input', text: ' building the website, it\'s ready for production.', duration: 35 },
-    { type: 'wait', duration: 500 },
-
-    // Move to send button and click
-    { type: 'move', target: '#email-send-btn', duration: 250 },
-    { type: 'wait', duration: 150 },
-    { type: 'click', target: '#email-send-btn' },
-    { type: 'callback', callback: () => {
-      window.dispatchEvent(new CustomEvent('sendEmail'));
-    }},
-    { type: 'wait', duration: 1000 },
   ];
 
   // Initialize simulation
