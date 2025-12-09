@@ -2,8 +2,10 @@
 import NotchPersistent from './NotchPersistent.astro';
 import InstanceList from './InstanceList.astro';
 import ChatView from './ChatView.astro';
+import { DOWNLOAD_URL } from '../../config';
 ---
 
+<div id="notch-config" data-download-url={DOWNLOAD_URL} hidden></div>
 <header id="notch" class="collapsed">
   <NotchPersistent />
 
@@ -26,6 +28,8 @@ import ChatView from './ChatView.astro';
   // ============================================================
   // SECTION 1: CONSTANTS & ENUMS
   // ============================================================
+
+  const DOWNLOAD_URL = document.getElementById('notch-config')?.getAttribute('data-download-url') || '';
 
   const EventType = {
     USER_MESSAGE: 'userMessage',
@@ -860,7 +864,7 @@ import ChatView from './ChatView.astro';
         type: EventType.PERMISSION_REQUEST,
         toolId: permToolId,
         toolName: 'Send download link',
-        toolInput: 'github.com/anthropics/claude-island'
+        toolInput: 'github.com/farouqaldori/claude-island'
       });
 
       renderInstanceList();
@@ -1348,7 +1352,7 @@ import ChatView from './ChatView.astro';
         setTimeout(() => {
           session.process({
             type: EventType.ASSISTANT_MESSAGE,
-            text: "Here's the download link: https://github.com/anthropics/claude-island/releases\n\nJust download the .dmg file and drag Claude Island to your Applications folder!"
+            text: "Here's the download link: " + DOWNLOAD_URL + "\n\nJust download the .dmg file and drag Claude Island to your Applications folder!"
           });
           session.state = InstanceState.WAITING_FOR_INPUT;
 
