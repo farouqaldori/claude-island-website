@@ -3,12 +3,23 @@
     <channel>
         <title>ClaudeIsland</title>
         <item>
+            <title>1.1</title>
+            <pubDate>Tue, 09 Dec 2025 20:50:43 +0100</pubDate>
+            <sparkle:version>2</sparkle:version>
+            <sparkle:shortVersionString>1.1</sparkle:shortVersionString>
+            <sparkle:minimumSystemVersion>15.6</sparkle:minimumSystemVersion>
+            <enclosure url="https://github.com/farouqaldori/claude-island/releases/download/v1.1/ClaudeIsland-1.1.dmg" length="4058201" type="application/octet-stream" sparkle:edSignature="ghZyQRNujgtEbMEXhWx6RsHzt4xjIUT2mxR7uQ4CkI24Ouh5YNkc2yIDDXJMIJ6oq5FMKhbVbKqZJ6hbcmRPBw=="/>
+            <sparkle:deltas>
+                <enclosure url="https://claudeisland.com/Claude%20Island2-1.delta" sparkle:deltaFrom="1" length="161994" type="application/octet-stream" sparkle:deltaFromSparkleExecutableSize="862896" sparkle:deltaFromSparkleLocales="de,he,ar,el,ja,fa,uk" sparkle:edSignature="Ow76Q0ztj2OLznHY/M8nHl1CiW/jgMXXet3mcWjso6LhebLwHuyaFP20rfI8TFHzNG6AqLdBxLN4ZKJs1SgcBw=="/>
+            </sparkle:deltas>
+        </item>
+        <item>
             <title>1.0</title>
             <pubDate>Mon, 08 Dec 2025 19:01:59 +0100</pubDate>
             <sparkle:version>1</sparkle:version>
             <sparkle:shortVersionString>1.0</sparkle:shortVersionString>
             <sparkle:minimumSystemVersion>15.6</sparkle:minimumSystemVersion>
-            <enclosure url="https://github.com/farouqaldori/claude-island/releases/download/v1.0/ClaudeIsland-1.0.dmg" length="4057941" type="application/octet-stream" sparkle:edSignature="A99+RCmPfcl7KW/fMWJ4Yxo0Dk7Idv7/AyIRDVTfiS/h30iM81RYeYbZ12P4cDK21bWN1jAR58l9loVZTQ/tAg=="/>
+            <enclosure url="https://claudeisland.com/ClaudeIsland-1.0.dmg" length="4057941" type="application/octet-stream" sparkle:edSignature="A99+RCmPfcl7KW/fMWJ4Yxo0Dk7Idv7/AyIRDVTfiS/h30iM81RYeYbZ12P4cDK21bWN1jAR58l9loVZTQ/tAg=="/>
         </item>
     </channel>
 </rss>
