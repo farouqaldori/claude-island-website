@@ -3,12 +3,24 @@
     <channel>
         <title>ClaudeIsland</title>
         <item>
+            <title>1.2</title>
+            <pubDate>Fri, 12 Dec 2025 18:30:43 +0100</pubDate>
+            <sparkle:version>3</sparkle:version>
+            <sparkle:shortVersionString>1.2</sparkle:shortVersionString>
+            <sparkle:minimumSystemVersion>15.6</sparkle:minimumSystemVersion>
+            <enclosure url="https://github.com/farouqaldori/claude-island/releases/download/v1.2/ClaudeIsland-1.2.dmg" length="4134588" type="application/octet-stream" sparkle:edSignature="crbsICnlATsagd/lLc8gMgZBMU10t9rZD6dKJhMCpOmuszjqg1YQc/XiPfsfXBNtK67Cjy6OlR1Iz5I774o/CA=="/>
+            <sparkle:deltas>
+                <enclosure url="https://claudeisland.com/Claude%20Island3-2.delta" sparkle:deltaFrom="2" length="453350" type="application/octet-stream" sparkle:deltaFromSparkleExecutableSize="862896" sparkle:deltaFromSparkleLocales="de,he,ar,el,ja,fa,uk" sparkle:edSignature="vGRLACrSbjjsXm/JHD4egXZrIkE2bYWHZD/hnQ2St81sYSTOXJbM62OgPXMs8KMTGyxnalHqC3XyPwbSIqOyDQ=="/>
+                <enclosure url="https://claudeisland.com/Claude%20Island3-1.delta" sparkle:deltaFrom="1" length="453806" type="application/octet-stream" sparkle:deltaFromSparkleExecutableSize="862896" sparkle:deltaFromSparkleLocales="de,he,ar,el,ja,fa,uk" sparkle:edSignature="QUj7/S4jj1va0iWfx3Wdg76sGVJfzDCd01WmbQhfgQurMqqJhujCb8M11h/MvSV6iQ7zUBMJW1EV8MZ9BobcAg=="/>
+            </sparkle:deltas>
+        </item>
+        <item>
             <title>1.1</title>
             <pubDate>Tue, 09 Dec 2025 20:50:43 +0100</pubDate>
             <sparkle:version>2</sparkle:version>
             <sparkle:shortVersionString>1.1</sparkle:shortVersionString>
             <sparkle:minimumSystemVersion>15.6</sparkle:minimumSystemVersion>
-            <enclosure url="https://github.com/farouqaldori/claude-island/releases/download/v1.1/ClaudeIsland-1.1.dmg" length="4058201" type="application/octet-stream" sparkle:edSignature="ghZyQRNujgtEbMEXhWx6RsHzt4xjIUT2mxR7uQ4CkI24Ouh5YNkc2yIDDXJMIJ6oq5FMKhbVbKqZJ6hbcmRPBw=="/>
+            <enclosure url="https://claudeisland.com/ClaudeIsland-1.1.dmg" length="4058201" type="application/octet-stream" sparkle:edSignature="ghZyQRNujgtEbMEXhWx6RsHzt4xjIUT2mxR7uQ4CkI24Ouh5YNkc2yIDDXJMIJ6oq5FMKhbVbKqZJ6hbcmRPBw=="/>
             <sparkle:deltas>
                 <enclosure url="https://claudeisland.com/Claude%20Island2-1.delta" sparkle:deltaFrom="1" length="161994" type="application/octet-stream" sparkle:deltaFromSparkleExecutableSize="862896" sparkle:deltaFromSparkleLocales="de,he,ar,el,ja,fa,uk" sparkle:edSignature="Ow76Q0ztj2OLznHY/M8nHl1CiW/jgMXXet3mcWjso6LhebLwHuyaFP20rfI8TFHzNG6AqLdBxLN4ZKJs1SgcBw=="/>
             </sparkle:deltas>
