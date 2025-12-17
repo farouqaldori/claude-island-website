@@ -808,6 +808,64 @@ import { DOWNLOAD_URL } from '../../config';
     });
     whoBuiltSession.state = InstanceState.IDLE;
     sessions.set('sample-whobuilt', whoBuiltSession);
+
+    // 4. "Who are the latest stargazers?" - pre-loaded, fetches data on creation
+    const stargazersSession = new Session('sample-stargazers', 'Who are the latest stargazers?');
+    const sgToolId = `stargazers-${Date.now()}`;
+    stargazersSession.events.push({ type: EventType.USER_MESSAGE, text: 'Who are the latest stargazers?' });
+    stargazersSession.events.push({ type: EventType.TOOL_USE, toolId: sgToolId, toolName: 'WebFetch', toolInput: 'farouqaldori/claude-island/stargazers' });
+    stargazersSession.tools.set(sgToolId, { id: sgToolId, name: 'WebFetch', input: 'farouqaldori/claude-island/stargazers', status: ToolStatus.SUCCESS });
+    stargazersSession.events.push({ type: EventType.TOOL_RESULT, toolId: sgToolId, success: true });
+    stargazersSession.state = InstanceState.IDLE;
+    sessions.set('sample-stargazers', stargazersSession);
+
+    // Fetch stargazers data and update the session
+    fetchStargazersForSession(stargazersSession);
+  }
+
+  // Fetch stargazers and add to pre-loaded session
+  async function fetchStargazersForSession(session: Session) {
+    try {
+      const repoResponse = await fetch('https://api.github.com/repos/farouqaldori/claude-island');
+      const repoData = await repoResponse.json();
+      const totalStars = repoData.stargazers_count || 0;
+
+      const perPage = 10;
+      const lastPage = Math.max(1, Math.ceil(totalStars / perPage));
+
+      const stargazersResponse = await fetch(`https://api.github.com/repos/farouqaldori/claude-island/stargazers?per_page=${perPage}&page=${lastPage}`, {
+        headers: { 'Accept': 'application/vnd.github.v3.star+json' }
+      });
+      const stargazersData = await stargazersResponse.json();
+
+      let message = `Claude Island has ${totalStars} star${totalStars !== 1 ? 's' : ''}!\n\n`;
+
+      if (Array.isArray(stargazersData) && stargazersData.length > 0) {
+        message += `Latest stargazers:\n\n`;
+        const stargazersList = [...stargazersData].reverse();
+        stargazersList.forEach((stargazer: any, index: number) => {
+          const user = stargazer.user || stargazer;
+          const starNum = totalStars - index;
+          message += `<stargazer><img src="${user.avatar_url}&s=32" alt="${user.login}" /><a href="https://github.com/${user.login}" target="_blank">${user.login}</a><num>#${starNum}</num></stargazer>\n`;
+        });
+      } else {
+        message += `Be the first to star the repo!\n`;
+      }
+
+      message += `\nWant to join them? Star the repo!\n\nhttps://github.com/farouqaldori/claude-island`;
+
+      session.events.push({ type: EventType.ASSISTANT_MESSAGE, text: message });
+
+      // Re-render if this session is active
+      if (activeSessionId === session.id) {
+        renderChat(session.id);
+      }
+    } catch (error) {
+      session.events.push({
+        type: EventType.ASSISTANT_MESSAGE,
+        text: "Couldn't fetch stargazers right now. Check out the repo directly!\n\nhttps://github.com/farouqaldori/claude-island"
+      });
+    }
   }
 
   // Simulate the install response with multiple tool calls and permission request
@@ -1292,9 +1350,11 @@ import { DOWNLOAD_URL } from '../../config';
         renderChat(sessionId);
         setViewMode('chat');
 
-        // If this is the install session in PROCESSING state, trigger the response
+        // If this is the install session in IDLE state, trigger the response
         const session = sessions.get(sessionId);
-        if (sessionId === 'sample-install' && session?.state === InstanceState.PROCESSING) {
+        if (sessionId === 'sample-install' && session?.state === InstanceState.IDLE) {
+          session.state = InstanceState.PROCESSING;
+          renderInstanceList();
           simulateInstallResponse(sessionId);
         }
       });
@@ -1406,8 +1466,15 @@ import { DOWNLOAD_URL } from '../../config';
   }
 
   function formatMarkdown(text) {
-    // First escape HTML
-    let result = escapeHtml(text);
+    // Extract stargazer tags to preserve them
+    const stargazerPlaceholders: string[] = [];
+    let processedText = text.replace(/<stargazer>.*?<\/stargazer>/g, (match: string) => {
+      stargazerPlaceholders.push(match);
+      return `__STARGAZER_${stargazerPlaceholders.length - 1}__`;
+    });
+
+    // Escape HTML
+    let result = escapeHtml(processedText);
 
     // Convert URLs to links
     const urlRegex = /(https?:\/\/[^\s]+)/g;
@@ -1421,6 +1488,11 @@ import { DOWNLOAD_URL } from '../../config';
 
     // Convert newlines to <br> tags
     result = result.replace(/\n/g, '<br>');
+
+    // Restore stargazer tags
+    stargazerPlaceholders.forEach((tag, index) => {
+      result = result.replace(`__STARGAZER_${index}__`, tag);
+    });
 
     return result;
   }

@@ -1101,4 +1101,50 @@ header#notch.chat {
     font-size: 10px;
     width: 12px;
   }
+
+  /* Stargazer - mobile */
+  stargazer img {
+    width: 16px;
+    height: 16px;
+  }
+
+  stargazer a {
+    font-size: 11px;
+  }
+
+  stargazer num {
+    font-size: 10px;
+  }
+}
+
+/* Stargazer elements in chat */
+stargazer {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 0;
+}
+
+stargazer img {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+stargazer a {
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 13px;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+stargazer a:hover {
+  color: var(--accent-pink);
+}
+
+stargazer num {
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 11px;
+  margin-left: auto;
 }
