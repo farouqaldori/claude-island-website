@@ -830,20 +830,39 @@ import { DOWNLOAD_URL } from '../../config';
       const repoData = await repoResponse.json();
       const totalStars = repoData.stargazers_count || 0;
 
-      const perPage = 10;
+      // Fetch last 100 stargazers - this gives us plenty to work with
+      const perPage = 100;
       const lastPage = Math.max(1, Math.ceil(totalStars / perPage));
+      const itemsOnLastPage = totalStars % perPage || perPage;
+
+      let allStargazers: any[] = [];
+
+      // If last page has less than 10 items, fetch the previous page too
+      if (itemsOnLastPage < 10 && lastPage > 1) {
+        const prevPageResponse = await fetch(`https://api.github.com/repos/farouqaldori/claude-island/stargazers?per_page=${perPage}&page=${lastPage - 1}`, {
+          headers: { 'Accept': 'application/vnd.github.v3.star+json' }
+        });
+        const prevPageData = await prevPageResponse.json();
+        if (Array.isArray(prevPageData)) {
+          allStargazers = prevPageData;
+        }
+      }
 
       const stargazersResponse = await fetch(`https://api.github.com/repos/farouqaldori/claude-island/stargazers?per_page=${perPage}&page=${lastPage}`, {
         headers: { 'Accept': 'application/vnd.github.v3.star+json' }
       });
       const stargazersData = await stargazersResponse.json();
+      if (Array.isArray(stargazersData)) {
+        allStargazers = allStargazers.concat(stargazersData);
+      }
 
       let message = `Claude Island has ${totalStars} star${totalStars !== 1 ? 's' : ''}!\n\n`;
 
-      if (Array.isArray(stargazersData) && stargazersData.length > 0) {
+      if (allStargazers.length > 0) {
         message += `Latest stargazers:\n\n`;
-        const stargazersList = [...stargazersData].reverse();
-        stargazersList.forEach((stargazer: any, index: number) => {
+        // Take the last 10, then reverse to show most recent first
+        const last10 = allStargazers.slice(-10).reverse();
+        last10.forEach((stargazer: any, index: number) => {
           const user = stargazer.user || stargazer;
           const starNum = totalStars - index;
           message += `<stargazer><img src="${user.avatar_url}&s=32" alt="${user.login}" /><a href="https://github.com/${user.login}" target="_blank">${user.login}</a><num>#${starNum}</num></stargazer>\n`;
